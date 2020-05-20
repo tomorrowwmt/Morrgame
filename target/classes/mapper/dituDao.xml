@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pomit.springwork.netty.Dao.DituDao">
+    <resultMap id="dituMap" type="cn.pomit.springwork.netty.entity.Ditu">
+        <!-- property对应实体类中的属性名  column 对应库表中的字段名 -->
+        <id column="mid" property="mid"/>
+        <result column="mname" property="mname"/>
+        <result column="mdesc" property="mdesc"/>
+        <result column="neighbor" property="neighbor"/>
+        <!-- 复合对象 -->
+        <!-- property对应实体类中的属性名  column 对应库表中的字段名 -->
+        <association property="uid" column="uid" javaType="cn.pomit.springwork.netty.entity.User">
+            <id column="uid" property="uid"/>
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+    <select id="querymap" resultMap="dituMap">
+        select
+        m.mid,
+        m.mname,
+        m.mdesc,
+        m.neighbor,
+        m.uid,
+        u.username
+        from tb_map m,
+        tb_user u
+        where
+        m.mid=u.uid;
+    </select>
+</mapper>

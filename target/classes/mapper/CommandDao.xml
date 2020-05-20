@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pomit.springwork.netty.Dao.CommandDao">
+    <select id="querycommand" resultType="cn.pomit.springwork.netty.entity.Command">
+            select command , cdesc from tb_command;
+    </select>
+
+</mapper>
