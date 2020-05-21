@@ -10,9 +10,8 @@ import java.util.*;
 @Slf4j
 @Component
 public class HelloClientHandler extends ChannelInboundHandlerAdapter {
-    public static String Name = "";
     @Autowired
-    private UserMapper userDao;
+    private UserMapper userMapper;
     @Override
     public  void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Server say : " + msg);
@@ -42,8 +41,11 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println(ctx.channel().remoteAddress() + " exceptionCaught :" + cause.getMessage() );
-        super.exceptionCaught(ctx, cause);
+        //打印异常栈跟踪
+        cause.printStackTrace();
+
+        // 关闭该Channel
+        ctx.close();
     }
     public static String read() throws Exception{
         String str = "";

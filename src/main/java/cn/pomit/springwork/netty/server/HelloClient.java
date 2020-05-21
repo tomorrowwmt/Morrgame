@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 public class HelloClient {
 
     public static String host = "127.0.0.1";
-    public static int port = 4444;
+    public static int port = 8099;
 
     /**
      * @param args

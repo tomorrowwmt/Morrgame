@@ -18,25 +18,23 @@ public class HelloServer {
     /**
      * 服务端监听的端口地址
      */
-    private static final int portNumber = 4444;
+    private static final int portNumber = 8099;
 
     //自动装备变量，spring会根据名字或者类型来装备这个变量，注解方式不需要set get方法了
     @Autowired
     private HelloServerInitializer helloServerInitializer;
 
-    public static void main(String[] args) throws InterruptedException {
-        new HelloServer().serverStart();
-    }
     //程序初始方法入口注解，提示spring这个程序先执行这里
-    @PostConstruct
-    public void serverStart() throws InterruptedException{
+    //@PostConstruct
+    public static void main(String[] args) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup);
             b.channel(NioServerSocketChannel.class);
-            b.childHandler(helloServerInitializer);
+            //b.childHandler(helloServerInitializer);
+            b.childHandler(new HelloServerInitializer());
             // 服务器绑定端口监听
             ChannelFuture f = b.bind(portNumber).sync();
             // 监听服务器关闭监听

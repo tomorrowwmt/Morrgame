@@ -83,8 +83,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             return;
         } else if("aor".equals(body)){
             System.out.println("打印实体开始");
-            //List<User> uu=userDao.queryuser();
-            //System.out.println(uu);
             String[] users={"1","wbl1","村名","出生天使之地",
                             "2","詹姆斯","村名","出生雷霆禁地",
                             "3","圣墟道长","法师","出生雷霆禁地",
@@ -101,6 +99,15 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                           "5","哈登","仙图"};
             List<String> ditu= Arrays.asList(arr);
             ctx.channel().writeAndFlush("移动成功\n"+ditu);
+        }else if("insert".equals(body)){
+            System.out.println("开始查询");
+            User us=new User();
+           //User users=userMapper.getUserById(1);
+            us.setUid(11);
+            us.setUsername("卡特");
+            us.setPassword("111");
+            System.out.println(us);
+            ctx.channel().writeAndFlush("注册成功\n"+us);
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
@@ -123,7 +130,10 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println(ctx.channel().remoteAddress() + " exceptionCaught :" + cause.getMessage() );
-        super.exceptionCaught(ctx, cause);
+        //打印异常栈跟踪
+        cause.printStackTrace();
+
+        // 关闭该Channel
+        ctx.close();
     }
 }
