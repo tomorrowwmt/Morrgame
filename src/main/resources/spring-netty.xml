@@ -2,18 +2,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
        xmlns:lang="http://www.springframework.org/schema/lang" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
-       default-lazy-init="false" default-autowire="byName">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--  <bean id="user" class="com.wayhb.User">
     <property name="userid" value="20"></property>
     <property name="username" value="wayhb"></property>
-    </bean>-->
+    < /bean>-->
     <!--开启注解方式，扫描包路径-->
     <context:annotation-config/>
     <context:component-scan base-package="cn.pomit.springwork.netty" />
-    <bean id="helloServer" class="cn.pomit.springwork.netty.server.HelloServer">
-    </bean>
     <!-- 传统方法配置BEAN
     <bean id="helloServer" class="com.netty.HelloServer" init-method="serverStart">
     <property name="helloServerInitializer" ref="helloServerInitializer"></property>
@@ -25,6 +22,7 @@
      -->
     <!--引入所需的配置文件-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 2.数据库连接池 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <!-- 配置连接池属性 -->
         <property name="driverClass" value="${jdbc.driver}" />
@@ -41,22 +39,11 @@
         <!-- 当获取连接失败重试次数 -->
         <property name="acquireRetryAttempts" value="2" />
     </bean>
-    <!-- 3.配置SqlSessionFactory对象 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <!-- 注入数据库连接池 -->
-        <property name="dataSource" ref="dataSource" />
-        <!-- 配置MyBaties全局配置文件:mybatis-config.xml -->
-        <property name="configLocation" value="classpath:mybatis-config.xml" />
-        <!-- 扫描entity包 使用别名 -->
-        <property name="typeAliasesPackage" value="cn.pomit.springwork.netty.entity" />
-        <!-- 扫描sql配置文件:mapper需要的xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- 注入sqlSessionFactory -->
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <!-- 给出需要扫描Dao接口包 -->
-        <property name="basePackage" value="cn.pomit.springwork.netty.Dao" />
+    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="cn.pomit.springwork.netty.mapper.UserMapper"/>
     </bean>
 </beans>

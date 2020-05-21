@@ -41,4 +41,14 @@ public class User {
     public void setMid(Ditu mid) {
         this.mid = mid;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", mid=" + mid +
+                '}';
+    }
 }

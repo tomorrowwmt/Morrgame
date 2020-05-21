@@ -1,23 +1,19 @@
 package cn.pomit.springwork.netty.handler;
 import java.net.InetAddress;
+import java.sql.SQLOutput;
 import java.util.*;
 
-import cn.pomit.springwork.netty.Dao.CommandDao;
-import cn.pomit.springwork.netty.Dao.DituDao;
-import cn.pomit.springwork.netty.Dao.UserDao;
 import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.Channel;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xwpf.usermodel.BodyElementType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -34,12 +30,7 @@ import javax.sound.midi.Soundbank;
 
 //继承Netty提供的通道传入处理器类，只要复写方法就可以了，简化开发
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
-    @Autowired
-    private CommandDao commandDao;
-    @Autowired
-    private DituDao dituDao;
-    @Autowired
-    private UserDao userDao;
+    private UserMapper userMapper;
     public static Map<String,String> user = new HashMap<String, String>();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -71,36 +62,43 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
+        if(null==msg){
+            return ;
+        }
         String body= (String) msg;
         if("login".equals(body)){
             ctx.channel().writeAndFlush("登陆成功");
             return;
-        }else if(body.contains("wbl1")) {
+        }else if("wbl1".equals(body)) {
             String name= body.substring(4);
                 user.put(name,"sucess");
                 ctx.channel().writeAndFlush("wbl1牛气冲天的用户--登录成功！\n");
+           // System.out.println(7777);
+            //System.out.println(userMapper.getUserById(1));
                 return;
-            }else if(body.contains("wbl2")){
+            }else if("wbl2".equals(body)){
             String name = body.substring(4);
             user.put(name,"sucess");
             ctx.channel().writeAndFlush("wbl2用户-注册并登录成功\n！");
             return;
-        }else if(body.contains("aor")){
+        } else if("aor".equals(body)){
             System.out.println("打印实体开始");
             //List<User> uu=userDao.queryuser();
             //System.out.println(uu);
-            String[] users={"1","詹姆斯","村名","出生雷霆禁地",
-                            "2","圣墟道长","法师","出生雷霆禁地",
-                            "3","科比","npc","出生Boss之家",
-                            "4","哈登","怪兽","出生圣域"};
+            String[] users={"1","wbl1","村名","出生天使之地",
+                            "2","詹姆斯","村名","出生雷霆禁地",
+                            "3","圣墟道长","法师","出生雷霆禁地",
+                            "4","科比","npc","出生Boss之家",
+                            "5","哈登","怪兽","出生圣域"};
             List<String> user=Arrays.asList(users);
             ctx.channel().writeAndFlush("打印成功\n"+user);
-        }else if(body.contains("move")){
+        }else if("move".equals(body)){
             System.out.println("移动相邻地图");
-            String[] arr={"1","詹姆斯","渡劫地图",
-                          "2","圣墟道长","塔图",
-                          "3","科比","百美图",
-                          "4","哈登","仙图"};
+            String[] arr={ "1","wbl1","美图",
+                          "2","詹姆斯","渡劫地图",
+                          "3","圣墟道长","塔图",
+                          "4","科比","百美图",
+                          "5","哈登","仙图"};
             List<String> ditu= Arrays.asList(arr);
             ctx.channel().writeAndFlush("移动成功\n"+ditu);
         }
@@ -122,5 +120,10 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
 
         super.channelActive(ctx);
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println(ctx.channel().remoteAddress() + " exceptionCaught :" + cause.getMessage() );
+        super.exceptionCaught(ctx, cause);
     }
 }

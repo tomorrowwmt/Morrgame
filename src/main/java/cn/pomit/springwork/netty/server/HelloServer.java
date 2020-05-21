@@ -24,6 +24,9 @@ public class HelloServer {
     @Autowired
     private HelloServerInitializer helloServerInitializer;
 
+    public static void main(String[] args) throws InterruptedException {
+        new HelloServer().serverStart();
+    }
     //程序初始方法入口注解，提示spring这个程序先执行这里
     @PostConstruct
     public void serverStart() throws InterruptedException{
@@ -34,7 +37,6 @@ public class HelloServer {
             b.group(bossGroup, workerGroup);
             b.channel(NioServerSocketChannel.class);
             b.childHandler(helloServerInitializer);
-
             // 服务器绑定端口监听
             ChannelFuture f = b.bind(portNumber).sync();
             // 监听服务器关闭监听

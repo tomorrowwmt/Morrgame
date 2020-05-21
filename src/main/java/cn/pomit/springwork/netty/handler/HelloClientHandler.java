@@ -1,28 +1,18 @@
 package cn.pomit.springwork.netty.handler;
-import cn.pomit.springwork.netty.Dao.CommandDao;
-import cn.pomit.springwork.netty.Dao.DituDao;
-import cn.pomit.springwork.netty.Dao.UserDao;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
 @Slf4j
 @Component
 public class HelloClientHandler extends ChannelInboundHandlerAdapter {
     public static String Name = "";
-    public static Map<String,String> command=new HashMap<String, String>();
     @Autowired
-    private CommandDao commandDao;
-    @Autowired
-    private DituDao dituDao;
-    @Autowired
-    private UserDao userDao;
+    private UserMapper userDao;
     @Override
     public  void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Server say : " + msg);
@@ -30,13 +20,12 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
         //收到数据
         String data= (String) msg;
         if("登陆成功".equals(data)){
-            System.out.println("hhh\n");
-        }else if(data.contains("wbl2")||data.contains("wbl3")){
-            System.out.println(data.substring(4));
-            System.out.println("游戏开始啦啦啦啦啦啦");
+            System.out.println("牛牛客户端启动----\n");
+            return;
+        }else if(data.contains("wbl2")){
+            System.out.println("游戏即将开始-----");
         }else if(data.contains("wbl1")){
-            //System.out.println(data.substring(4));
-            System.out.println("游戏开始");
+            System.out.println("游戏开始请稍后-----");
         }
     }
 
@@ -50,6 +39,11 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Client close ");
         super.channelInactive(ctx);
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println(ctx.channel().remoteAddress() + " exceptionCaught :" + cause.getMessage() );
+        super.exceptionCaught(ctx, cause);
     }
     public static String read() throws Exception{
         String str = "";
