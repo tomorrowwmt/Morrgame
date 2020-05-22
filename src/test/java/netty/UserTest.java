@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.sound.midi.Soundbank;
 import java.util.List;
 
 public class UserTest {
@@ -18,9 +19,7 @@ public class UserTest {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
          List<User> users=userMapper.queryuser();
-         for(User us:users){
-             System.out.println(us);
-         }
+        System.out.println(users);
     }
     @Test
     public void select(){

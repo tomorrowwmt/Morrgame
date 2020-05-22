@@ -14,12 +14,6 @@ public class HelloClient {
 
     public static String host = "127.0.0.1";
     public static int port = 8099;
-
-    /**
-     * @param args
-     * @throws InterruptedException
-     * @throws IOException
-     */
     public static void main(String[] args) throws InterruptedException, IOException {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
