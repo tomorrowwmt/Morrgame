@@ -23,10 +23,19 @@ public class UserTest {
     }
     @Test
     public void select(){
-        System.out.println(7777);
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=userMapper.getUserById(1);
+        User user=userMapper.getUserById(14);
         System.out.println(user);
+    }
+    @Test
+    public void insert(){
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        UserMapper userMapper=ac.getBean(UserMapper.class);
+        User user=new User();
+        user.setUsername("三七互娱");
+        user.setPassword("1111");
+        int user1 = userMapper.addUser(user);
+        System.out.println(user1);
     }
 }

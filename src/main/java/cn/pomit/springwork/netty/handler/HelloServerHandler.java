@@ -5,6 +5,7 @@ import java.util.*;
 
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.entity.Ditu;
+import cn.pomit.springwork.netty.entity.NPC;
 import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.Channel;
@@ -38,7 +39,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private  UserMapper userMapper;
     private ExcelReader reader;
-    public static Map<String,String> user = new HashMap<String, String>();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
@@ -75,10 +75,21 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().writeAndFlush("登陆成功");
             return;
         }else if("wbl1".equals(body)) {
-                ctx.channel().writeAndFlush("wbl1牛气冲天的用户--登录成功！\n");
-                return;
-            }else if("wbl2".equals(body)){
-            ctx.channel().writeAndFlush("wbl2用户-注册并登录成功\n！");
+            System.out.println("怪兽即将到来---");
+            ExcelReader excelReader = new ExcelReader();
+            List<List<String>> res = excelReader.readXlsx("D:\\test\\Monster.xlsx");
+            ctx.channel().writeAndFlush("用户登录成功怪兽已生成\n"+"怪兽来了==="+res);
+            return;
+        }else if("insert".equals(body)){
+            System.out.println("用户注册正在执行请稍等---");
+            ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+            UserMapper userMapper=ac.getBean(UserMapper.class);
+            User user=new User();
+            user.setUsername("wbl4");
+            user.setPassword("1111");
+            user.setHp(1000);
+            int user1 = userMapper.addUser(user);
+            ctx.channel().writeAndFlush("用户-注册成功\n！"+user);
             return;
         } else if("aor".equals(body)){
             System.out.println("打印实体开始");
@@ -91,6 +102,15 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ExcelReader excelReader = new ExcelReader();
             List<List<String>> result = excelReader.readXlsx("D:\\test\\ditu.xlsx");
             ctx.channel().writeAndFlush("移动成功\n"+result.toString());
+        }else if("talk".equals(body)){
+            System.out.println("talk开始");
+            ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+            UserMapper userMapper=ac.getBean(UserMapper.class);
+            String username = userMapper.getUserById(14).getUsername();
+            ExcelReader excelReader = new ExcelReader();
+            List<List<String>> result1 = excelReader.readXlsx("D:\\test\\NPC.xlsx");
+            NPC npc=new NPC(""+username," "+result1.get(0));
+            ctx.channel().writeAndFlush("欢迎来到超炫酷的游戏\n"+npc);
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
@@ -115,7 +135,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //打印异常栈跟踪
         cause.printStackTrace();
-
         // 关闭该Channel
         ctx.close();
     }

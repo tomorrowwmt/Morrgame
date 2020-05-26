@@ -1,5 +1,7 @@
 package cn.pomit.springwork.netty.entity;
 
+import java.util.List;
+
 /*
 用户
  */
@@ -7,8 +9,7 @@ public class User {
     private Integer uid;
     private String username;
     private String password;
-    //用户所在地点
-    private Ditu mid;
+    private Integer hp;
 
     public Integer getUid() {
         return uid;
@@ -34,12 +35,12 @@ public class User {
         this.password = password;
     }
 
-    public Ditu getMid() {
-        return mid;
+    public Integer getHp() {
+        return hp;
     }
 
-    public void setMid(Ditu mid) {
-        this.mid = mid;
+    public void setHp(Integer hp) {
+        this.hp = hp;
     }
 
     @Override
@@ -48,7 +49,35 @@ public class User {
                 "uid=" + uid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", mid=" + mid +
+                ", hp=" + hp +
                 '}';
+    }
+    //普通攻击
+    public void Attack(Monster m){
+        //做一个伤害
+        int injury= (int) (Math.random()*10+20);
+        //获取用户的血量
+        //获取怪兽的血量
+        int hp=m.getHp();
+        hp-=injury;
+        //血量为0
+        if(hp>=0){
+            m.setHp(hp);
+        }else{
+            m.setHp(0);
+        }
+    }
+    //魔法攻击
+    public void MagicAttack(Monster[] ret) {
+        for(Monster ms :ret) {
+            int hp = ms.getHp();
+            hp-= 40;
+            //血量为0时怎么办
+            if(hp>=0) {
+                ms.setHp(hp);
+            }else {
+                ms.setHp(0);
+            }
+        }
     }
 }
