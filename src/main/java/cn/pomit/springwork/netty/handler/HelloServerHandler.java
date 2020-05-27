@@ -5,6 +5,7 @@ import java.util.*;
 
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.entity.Ditu;
+import cn.pomit.springwork.netty.entity.Monster;
 import cn.pomit.springwork.netty.entity.NPC;
 import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
@@ -69,7 +70,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
-        User us=new User();
         String body= (String) msg;
         if("login".equals(body)){
             ctx.channel().writeAndFlush("登陆成功");
@@ -111,6 +111,12 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             List<List<String>> result1 = excelReader.readXlsx("D:\\test\\NPC.xlsx");
             NPC npc=new NPC(""+username," "+result1.get(0));
             ctx.channel().writeAndFlush("欢迎来到超炫酷的游戏\n"+npc);
+        }else if("attack".equals(body)){
+            System.out.println("打怪开始");
+            HelloServerHandler hs=new HelloServerHandler();
+            hs.Attack();
+            ctx.channel().writeAndFlush("用户胜利\n" +
+                    "怪兽当场全部灭亡，请所有玩家等待怪兽复活在来挑战\n");
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
@@ -137,5 +143,58 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         // 关闭该Channel
         ctx.close();
+    }
+    public void Attack() throws Exception {
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        UserMapper userMapper=ac.getBean(UserMapper.class);
+        User user=userMapper.getUserById(14);
+        //System.out.println("名字:"+username+","+"血量"+hp);
+        Monster[] monsters = new Monster[3];
+        monsters[0] = new Monster("雪域魔王",100);
+        monsters[1] = new Monster("九天狐王",80);
+        monsters[2] = new Monster("红眼魔君",200);
+        int n = 1;
+        while(true) {
+            System.out.println("=============第"+n+"回合=============");
+            if(user.getHp()==0) {
+                System.out.println("怪兽胜利");
+                break;
+            }else if (monsters[0].getHp() == 0 && monsters[1].getHp() == 0 && monsters[2].getHp() == 0) {
+                System.out.println("用户胜利");
+                System.out.println("怪兽全部死亡了");
+                break;
+            }
+            else {
+                System.out.println(user.toString());
+                double key = Math.random();
+                if(key >= 0.0 && key <= 0.6) {
+                    while(monsters[(int)Math.random()*3].getHp() != 0) {
+                        user.Attack(monsters[(int)Math.random()*3]);
+                        System.out.println(user+"\n"+"用户利用技能对"+monsters[(int)Math.random()*3].getName()
+                                +"怪兽使用了普通攻击");
+                        break;
+                    }
+                }else if (key > 0.6 && key <= 0.7) {
+                    while(monsters[(int)Math.random()*3].getHp() != 0) {
+                        user.HugeAttack(monsters[(int)Math.random()*3]);
+                        System.out.println(user+"\n"+"用户利用技能对"+monsters[(int)Math.random()*3].getName()
+                                +"怪兽使用了必杀");
+                        break;
+                    }
+                }else if (key > 0.7 && key < 1.0) {
+                    user.MagicAttack(monsters);
+                    System.out.println(user+"\n"+"用户利用技能对所有怪兽使用了魔法攻击");
+                }
+                System.out.println(monsters[0].toString());
+                System.out.println(monsters[1].toString());
+                System.out.println(monsters[2].toString());
+
+                monsters[0].Attack(user);
+                monsters[1].Attack(user);
+                monsters[2].Attack(user);
+                System.out.println("怪兽对用户使用了普攻\n");
+                n++;
+            }
+        }
     }
 }

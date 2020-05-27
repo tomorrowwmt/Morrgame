@@ -9,7 +9,15 @@ public class User {
     private Integer uid;
     private String username;
     private String password;
+    private String  skill;
     private Integer hp;
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
 
     public Integer getUid() {
         return uid;
@@ -42,41 +50,45 @@ public class User {
     public void setHp(Integer hp) {
         this.hp = hp;
     }
-
     @Override
     public String toString() {
         return "User{" +
                 "uid=" + uid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", skill='" + skill + '\'' +
                 ", hp=" + hp +
                 '}';
     }
+
     //普通攻击
-    public void Attack(Monster m){
-        //做一个伤害
-        int injury= (int) (Math.random()*10+20);
-        //获取用户的血量
-        //获取怪兽的血量
-        int hp=m.getHp();
-        hp-=injury;
-        //血量为0
-        if(hp>=0){
+    public void Attack(Monster m) {
+        int injury = (int)(Math.random()*10+30);
+        int hp = m.getHp();
+        hp -= injury;
+        if(hp>=0) {
             m.setHp(hp);
-        }else{
+        }else {
             m.setHp(0);
         }
+
     }
-    //魔法攻击
-    public void MagicAttack(Monster[] ret) {
-        for(Monster ms :ret) {
-            int hp = ms.getHp();
-            hp-= 40;
-            //血量为0时怎么办
+    //必杀攻击
+    public void HugeAttack(Monster m) {
+        //做一个伤害
+        int injury = (int) (m.getHp() > 50 ? m.getHp()*0.85 : m.getHp()*0.95);
+
+        m.setHp(m.getHp() - injury);
+    }
+    //魔法
+    public void MagicAttack(Monster[] m) {
+        for(Monster monster : m) {
+            int hp = monster.getHp();
+            hp -= 35;
             if(hp>=0) {
-                ms.setHp(hp);
+                monster.setHp(hp);
             }else {
-                ms.setHp(0);
+                monster.setHp(0);
             }
         }
     }
