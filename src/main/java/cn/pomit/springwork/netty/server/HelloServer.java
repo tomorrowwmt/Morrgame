@@ -26,7 +26,7 @@ public class HelloServer {
 
     //程序初始方法入口注解，提示spring这个程序先执行这里
     //@PostConstruct
-    public static void main(String[] args) throws InterruptedException {
+     public static void main(String[] args) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
