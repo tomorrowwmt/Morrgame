@@ -113,9 +113,11 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             NPC npc=new NPC(""+username," "+result1.get(0));
             ctx.channel().writeAndFlush("欢迎来到超炫酷的游戏\n"+npc);
         }else if("attack".equals(body)){
-            HelloServerHandler hs=new HelloServerHandler();
-            hs.Attack();
-            ctx.channel().writeAndFlush("玩家胜利\n,已通知所有玩家" );
+            new HelloServerHandler().Attack();
+            ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+            UserMapper userMapper=ac.getBean(UserMapper.class);
+            List<User> users=userMapper.queryuser();
+            ctx.channel().writeAndFlush("战斗结束,结果已通知所有玩家\n"+users);
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
@@ -160,8 +162,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             }else if (monsters[0].getHp() == 0 && monsters[1].getHp() == 0 && monsters[2].getHp() == 0) {
                 System.out.println("玩家胜利");
                 List<User> users=userMapper.queryuser();
-                System.out.println("怪兽全部死亡了通知各全部玩家\n"+"收到over!!"+users);
-
+                System.out.println("怪兽已经处于死亡状态，通知所有玩家\n"+"收到over!!=="+users);
                 break;
             }
             else {
@@ -176,6 +177,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                         System.out.println("使用普通技能消耗自身值mp为10");
                         try {
                             Thread.sleep(1000);
+                            System.out.println("----------------");
                             System.out.println("CD技能恢复成功");
                         }catch (Exception e){
                             e.getMessage();
@@ -190,6 +192,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                         System.out.println("使用普通技能消耗自身值mp为20");
                         try {
                             Thread.sleep(1000);
+                            System.out.println("----------------");
                             System.out.println("CD技能恢复成功");
                         }catch (Exception e){
                             e.getMessage();
@@ -202,6 +205,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                     System.out.println("使用普通技能消耗自身值mp为30");
                     try {
                         Thread.sleep(3000);
+                        System.out.println("----------------");
                         System.out.println("CD技能恢复成功");
                     }catch (Exception e){
                         e.getMessage();
@@ -214,7 +218,8 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                 monsters[0].Attack(user);
                 monsters[1].Attack(user);
                 monsters[2].Attack(user);
-                System.out.println("怪兽对用户使用了普攻\n");
+                System.out.println("----------------");
+                System.out.println("怪兽对"+user.getUsername()+"玩家使用了普攻\n");
                 n++;
             }
         }

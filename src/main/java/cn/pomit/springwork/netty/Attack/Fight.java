@@ -12,7 +12,7 @@ import java.util.List;
 public class Fight {
     @Autowired
     private UserMapper userMapper;
-    public void  Attack() throws Exception {
+    public boolean Attack() throws Exception {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
         User user=userMapper.getUserById(1);
@@ -25,12 +25,12 @@ public class Fight {
             System.out.println("=============第"+n+"回合=============");
             if(user.getHp()==0) {
                 System.out.println("怪兽胜利");
-                break;
+                return false;
+                //break;
             }else if (monsters[0].getHp() == 0 && monsters[1].getHp() == 0 && monsters[2].getHp() == 0) {
                 System.out.println("玩家胜利");
                 List<User> users=userMapper.queryuser();
-                System.out.println("怪兽全部死亡了通知各全部玩家\n"+"收到over!!"+users);
-
+                System.out.println("怪兽已经处于死亡状态，通知所有玩家\n"+"收到over!!=="+users);
                 break;
             }
             else {
@@ -45,6 +45,7 @@ public class Fight {
                         System.out.println("使用普通技能消耗自身值mp为10");
                         try {
                             Thread.sleep(1000);
+                            System.out.println("----------------");
                             System.out.println("CD技能恢复成功");
                         }catch (Exception e){
                             e.getMessage();
@@ -59,6 +60,7 @@ public class Fight {
                         System.out.println("使用普通技能消耗自身值mp为20");
                         try {
                             Thread.sleep(1000);
+                            System.out.println("----------------");
                             System.out.println("CD技能恢复成功");
                         }catch (Exception e){
                             e.getMessage();
@@ -71,6 +73,7 @@ public class Fight {
                     System.out.println("使用普通技能消耗自身值mp为30");
                     try {
                         Thread.sleep(3000);
+                        System.out.println("----------------");
                         System.out.println("CD技能恢复成功");
                     }catch (Exception e){
                         e.getMessage();
@@ -83,10 +86,12 @@ public class Fight {
                 monsters[0].Attack(user);
                 monsters[1].Attack(user);
                 monsters[2].Attack(user);
-                System.out.println("怪兽对用户使用了普攻\n");
+                System.out.println("----------------");
+                System.out.println("怪兽对"+user.getUsername()+"玩家使用了普攻\n");
                 n++;
             }
         }
+        return true;
     }
 
     public static void main(String[] args) throws Exception {
