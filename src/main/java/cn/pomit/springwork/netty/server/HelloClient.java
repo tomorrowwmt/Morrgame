@@ -45,4 +45,8 @@ public class HelloClient {
             group.shutdownGracefully();
         }
     }
+    public static void sendMsg(Channel channel) {
+        String str = "logon";
+        channel.writeAndFlush(str);
+    }
 }
