@@ -76,14 +76,14 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         if("login".equals(body)) {
             LoginUtil loginUtil=new LoginUtil();
             loginUtil.longin();
-            //System.out.println(56666);
-            //System.out.println("恭喜玩家进入屠龙破晓游戏\n游戏开始了请输入相关命令：1.aor 2.move 3.talk 4.exit");
-            ctx.channel().writeAndFlush("登录成功\n"+loginUtil.toString());
+            ctx.channel().writeAndFlush("登录成功\n");
             return;
         }else if("insert".equals(body)){
             new LoginUtil().zhuce();
             ctx.channel().writeAndFlush("用户-注册成功\n！");
             return;
+        }else{
+            ctx.channel().writeAndFlush("非法操作请输入登陆指令");
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
@@ -98,8 +98,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        //System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
-        System.out.println("有客户端登录："+ ctx.channel().remoteAddress().toString());
+        System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
 
         super.channelActive(ctx);
@@ -111,59 +110,4 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         // 关闭该Channel
         ctx.close();
     }
-    public void  Attack() throws Exception {
-        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=userMapper.getUserById(1);
-        Monster[] monsters = new Monster[1];
-        monsters[0] = new Monster("雪域魔王",100);
-        int n = 1;
-        while(true) {
-            System.out.println("=============第"+n+"回合=============");
-            if(user.getHp()==0) {
-                System.out.println("怪兽胜利");
-                break;
-
-            }else if (monsters[0].getHp() == 0 ) {
-                System.out.println("玩家胜利");
-                List<User> users=userMapper.queryuser();
-                System.out.println("怪兽已经处于死亡状态，通知所有玩家\n"+"收到over!!=="+users);
-                break;
-            }
-            else {
-                System.out.println(user);
-                double key = Math.random();
-                if(key >= 0.0 && key <= 0.6) {
-                    while(monsters[(int)Math.random()*1].getHp() != 0) {
-                        user.Attack(monsters[(int)Math.random()*1]);
-                        System.out.println(user.getUsername()+"玩家利用普通技能末日风暴和心灵火符对"
-                                +monsters[(int)Math.random()*1].getName()
-                                +"怪兽使用了普通攻击\n"+"技能使用完CD,1s后恢复");
-                        System.out.println("使用普通技能消耗自身值mp为10");
-                        System.out.println("CD技能恢复成功");
-                        break;
-                    }
-                }else if (key > 0.6 && key <= 0.7) {
-                    while(monsters[(int)Math.random()*1].getHp() != 0) {
-                        user.HugeAttack(monsters[(int)Math.random()*3]);
-                        System.out.println(user.getUsername()+"玩家利用技能咸鱼突刺对"+monsters[(int)Math.random()*3].getName()
-                                +"怪兽使用了必杀\n"+"技能使用完毕CD,2s后恢复请玩家稍后");
-                        System.out.println("使用普通技能消耗自身值mp为20");
-                        System.out.println("CD技能恢复成功");
-                        break;
-                    }
-                }else if (key > 0.7 && key < 1.0) {
-                    user.MagicAttack(monsters);
-                    System.out.println(user.getUsername()+"玩家利用技能冰龙破和唤雷术对所有怪兽使用了魔法攻击\n"+"技能使用完CD,3s后恢复");
-                    System.out.println("使用普通技能消耗自身值mp为30");
-                    System.out.println("CD技能恢复成功");
-                    }
-                }
-                System.out.println(monsters[0].toString());
-                monsters[0].Attack(user);
-                System.out.println("----------------");
-                System.out.println("怪兽对"+user.getUsername()+"玩家使用了普攻\n");
-                n++;
-            }
-        }
 }

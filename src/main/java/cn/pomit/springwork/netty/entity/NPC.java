@@ -29,6 +29,6 @@ public class NPC {
 
     @Override
     public String toString() {
-      return name+"玩家"+"对话\n"+talk;
+      return name+"玩家"+talk;
     }
 }

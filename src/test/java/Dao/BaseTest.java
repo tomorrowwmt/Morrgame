@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 //告诉junit spring配置文件
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-netty.xml"})
+@ContextConfiguration({"classpath:spring-netty.xml",})
 public class BaseTest {
 	
 }

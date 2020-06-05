@@ -2,29 +2,49 @@ package cn.pomit.springwork.netty.entity;
 /*
 装备类
  */
-public class Equipment extends Item {
-    //增加力量攻击属性
-    private int Strength;
-    //增加伤害
-    private  int Ack;
-
-    public Equipment(Integer id, String Iname, String type, String desc, Integer capacity) {
-        super(id, Iname, type, desc, capacity);
+public class Equipment  {
+    private  Integer id;
+    private String name;
+    //攻击力
+    private Integer atk;
+    //装备的耐久度
+    private  int endurance;
+    public Equipment(Integer id,String name,int atk,int endurance){
+        this.id=id;
+        this.name=name;
+        this.atk=atk;
+        this.endurance=endurance;
     }
 
-    public int getStrength() {
-        return Strength;
+    public Integer getId() {
+        return id;
     }
 
-    public void setStrength(int strength) {
-        Strength = strength;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getAck() {
-        return Ack;
+    public String getName() {
+        return name;
     }
 
-    public void setAck(int ack) {
-        Ack = ack;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAtk() {
+        return atk;
+    }
+
+    public void setAtk(Integer atk) {
+        this.atk = atk;
+    }
+
+    public int getEndurance() {
+        return endurance;
+    }
+
+    public void setEndurance(int endurance) {
+        this.endurance = endurance;
     }
 }

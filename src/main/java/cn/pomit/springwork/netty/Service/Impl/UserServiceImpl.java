@@ -1,6 +1,7 @@
 package cn.pomit.springwork.netty.Service.Impl;
 
 import cn.pomit.springwork.netty.Service.UserService;
+import cn.pomit.springwork.netty.Spring.SpringContextHolder;
 import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,4 @@ public class UserServiceImpl implements UserService {
     public int addUser(User user) {
         return userMapper.addUser(user);
     }
-
 }

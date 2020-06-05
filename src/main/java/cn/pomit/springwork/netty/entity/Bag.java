@@ -1,25 +1,17 @@
 package cn.pomit.springwork.netty.entity;
 /*
-物品的基类
+背包栏
  */
-public class Item {
+public class Bag {
     private Integer id;
     //物品名字
-    private  String Iname;
+    private String Iname;
     //物品类型
     private String type;
     //物品描述
     private String desc;
-    //物品的容量
+    //背包的容量
     private Integer capacity;
-
-    public Item(Integer id,String Iname,String type,String desc,Integer capacity){
-        this.id=id;
-        this.Iname=Iname;
-        this.type=type;
-        this.desc=desc;
-        this.capacity=capacity;
-    }
 
     public Integer getId() {
         return id;
@@ -56,8 +48,9 @@ public class Item {
     public Integer getCapacity() {
         return capacity;
     }
-
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
+
 }
+
