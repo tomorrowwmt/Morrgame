@@ -1,5 +1,7 @@
-package cn.pomit.springwork.netty.entity;
+package cn.pomit.springwork.netty.Monster;
 
+
+import cn.pomit.springwork.netty.entity.User;
 
 public class Monster {
     //怪兽名字

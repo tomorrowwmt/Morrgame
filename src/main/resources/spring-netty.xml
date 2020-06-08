@@ -53,10 +53,16 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--mapper类所在的包-->
+        <property name="basePackage" value="cn.pomit.springwork.netty.mapper"/>
+    </bean>
+    <!--
     <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
         <property name="mapperInterface" value="cn.pomit.springwork.netty.mapper.UserMapper"/>
     </bean>
+    <-->
     <bean id="cacheManager" class="org.springframework.cache.guava.GuavaCacheManager">
         <property name="cacheSpecification" value="concurrencyLevel=4,expireAfterAccess=100s,expireAfterWrite=100s" />
         <property name="cacheNames">

@@ -25,7 +25,7 @@ public class UserTest {
     public void select(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=userMapper.getUserById(14);
+        User user=userMapper.getUserById(1);
         System.out.println(user);
     }
     @Test

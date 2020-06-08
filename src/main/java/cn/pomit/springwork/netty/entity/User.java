@@ -1,8 +1,6 @@
 package cn.pomit.springwork.netty.entity;
 
-import org.apache.commons.collections4.SplitMapUtils;
-
-import java.util.Random;
+import cn.pomit.springwork.netty.Monster.Monster;
 
 /*
 用户

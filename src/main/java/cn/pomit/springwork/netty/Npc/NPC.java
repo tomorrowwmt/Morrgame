@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.entity;
+package cn.pomit.springwork.netty.Npc;
 /*
 npc玩家设计实体类
  */

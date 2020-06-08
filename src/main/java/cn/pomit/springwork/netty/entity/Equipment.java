@@ -9,12 +9,14 @@ public class Equipment  {
     private Integer atk;
     //装备的耐久度
     private  int endurance;
+    /*
     public Equipment(Integer id,String name,int atk,int endurance){
         this.id=id;
         this.name=name;
         this.atk=atk;
         this.endurance=endurance;
     }
+     */
 
     public Integer getId() {
         return id;
