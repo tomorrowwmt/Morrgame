@@ -2,14 +2,37 @@ package cn.pomit.springwork.netty.Monster;
 
 
 import cn.pomit.springwork.netty.entity.User;
+import com.alibaba.excel.annotation.ExcelProperty;
 
-public class Monster {
+import javax.sql.rowset.BaseRowSet;
+
+public class Monster extends BaseRowSet {
+    private  int  id;
     //怪兽名字
     private String name;
     //当前生命值
     private int  hp;
     //状态
-    public String  isLive;
+   public String  Live;
+   //送经验值
+    public  int sendExp;
+
+    public int getSendExp() {
+        return sendExp;
+    }
+
+    public void setSendExp(int sendExp) {
+        this.sendExp = sendExp;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -27,20 +50,22 @@ public class Monster {
         this.hp = hp;
     }
 
-    public String getIsLive() {
-        return isLive;
+    public String getLive() {
+        return Live;
     }
 
-    public void setIsLive(String isLive) {
-        this.isLive = isLive;
+    public void setLive(String live) {
+        Live = live;
     }
 
     @Override
     public String toString() {
         return "Monster{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", hp=" + hp +
-                ", isLive=" + isLive +
+                ", Live='" + Live + '\'' +
+                ", sendExp=" + sendExp +
                 '}';
     }
 

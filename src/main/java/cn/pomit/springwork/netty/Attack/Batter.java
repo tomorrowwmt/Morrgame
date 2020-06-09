@@ -5,6 +5,9 @@ import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.entity.User;
 
+import javax.jws.soap.SOAPBinding;
+import java.net.URL;
+
 public class Batter {
    public void attack()throws Exception {
        Bag bag=new Bag();
@@ -12,29 +15,59 @@ public class Batter {
         User user=new User();
         user.setUsername("wbl1");
         user.setHp(200);
-        user.setMp(30);
+        user.exp=0;
+        user.levelExp=20;
         mas.setName("雪域魔王");
         mas.setHp(200);
+        //mas.setSendExp(30);
+       mas.sendExp=30;
         while(user.getHp()>0&& mas.getHp()>0){
             user.bit(mas);
             if(mas.getHp()<=0){
-                System.out.println(mas.isLive="怪兽死亡"+user.getUsername()+"胜利");
+                System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"胜利");
+                System.out.println("======================");
+                //设计怪兽死亡后，送出相应的经验值
+                user.exp+=mas.sendExp;
+                //设计死亡后看下经验时候足够升级
+                 checkUpgrade();
             }
            mas.bit(user);
             //做一个设计当hp<100时；利用药水恢复hp
             if(user.getHp()>0){
-                if(user.getHp()<=150){
+                if(user.getHp()<=100){
                     user.drug();
+                    //吃药后直接触发必杀技能
+                    user.HugeAttack(mas);
+                    //吃药后药水减1
                     bag.useconsumable(bag);
                 }
             }else{
                 break;
             }
             if(user.getHp()<=0){
-                System.out.println(user.isLive="玩家死亡"+mas.getName()+"胜利");
+                System.out.println("玩家死亡"+mas.getName()+"胜利");
             }
         }
     }
+    public void checkUpgrade(){
+       //检查是否升级，自己的经验是否大于升级所需要的经验
+       User user=new User();
+       //如果升级就调用升级方法
+       if(user.exp>=user.levelExp){
+           upgrade();
+       }
+    }
+    //升级的方法
+    public void upgrade() {
+       //升级之后，将所有属性则增加
+       User user=new User();
+        System.out.println("终于打赢要升级啦");
+        user.level+=1;
+        user.exp+=50;
+        user.levelExp+=30;
+        System.out.println("玩家等级升级为="+user.level+" "+"玩家经验="+user.exp+" "+"下一级所需要的经验为="+user.levelExp);
+    }
+
     public static void main(String[] args) throws Exception{
        new Batter().attack();
     }

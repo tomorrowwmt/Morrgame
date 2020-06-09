@@ -64,7 +64,10 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         String body= (String) msg;
         if("login".equals(body)) {
             LoginUtil loginUtil=new LoginUtil();
-            loginUtil.longin();
+            //启动加载配置文件
+            //loginUtil.start();
+            //登陆模块
+            loginUtil.login();
             ctx.channel().writeAndFlush("登录成功\n");
             return;
         }else if("insert".equals(body)){

@@ -1,7 +1,6 @@
 package netty;
 import cn.pomit.springwork.netty.Service.Impl.UserServiceImpl;
 import cn.pomit.springwork.netty.Service.UserService;
-import cn.pomit.springwork.netty.Spring.SpringContextHolder;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import cn.pomit.springwork.netty.server.HelloServer;
 import org.apache.log4j.Logger;

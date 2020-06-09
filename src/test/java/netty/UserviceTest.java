@@ -29,7 +29,6 @@ public class UserviceTest {
         User user=new User();
         user.setUsername("hhhhh");
         user.setPassword("44444");
-        user.setSkill("对讲机");
         user.setHp(1000);
         int i = userService.addUser(user);
         System.out.println(i);
