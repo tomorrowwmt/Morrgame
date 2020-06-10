@@ -3,6 +3,7 @@ package cn.pomit.springwork.netty.Attack;
 
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.Monster.Monster;
+import cn.pomit.springwork.netty.entity.Equipment;
 import cn.pomit.springwork.netty.entity.User;
 
 import javax.jws.soap.SOAPBinding;
@@ -12,17 +13,26 @@ public class Batter {
    public void attack()throws Exception {
        Bag bag=new Bag();
         Monster mas=new Monster();
-        User user=new User();
+       Equipment equip=new Equipment();
+       equip.setName("屠龙刀");
+       equip.setAtk(100);
+       equip.setType("武器类");
+       equip.setEndurance(70);
+       User user=new User();
         user.setUsername("wbl1");
         user.setHp(200);
         user.exp=0;
         user.levelExp=20;
+        user.setAtk(70);
         mas.setName("雪域魔王");
-        mas.setHp(200);
+        mas.setHp(300);
         //mas.setSendExp(30);
        mas.sendExp=30;
         while(user.getHp()>0&& mas.getHp()>0){
             user.bit(mas);
+            //穿一下
+            user.wearEquip(4);
+            user.MagicAttack(mas);
             if(mas.getHp()<=0){
                 System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"胜利");
                 System.out.println("======================");
@@ -34,18 +44,20 @@ public class Batter {
            mas.bit(user);
             //做一个设计当hp<100时；利用药水恢复hp
             if(user.getHp()>0){
-                if(user.getHp()<=100){
+                if(user.getHp()<=150){
                     user.drug();
-                    //吃药后直接触发必杀技能
-                    user.HugeAttack(mas);
                     //吃药后药水减1
                     bag.useconsumable(bag);
+                    //可以继续叠加药水
+                    bag.diejia();
                 }
             }else{
                 break;
             }
             if(user.getHp()<=0){
                 System.out.println("玩家死亡"+mas.getName()+"胜利");
+                System.out.println("装备丢失");
+                user.unlockEquip(4);
             }
         }
     }
@@ -65,7 +77,7 @@ public class Batter {
         user.level+=1;
         user.exp+=50;
         user.levelExp+=30;
-        System.out.println("玩家等级升级为="+user.level+" "+"玩家经验="+user.exp+" "+"下一级所需要的经验为="+user.levelExp);
+        System.out.println("玩家等级升级为"+user.level+" "+"玩家经验"+user.exp+" "+"下一级所需要的经验为"+user.levelExp);
     }
 
     public static void main(String[] args) throws Exception{

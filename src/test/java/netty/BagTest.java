@@ -3,6 +3,7 @@ package netty;
 import Dao.BaseTest;
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.mapper.BagMapper;
+import org.apache.poi.ss.formula.functions.Count;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -51,7 +52,7 @@ public class BagTest  {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
         Bag bag=new Bag();
-        bag.setId(11);
+        bag.setId(1);
         bag.setCount(9);
         int result=bagMapper.update(bag);
         System.out.println(result);

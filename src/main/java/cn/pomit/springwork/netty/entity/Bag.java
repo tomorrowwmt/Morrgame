@@ -84,6 +84,7 @@ public class Bag {
                 ", capacity=" + capacity +
                 '}';
     }
+    //消耗物品
     public  void useconsumable(Bag bag){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
@@ -107,33 +108,12 @@ public class Bag {
             }else{
                 map.put(obj,1);
             }
-            System.out.println(map);
+            System.out.println("叠加完成");
         }
     }
-    public void equipAdd() throws Exception {
-        ExcelReader excelReader = new ExcelReader();
-        Bag bag=new Bag();
-        bag.capacity=5;
-        HashMap<Integer,String> map=new HashMap<Integer, String>();
-        List<List<String>> beibao = excelReader.readXlsx("D:\\test\\Euipment.xlsx");
-        List<String> strings = beibao.get(0);
-        List<String> strings1 = beibao.get(1);
-        for(int i=0;i<=bag.capacity;i++){
-            if(map.size()<=5){
-                map.put(1, String.valueOf(strings));
-                map.put(2, String.valueOf(strings1));
-                System.out.println("装备增加成功\n"+map);
-                break;
-            }else {
-                System.out.println("背包超过了最大容量了请回收装备");
-                break;
-            }
-        }
-    }
-
     public static void main(String[] args) throws Exception {
         Bag bag=new Bag();
-        new Bag().useconsumable(bag);
+        bag.diejia();
     }
 }
 

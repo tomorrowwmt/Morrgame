@@ -27,9 +27,9 @@ public class LoginUtil {
         List<List<String>> map = excelReader.readXlsx("src\\main\\resources\\Excel\\Ditu.xlsx");
         List<List<String>> say = excelReader.readXlsx("src\\main\\resources\\Excel\\NPC.xlsx");
         List<List<String>> skill = excelReader.readXlsx("src\\main\\resources\\Excel\\Skill.xlsx");
-        ///利用gauva工具类创建一个immutableMap的不可变map
+        ///利用gauva工具类创建一个immutableMap的不可变map,更改只需要替换即可
         Map<String,Object> immutableMap = new ImmutableMap.Builder<String,Object>()
-                .put("Monster",res+"\n")
+                .put("Monster",res)
                 .put("Ditu",map)
                 .put("NPC",say)
                 .put("Skill",skill).build();
