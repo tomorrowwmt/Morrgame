@@ -14,20 +14,18 @@ import java.util.*;
 背包栏
  */
 public class Bag {
-    @Autowired
-    private BagMapper bagMapper;
     private Integer id;
     //物品名字
     private String Iname;
     //物品类型
-    private String type;
+    //private String type;
     //物品描述
     private String besc;
     //背包的容量
     private Integer capacity;
     private  Integer count;
 
-    public Integer getId() {
+    public Integer getId(int i) {
         return id;
     }
 
@@ -41,14 +39,6 @@ public class Bag {
 
     public void setIname(String iname) {
         Iname = iname;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getBesc() {
@@ -79,41 +69,54 @@ public class Bag {
         return "Bag{" +
                 "id=" + id +
                 ", Iname='" + Iname + '\'' +
-                ", type='" + type + '\'' +
                 ", besc='" + besc + '\'' +
                 ", capacity=" + capacity +
+                ", count=" + count +
                 '}';
     }
+
     //消耗物品
     public  void useconsumable(Bag bag){
+        //先做非空判断
+        if(bag==null){
+            return;
+        }
+        //查询数据库背包是否有药水物品
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
-        Bag queryid = bagMapper.queryid(11);
-        int ct=queryid.getCount();
-        ct--;
-        System.out.println("使用药水后背包剩下药水数量="+ct);
+        List<Bag> bags = bagMapper.queryBag();
+        //根据查询结果获取药水count
+        Integer yaoshui = bags.get(0).getCount();
+        //每次使用药水减1，执行更新count进入数据库
+        yaoshui--;
+        bag.setId(1);
+        bag.setCount(yaoshui);
+        int result=bagMapper.update(bag);
     }
-    public void diejia(){
-        List<String> str=new ArrayList<String>();
-        //药水可叠加，装备不能叠加
-        str.add(0,"药水");
-        str.add(1,"药水");
-        str.add(2,"药水");
-        str.add(3,"药水");
-        str.add(4,"装备");
-        Map<String,Object> map=new HashMap<String, Object>();
-        for(String obj:str){
-            if(map.containsKey(obj)){
-                map.put(obj, ((Integer)map.get(obj)).intValue() + 1);
-            }else{
-                map.put(obj,1);
-            }
-            System.out.println("叠加完成");
-        }
+    public void diejia(Bag bag){
+        //药水可叠加，装备不能叠加,key表示位置，value表示数量
+        Map<Integer,Integer> map=new HashMap<>();
+        //直接添加
+        map.put(1, 10);
+        //查询数据药水物品
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        BagMapper bagMapper=ac.getBean(BagMapper.class);
+        List<Bag> bags = bagMapper.queryBag();
+        //根据查询结果获取药水count
+        Integer ys= bags.get(0).getCount();
+        //获取map里的value
+        int count= map.get(1);
+        //叠加插入更新数据库
+        count+=ys;
+        //更新操作
+        bag.setId(1);
+        bag.setCount(count);
+        int result=bagMapper.update(bag);
     }
     public static void main(String[] args) throws Exception {
         Bag bag=new Bag();
-        bag.diejia();
+        //bag.useconsumable(bag);
+        bag.diejia(bag);
     }
 }
 

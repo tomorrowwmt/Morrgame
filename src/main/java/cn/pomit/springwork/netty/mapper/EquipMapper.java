@@ -17,7 +17,7 @@ public interface EquipMapper {
     @Select("select * from tb_equip where id=#{id}")
     Equipment querid(int id);
     //增加
-    @Insert("insert into tb_equip values(#{id},#{name},#{atk},#{type},#{endurance})")
+    @Insert("insert into tb_equip values(#{id},#{name},#{atk},#{endurance})")
     int insert(Equipment equipment);
     //删除
     @Delete("delete from tb_equip where id=#{id}")

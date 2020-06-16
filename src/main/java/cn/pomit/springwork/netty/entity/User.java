@@ -1,5 +1,6 @@
 package cn.pomit.springwork.netty.entity;
 
+import cn.pomit.springwork.netty.Enum.SkillType;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Skills.Skill;
 import cn.pomit.springwork.netty.mapper.EquipMapper;
@@ -112,18 +113,16 @@ public class User {
         this.yaoshui = yaoshui;
     }
 
-    //攻击
+    //普通攻击
     public void bit(Monster mas){
         Skill skill=new Skill();
-        skill.name="末日风暴";
-        skill.type="普通攻击";
         skill.cd=1;
         skill.mp=30;
         mas.setHp(mas.getHp()-10);
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
-        System.out.println(mas.getName()+"被"+username+"玩家利用"+skill.type+skill.name
+        System.out.println(mas.getName()+"被"+username+"玩家利用"+SkillType.Common.getName()
                 +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
         System.out.println("==========================================");
         System.out.println("CD恢复");
@@ -140,15 +139,13 @@ public class User {
     //必杀攻击
     public void MagicAttack(Monster mas) {
         Skill skill=new Skill();
-        skill.name="屠龙大击";
-        skill.type="必杀技";
         skill.cd=3;
         skill.mp=30;
         mas.setHp(mas.getHp()-30);
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
-        System.out.println(mas.getName()+"被"+username+"玩家利用"+skill.type+skill.name
+        System.out.println(mas.getName()+"被"+username+"玩家利用"+ SkillType.Bisha.getName()
                 +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
         System.out.println("==========================================");
         System.out.println("==========================================");
@@ -166,7 +163,7 @@ public class User {
     }
     //使用药水恢复hp或者mp
     //这里设计用药水的话恢复值不能超过生命值上限
-    public void drug(){
+    public void drug(User user){
         //设计0.15倍数
         yaoshui= (int) Math.round(hp*0.15);
         hp=hp+yaoshui;
@@ -177,18 +174,18 @@ public class User {
         //设计玩家一开始是没有装备的，不进持久化
          equip.loaded=0;
          //穿上装备
-         new User().wearEquip(4);
+         wearEquip(4);
          //锁定装备
-         equip.lock();
+         equip.setLocked(1);
     }
     public void wearEquip(int id) {
         //获取装备
         Equipment equip= getEquipmentById(id);
         //穿戴类型
         //String replaceEquip= getEquipmentById(id).getType();
-        equip.setLoaded(0);
+        //equip.setLoaded(0);
         this.atk=equip.getAtk()+100;
-        System.out.println("穿上"+equip.getName()+",攻击力增加"+equip.getAtk()+"得以触发必杀技能");
+        System.out.println("穿上"+equip.getName()+",攻击力增加"+equip.getAtk()+"触发必杀技能");
         equip.setEndurance(equip.getEndurance()-30);
         if(equip.getEndurance()<=50){
             System.out.println("武器耐久度过低需要去修理一下");
@@ -218,8 +215,9 @@ public class User {
      * 脱装备
      */
     public void unlockEquip(int id){
-        Equipment equip = getEquipmentById(id);
-        equip.unlock();
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        EquipMapper equipMapper = ac.getBean(EquipMapper.class);
+        int delete = equipMapper.delete(4);
         System.out.println("解除脱装备完成");
     }
     public static void main(String[] args) {

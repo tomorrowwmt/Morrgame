@@ -1,4 +1,5 @@
 package cn.pomit.springwork.netty.handler;
+import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.Login.LoginUtil;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.entity.User;
@@ -26,7 +27,6 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
         }
         //收到数据
         String data = (String) msg;
-
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

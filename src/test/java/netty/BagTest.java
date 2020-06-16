@@ -1,6 +1,7 @@
 package netty;
 
 import Dao.BaseTest;
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import org.apache.poi.ss.formula.functions.Count;
@@ -20,7 +21,9 @@ public class BagTest  {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
         List<Bag> bags = bagMapper.queryBag();
-        System.out.println(bags);
+        //System.out.println(bags);
+        Bag bag = bags.get(0);
+        System.out.println(bag);
     }
     @Test
     public void insert(){
@@ -28,7 +31,6 @@ public class BagTest  {
         BagMapper bagMapper=ac.getBean(BagMapper.class);
         Bag bag=new Bag();
         bag.setIname("护膝");
-        bag.setType("装备");
         bag.setBesc("保护玩家");
         bag.setCapacity(10);
         int insert = bagMapper.insert(bag);

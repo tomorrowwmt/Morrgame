@@ -34,7 +34,7 @@ public class EquipTest {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
         Equipment querid = equipMapper.querid(1);
-        System.out.println(querid.getType());
+        System.out.println(querid);
     }
     @Test
     public void delete(){

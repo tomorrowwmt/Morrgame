@@ -3,6 +3,7 @@ import java.net.InetAddress;
 
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Login.LoginUtil;
+import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.Channel;
 
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.jws.soap.SOAPBinding;
 
 @Slf4j
 @Service("helloServerHandler")
@@ -64,15 +67,25 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         String body= (String) msg;
         if("login".equals(body)) {
             LoginUtil loginUtil=new LoginUtil();
-            //启动加载配置文件
-            //loginUtil.start();
-            //登陆模块
             loginUtil.login();
             ctx.channel().writeAndFlush("登录成功\n");
             return;
-        }else if("insert".equals(body)){
+        }else if("aor".equals(body)){
+            new LoginUtil().aor();
+            ctx.channel().writeAndFlush("打印成功\n");
+            return;
+        }else if("attack".equals(body)){
+            User user=new User();
+            new LoginUtil().attack(user);
+            ctx.channel().writeAndFlush("战斗完成\n");
+            return;
+        }else if("qiehuan".equals(body)){
+            new LoginUtil().qiehuan();
+            ctx.channel().writeAndFlush("切换地图，与Npc完成\n");
+            return;
+        }else if("zhuce".equals(body)){
             new LoginUtil().zhuce();
-            ctx.channel().writeAndFlush("用户-注册成功\n！");
+            ctx.channel().writeAndFlush("注册成功\n");
             return;
         }else{
             ctx.channel().writeAndFlush("非法操作请输入登陆指令");
@@ -89,10 +102,8 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
      * */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
         System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
-
         super.channelActive(ctx);
     }
     @Override
