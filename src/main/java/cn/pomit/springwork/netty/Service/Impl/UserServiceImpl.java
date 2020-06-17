@@ -6,6 +6,8 @@ import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

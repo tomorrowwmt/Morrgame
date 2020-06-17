@@ -3,6 +3,7 @@ package cn.pomit.springwork.netty.Login;
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Service.UserService;
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.User;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -17,6 +18,10 @@ import java.util.Scanner;
 public class LoginUtil {
     @Autowired
     private  UserService userService;
+    @Autowired
+    private IdWorker worker;
+    //定义idworker
+    private static IdWorker WORKER=new IdWorker(1,1,1);
     public void  qiehuan()throws Exception{
         //启动服务器直接加载所有配置资源
         ExcelReader excelReader = new ExcelReader();
@@ -41,6 +46,7 @@ public class LoginUtil {
             }else if("talk".equals(cli)){
                 System.out.println("npc玩家对话场景");
                 System.out.println(immutableMap.get("NPC"));
+                break;
             }
         }
     }
@@ -51,10 +57,9 @@ public class LoginUtil {
         cache.put("username", "wbl1");
         // 获取缓存
         Object username = cache.getIfPresent("username");
-        System.out.println(username+"玩家登陆成功");
-        return;
+        System.out.println("\n"+username+"玩家登陆成功");
     }
-    public void aor() throws Exception {
+    public void aor(User user) throws Exception {
         System.out.println("打印实体");
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
         UserService userService = (UserService) ac.getBean("UserGuavaCache");
@@ -67,14 +72,15 @@ public class LoginUtil {
         System.out.println("战斗完成");
     }
     public void zhuce()throws Exception{
+        User user=new User();
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserService userService= (UserService) ac.getBean("UserGuavaCache");
-        User user=new User();
         while(true) {
             String name=read();
             if ("wbl1".equals(name)) {
                 System.out.println("用户已存在请换名字注册");
             } else if ("wbl3".equals(name)) {
+                user.setUid(WORKER.nextId());
                 user.setUsername("wbl3");
                 user.setPassword("44444");
                 user.setHp(100);
@@ -85,11 +91,9 @@ public class LoginUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        //new LoginUtil().login();
+       // new LoginUtil().login();
         //new LoginUtil().zhuce();
-        //\
         // new LoginUtil().peizhi();
-       // new LoginUtil().start();
     }
     public static String read() throws Exception{
         String str = "";

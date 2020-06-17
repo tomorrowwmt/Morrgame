@@ -1,6 +1,7 @@
 package cn.pomit.springwork.netty.entity;
 
 import cn.pomit.springwork.netty.mapper.EquipMapper;
+import lombok.Data;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -10,6 +11,7 @@ import java.util.HashMap;
 /*
 装备类
  */
+@Data
 public class Equipment {
     private Integer id;
     private String name;
@@ -23,61 +25,6 @@ public class Equipment {
     public int loaded;
     //是否已被锁定
     private int locked;
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public int getLoaded() {
-        return loaded;
-    }
-
-    public void setLoaded(int loaded) {
-        this.loaded = loaded;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAtk() {
-        return atk;
-    }
-
-    public void setAtk(Integer atk) {
-        this.atk = atk;
-    }
-
-    public int getEndurance() {
-        return endurance;
-    }
-
-    public void setEndurance(int endurance) {
-        this.endurance = endurance;
-    }
-
-    public void setLocked(int locked) {
-        this.locked = locked;
-    }
-
-    @Override
-    public String toString() {
-        return "Equipment{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", atk=" + atk +
-                ", endurance=" + endurance +
-                ", loaded=" + loaded +
-                ", locked=" + locked +
-                '}';
-    }
-
     /**
      * 判断是否是上阵的装备
      * @return boolean

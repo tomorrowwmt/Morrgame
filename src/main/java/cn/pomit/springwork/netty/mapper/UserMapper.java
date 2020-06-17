@@ -14,6 +14,6 @@ public interface UserMapper {
     @Select("select * from tb_user where uid=#{uid}")
     User getUserById(int uid);
    //添加用户
-    @Insert("insert into tb_user(username, password,hp) values(#{username},#{password},#{hp})")
+    @Insert("insert into tb_user(uid,username,password)values(#{uid},#{username},#{password})")
     int  addUser(User user);
 }

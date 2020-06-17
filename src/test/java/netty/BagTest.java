@@ -1,10 +1,7 @@
 package netty;
 
-import Dao.BaseTest;
-import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.mapper.BagMapper;
-import org.apache.poi.ss.formula.functions.Count;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

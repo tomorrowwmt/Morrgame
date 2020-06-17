@@ -4,14 +4,16 @@ import cn.pomit.springwork.netty.Enum.SkillType;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Skills.Skill;
 import cn.pomit.springwork.netty.mapper.EquipMapper;
+import lombok.Data;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /*
 用户
  */
+@Data
 public class User {
-    private Integer uid;
+    private Long uid;
     private String username;
     private String password;
     //当前生命值
@@ -25,94 +27,6 @@ public class User {
     //下一级所需经验
     public  int levelExp;
     private  int atk;
-    public int getExp() {
-        return exp;
-    }
-
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getLevelExp() {
-        return levelExp;
-    }
-
-    public void setLevelExp(int levelExp) {
-        this.levelExp = levelExp;
-    }
-
-    public Integer getUid() {
-        return uid;
-    }
-
-    public void setUid(Integer uid) {
-        this.uid = uid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getYaoshui() {
-        return yaoshui;
-    }
-
-
-    public int getAtk() {
-        return atk;
-    }
-
-    public void setAtk(int atk) {
-        this.atk = atk;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", hp=" + hp +
-                ", yaoshui=" + yaoshui +
-                ", exp=" + exp +
-                ", level=" + level +
-                ", levelExp=" + levelExp +
-                ", atk=" + atk +
-                '}';
-    }
-
-    public void setYaoshui(int yaoshui) {
-        this.yaoshui = yaoshui;
-    }
-
     //普通攻击
     public void bit(Monster mas){
         Skill skill=new Skill();

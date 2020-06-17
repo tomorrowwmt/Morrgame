@@ -1,6 +1,6 @@
 package netty;
 
-import Dao.BaseTest;
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.apache.log4j.Logger;
@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.sound.midi.Soundbank;
 import java.util.List;
 
 public class UserTest {
@@ -33,7 +32,10 @@ public class UserTest {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
         User user=new User();
-        user.setUsername("三七互娱");
+        IdWorker worker=new IdWorker(1,1,1);
+        long l=worker.nextId();
+        user.setUid(l);
+        user.setUsername("tgtretrgtgr");
         user.setPassword("1111");
         int user1 = userMapper.addUser(user);
         System.out.println(user1);

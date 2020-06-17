@@ -1,8 +1,11 @@
 package cn.pomit.springwork.netty.Ditu;
 
+import lombok.Data;
+
 /*
 地图
  */
+@Data
 public class Ditu {
     private Integer mid;
     //地图名称m
@@ -11,40 +14,4 @@ public class Ditu {
     private String mdesc;
     //临近的地图
     private String neighbor;
-
-    public void setMdesc(String mdesc) {
-        this.mdesc = mdesc;
-    }
-    public Integer getMid() {
-        return mid;
-    }
-
-    public void setMid(Integer mid) {
-        this.mid = mid;
-    }
-
-    public String getMname() {
-        return mname;
-    }
-
-    public void setMname(String mname) {
-        this.mname = mname;
-    }
-
-    public String getMdesc() {
-        return mdesc;
-    }
-
-    public void setMdes(String mdes) {
-        this.mdesc = mdes;
-    }
-
-    public String getNeighbor() {
-        return neighbor;
-    }
-
-    public void setNeighbor(String neighbor) {
-        this.neighbor = neighbor;
-    }
-
 }

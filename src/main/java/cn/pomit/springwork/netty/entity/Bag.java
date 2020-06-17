@@ -3,6 +3,7 @@ package cn.pomit.springwork.netty.entity;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import lombok.Data;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +14,7 @@ import java.util.*;
 /*
 背包栏
  */
+@Data
 public class Bag {
     private Integer id;
     //物品名字
@@ -24,57 +26,6 @@ public class Bag {
     //背包的容量
     private Integer capacity;
     private  Integer count;
-
-    public Integer getId(int i) {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getIname() {
-        return Iname;
-    }
-
-    public void setIname(String iname) {
-        Iname = iname;
-    }
-
-    public String getBesc() {
-        return besc;
-    }
-
-    public void setBesc(String besc) {
-        this.besc = besc;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    @Override
-    public String toString() {
-        return "Bag{" +
-                "id=" + id +
-                ", Iname='" + Iname + '\'' +
-                ", besc='" + besc + '\'' +
-                ", capacity=" + capacity +
-                ", count=" + count +
-                '}';
-    }
-
     //消耗物品
     public  void useconsumable(Bag bag){
         //先做非空判断
@@ -93,11 +44,12 @@ public class Bag {
         bag.setCount(yaoshui);
         int result=bagMapper.update(bag);
     }
+    //药水叠加方法
     public void diejia(Bag bag){
         //药水可叠加，装备不能叠加,key表示位置，value表示数量
         Map<Integer,Integer> map=new HashMap<>();
         //直接添加
-        map.put(1, 10);
+        map.put(1, 99);
         //查询数据药水物品
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);

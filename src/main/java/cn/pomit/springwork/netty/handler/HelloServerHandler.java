@@ -33,11 +33,9 @@ import javax.jws.soap.SOAPBinding;
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private  UserMapper userMapper;
-    private ExcelReader reader;
+    public static User user=new User();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
-    //有新链接加入，对外发布消息
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {  // (2)
         Channel incoming = ctx.channel();
@@ -46,8 +44,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         }
         channels.add(ctx.channel());
     }
-
-    //有链接断开，对外发布消息
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {  // (3)
         Channel incoming = ctx.channel();
@@ -71,11 +67,10 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().writeAndFlush("登录成功\n");
             return;
         }else if("aor".equals(body)){
-            new LoginUtil().aor();
+            new LoginUtil().aor(user);
             ctx.channel().writeAndFlush("打印成功\n");
             return;
         }else if("attack".equals(body)){
-            User user=new User();
             new LoginUtil().attack(user);
             ctx.channel().writeAndFlush("战斗完成\n");
             return;

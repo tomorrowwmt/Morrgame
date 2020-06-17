@@ -27,7 +27,6 @@ public class IdWorker{
         }
         System.out.printf("worker starting. timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d",
                 timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId);
-
         this.workerId = workerId;
         this.datacenterId = datacenterId;
         this.sequence = sequence;
@@ -35,7 +34,6 @@ public class IdWorker{
 
     //初始时间戳
     private long twepoch = 1288834974657L;
-
     //长度为5位
     private long workerIdBits = 5L;
     private long datacenterIdBits = 5L;
@@ -46,14 +44,12 @@ public class IdWorker{
     private long sequenceBits = 12L;
     //序列号最大值
     private long sequenceMask = -1L ^ (-1L << sequenceBits);
-
     //工作id需要左移的位数，12位
     private long workerIdShift = sequenceBits;
     //数据id需要左移位数 12+5=17位
     private long datacenterIdShift = sequenceBits + workerIdBits;
     //时间戳需要左移位数 12+5+5=22位
     private long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
-
     //上次时间戳，初始值为负数
     private long lastTimestamp = -1L;
 
@@ -72,7 +68,6 @@ public class IdWorker{
     //下一个ID生成算法
     public synchronized long nextId() {
         long timestamp = timeGen();
-
         //获取当前时间戳如果小于上次时间戳，则表示时间戳获取出现异常
         if (timestamp < lastTimestamp) {
             System.err.printf("clock is moving backwards.  Rejecting requests until %d.", lastTimestamp);
@@ -126,6 +121,8 @@ public class IdWorker{
         for (int i = 0; i < 30; i++) {
             System.out.println(worker.nextId());
         }
+        long l = worker.nextId();
+        System.out.println(l);
     }
 
 }
