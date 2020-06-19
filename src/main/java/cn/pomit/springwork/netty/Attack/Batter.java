@@ -1,11 +1,7 @@
 package cn.pomit.springwork.netty.Attack;
-
-
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.Monster.Monster;
-import cn.pomit.springwork.netty.entity.Equipment;
 import cn.pomit.springwork.netty.entity.User;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 
 public class Batter {
    public void attack(User user)throws Exception {

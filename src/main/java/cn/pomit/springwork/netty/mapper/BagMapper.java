@@ -13,7 +13,7 @@ import java.util.List;
 public interface BagMapper {
     @Select("select * from tb_bag")
     List<Bag> queryBag();
-    @Insert("insert into tb_bag(Iname,besc,capacity) values(#{Iname},#{besc},#{capacity})")
+    @Insert("insert into tb_bag(id,Iname,besc,capacity) values(#{id},#{Iname},#{besc},#{capacity})")
     int insert(Bag bag);
     @Delete("delete from tb_bag where id=#{id}")
     int delete(int id);

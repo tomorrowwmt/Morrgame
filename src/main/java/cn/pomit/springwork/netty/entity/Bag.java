@@ -16,15 +16,12 @@ import java.util.*;
  */
 @Data
 public class Bag {
-    private Integer id;
+    private Long id;
     //物品名字
     private String Iname;
-    //物品类型
-    //private String type;
-    //物品描述
-    private String besc;
     //背包的容量
     private Integer capacity;
+    //物品数量
     private  Integer count;
     //消耗物品
     public  void useconsumable(Bag bag){
@@ -40,7 +37,7 @@ public class Bag {
         Integer yaoshui = bags.get(0).getCount();
         //每次使用药水减1，执行更新count进入数据库
         yaoshui--;
-        bag.setId(1);
+        bag.setId(1L);
         bag.setCount(yaoshui);
         int result=bagMapper.update(bag);
     }
@@ -61,14 +58,14 @@ public class Bag {
         //叠加插入更新数据库
         count+=ys;
         //更新操作
-        bag.setId(1);
+        bag.setId(1L);
         bag.setCount(count);
         int result=bagMapper.update(bag);
     }
     public static void main(String[] args) throws Exception {
         Bag bag=new Bag();
-        //bag.useconsumable(bag);
-        bag.diejia(bag);
+        bag.useconsumable(bag);
+       // bag.diejia(bag);
     }
 }
 

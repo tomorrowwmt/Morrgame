@@ -22,21 +22,15 @@ public class LoginUtil {
     private IdWorker worker;
     //定义idworker
     private static IdWorker WORKER=new IdWorker(1,1,1);
-    public void  qiehuan()throws Exception{
-        //启动服务器直接加载所有配置资源
+    public void  qiehuan(User user)throws Exception{
         ExcelReader excelReader = new ExcelReader();
-        List<List<String>> res = excelReader.readXlsx("src\\main\\resources\\Excel\\Monster.xlsx");
         List<List<String>> map = excelReader.readXlsx("src\\main\\resources\\Excel\\Ditu.xlsx");
         List<List<String>> say = excelReader.readXlsx("src\\main\\resources\\Excel\\NPC.xlsx");
-        List<List<String>> skill = excelReader.readXlsx("src\\main\\resources\\Excel\\Skill.xlsx");
         ///利用gauva工具类创建一个immutableMap的不可变map,更改只需要替换即可
         Map<String,Object> immutableMap = new ImmutableMap.Builder<String,Object>()
-                .put("Monster",res)
                 .put("Ditu",map)
-                .put("NPC",say)
-                .put("Skill",skill).build();
-        System.out.println("所有地图，怪兽，Npc,技能配置资源加载完成:\n"+immutableMap);
-        System.out.println("请输入相关命令： 1.move 3.talk");
+                .put("NPC",say).build();
+        System.out.println("请输入相关命令:1.move 3.talk");
         while (true){
             String cli=read();
             if("move".equals(cli)){
@@ -66,11 +60,6 @@ public class LoginUtil {
         List<User> users = userService.queryAllUser();
         System.out.println(users);
     }
-    public void attack(User user) throws Exception {
-        Batter batter=new Batter();
-        batter.attack(user);
-        System.out.println("战斗完成");
-    }
     public void zhuce()throws Exception{
         User user=new User();
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
@@ -79,9 +68,9 @@ public class LoginUtil {
             String name=read();
             if ("wbl1".equals(name)) {
                 System.out.println("用户已存在请换名字注册");
-            } else if ("wbl3".equals(name)) {
+            } else if ("wbl2".equals(name)) {
                 user.setUid(WORKER.nextId());
-                user.setUsername("wbl3");
+                user.setUsername("wbl2");
                 user.setPassword("44444");
                 user.setHp(100);
                 int i = userService.addUser(user);
@@ -92,7 +81,7 @@ public class LoginUtil {
 
     public static void main(String[] args) throws Exception {
        // new LoginUtil().login();
-        //new LoginUtil().zhuce();
+        new LoginUtil().zhuce();
         // new LoginUtil().peizhi();
     }
     public static String read() throws Exception{

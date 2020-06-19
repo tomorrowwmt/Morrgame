@@ -1,5 +1,6 @@
 package netty;
 
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.Equipment;
 import cn.pomit.springwork.netty.mapper.EquipMapper;
 import org.junit.Test;
@@ -22,11 +23,13 @@ public class EquipTest {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
         Equipment equip=new Equipment();
-        equip.setId(3);
-        equip.setName("护膝");
+        IdWorker worker=new IdWorker(1,1,1);
+        long l=worker.nextId();
+        equip.setId(l);
+        equip.setName("sddscs");
         equip.setAtk(100);
         equip.setEndurance(70);
-        //int insert = equipMapper.insert("护膝");
+        int insert = equipMapper.insert(equip);
         //System.out.println(insert);
     }
     @Test
@@ -48,7 +51,7 @@ public class EquipTest {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
         Equipment equip=new Equipment();
-        equip.setId(4);
+        equip.setId(4L);
         equip.setEndurance(60);
         int update = equipMapper.update(equip);
         System.out.println(update);

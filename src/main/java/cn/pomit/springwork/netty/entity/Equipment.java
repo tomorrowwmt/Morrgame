@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 @Data
 public class Equipment {
-    private Integer id;
+    private Long id;
     private String name;
     //攻击力
     private Integer atk;

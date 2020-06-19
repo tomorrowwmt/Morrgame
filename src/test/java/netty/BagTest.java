@@ -1,5 +1,6 @@
 package netty;
 
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import org.junit.Test;
@@ -27,8 +28,10 @@ public class BagTest  {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
         Bag bag=new Bag();
-        bag.setIname("护膝");
-        bag.setBesc("保护玩家");
+        IdWorker worker=new IdWorker(1,1,1);
+        long l=worker.nextId();
+        bag.setId(l);
+        bag.setIname("头盔");
         bag.setCapacity(10);
         int insert = bagMapper.insert(bag);
         System.out.println(insert);
@@ -51,7 +54,7 @@ public class BagTest  {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper=ac.getBean(BagMapper.class);
         Bag bag=new Bag();
-        bag.setId(1);
+        bag.setId(1L);
         bag.setCount(9);
         int result=bagMapper.update(bag);
         System.out.println(result);

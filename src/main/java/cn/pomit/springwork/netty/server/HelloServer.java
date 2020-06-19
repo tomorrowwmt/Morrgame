@@ -1,5 +1,8 @@
 package cn.pomit.springwork.netty.server;
+import cn.pomit.springwork.netty.Excel.ExcelReader;
+import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.handler.HelloServerInitializer;
+import com.google.common.collect.ImmutableMap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -8,13 +11,18 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import javax.annotation.PostConstruct;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 //注解方式注入bean，名字是helloServer
 @Service("helloServer")
 public class HelloServer {
     private static Logger log = Logger.getLogger(HelloServer.class);
+    private static IdWorker WORKER=new IdWorker(1,1,1);
     /**
      * 服务端监听的端口地址
      */
@@ -26,8 +34,10 @@ public class HelloServer {
 
     //程序初始方法入口注解，提示spring这个程序先执行这里
     //@PostConstruct
-     public static void main(String[] args) throws InterruptedException {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+     public static void main(String[] args) throws Exception {
+         //启动服务器直接加载所有配置资源
+        new HelloServer().jiazai();
+         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -48,5 +58,19 @@ public class HelloServer {
             workerGroup.shutdownGracefully();
         }
     }
-
+    public void  jiazai()throws Exception {
+        //启动服务器直接加载所有配置资源
+        ExcelReader excelReader = new ExcelReader();
+        List<List<String>> res = excelReader.readXlsx("src\\main\\resources\\Excel\\Monster.xlsx");
+        List<List<String>> map = excelReader.readXlsx("src\\main\\resources\\Excel\\Ditu.xlsx");
+        List<List<String>> say = excelReader.readXlsx("src\\main\\resources\\Excel\\NPC.xlsx");
+        List<List<String>> skill = excelReader.readXlsx("src\\main\\resources\\Excel\\Skill.xlsx");
+        ///利用gauva工具类创建一个immutableMap的不可变map,更改只需要替换即可
+        Map<String, Object> immutableMap = new ImmutableMap.Builder<String, Object>()
+                .put("Monster", res)
+                .put("Ditu", map)
+                .put("NPC", say)
+                .put("Skill", skill).build();
+        System.out.println("所有地图，怪兽，Npc,技能配置资源加载完成:\n" + immutableMap);
+    }
 }

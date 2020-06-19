@@ -1,8 +1,11 @@
 package cn.pomit.springwork.netty.handler;
 import java.net.InetAddress;
+import java.util.List;
 
+import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Login.LoginUtil;
+import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.Channel;
@@ -15,7 +18,9 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -62,8 +67,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
         String body= (String) msg;
         if("login".equals(body)) {
-            LoginUtil loginUtil=new LoginUtil();
-            loginUtil.login();
+            new LoginUtil().login();
             ctx.channel().writeAndFlush("登录成功\n");
             return;
         }else if("aor".equals(body)){
@@ -71,12 +75,16 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().writeAndFlush("打印成功\n");
             return;
         }else if("attack".equals(body)){
-            new LoginUtil().attack(user);
-            ctx.channel().writeAndFlush("战斗完成\n");
+            new Batter().attack(user);
+            //通知所有玩家
+            ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
+            UserService userService = (UserService) ac.getBean("UserGuavaCache");
+            List<User> users = userService.queryAllUser();
+            ctx.channel().writeAndFlush(users+"\n"+"战斗完成，通知玩家怪兽死亡\n");
             return;
         }else if("qiehuan".equals(body)){
-            new LoginUtil().qiehuan();
-            ctx.channel().writeAndFlush("切换地图，与Npc完成\n");
+            new LoginUtil().qiehuan(user);
+            ctx.channel().writeAndFlush("场景切换完成并与npc谈话\n");
             return;
         }else if("zhuce".equals(body)){
             new LoginUtil().zhuce();

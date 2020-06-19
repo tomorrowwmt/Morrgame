@@ -1,12 +1,17 @@
 package cn.pomit.springwork.netty.entity;
 
+import cn.pomit.springwork.netty.Enum.BagType;
+import cn.pomit.springwork.netty.Enum.EquipType;
 import cn.pomit.springwork.netty.Enum.SkillType;
+import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Skills.Skill;
 import cn.pomit.springwork.netty.mapper.EquipMapper;
 import lombok.Data;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Date;
 
 /*
 用户
@@ -27,6 +32,7 @@ public class User {
     //下一级所需经验
     public  int levelExp;
     private  int atk;
+    public Date time;
     //普通攻击
     public void bit(Monster mas){
         Skill skill=new Skill();
@@ -81,7 +87,7 @@ public class User {
         //设计0.15倍数
         yaoshui= (int) Math.round(hp*0.15);
         hp=hp+yaoshui;
-        System.out.println("["+username+"使用的药水,增加了血量hp="+yaoshui+"的血量!]");
+        System.out.println("["+username+"使用背包中的物品"+ BagType.Yaoshui.getName() +",增加了血量hp="+yaoshui+"的血量!]");
         System.out.println("喝了药水后迅速恢复hp="+hp);
     }
      public void wear(Equipment equip){
@@ -99,7 +105,8 @@ public class User {
         //String replaceEquip= getEquipmentById(id).getType();
         //equip.setLoaded(0);
         this.atk=equip.getAtk()+100;
-        System.out.println("穿上"+equip.getName()+",攻击力增加"+equip.getAtk()+"触发必杀技能");
+        System.out.println("穿上"+equip.getName()+",装备类型为"+ EquipType.Weapon.getName() +
+                ",使得攻击力增加"+equip.getAtk()+",触发必杀技能");
         equip.setEndurance(equip.getEndurance()-30);
         if(equip.getEndurance()<=50){
             System.out.println("武器耐久度过低需要去修理一下");
@@ -129,10 +136,35 @@ public class User {
      * 脱装备
      */
     public void unlockEquip(int id){
+        //脱下装备这里直接采用delete
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
         int delete = equipMapper.delete(4);
         System.out.println("解除脱装备完成");
+    }
+    //副本boss攻击方法
+    public void attackboss(Boss boss){
+        Skill skill=new Skill();
+        skill.cd=1;
+        skill.mp=30;
+        boss.setHp(boss.getHp()-30);
+        if(boss.getHp()<=0){
+            boss.setHp(0);
+        }
+        System.out.println(boss.getName()+"被"+username+"玩家利用"+SkillType.Common.getName()
+                +"攻击，剩余血量是"+boss.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
+        System.out.println("==========================================");
+        System.out.println("CD恢复");
+        skill.setMp(skill.getMp()-10);
+        if(skill.getMp()<=0){
+            System.out.println("mp值过低无法使用技能");
+        }else{
+            System.out.println("mp等待1s自动恢复");
+            System.out.println("=============");
+            System.out.println("mp恢复成功");
+            System.out.println("=============");
+        }
+
     }
     public static void main(String[] args) {
         new User().wearEquip(4);
