@@ -32,7 +32,8 @@ public class User {
     //下一级所需经验
     public  int levelExp;
     private  int atk;
-    public Date time;
+    //private int time;
+
     //普通攻击
     public void bit(Monster mas){
         Skill skill=new Skill();

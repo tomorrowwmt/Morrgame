@@ -1,48 +1,75 @@
 package cn.pomit.springwork.netty.FuBen;
 
+import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.entity.User;
+import com.google.common.collect.ImmutableMap;
 import org.checkerframework.checker.units.qual.min;
+import sun.misc.GC;
 
 import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Hurt {
-    public void gongji(User user) throws InterruptedException {
+    public Hurt(String sence)  {
+    }
+    public void gongji(User user) throws Exception {
+        //切换场景
+        qiehuan(user);
+        //增加countdown计时器
+        CountDown cd=new CountDown(9);
         user.setUsername("wbl1");
         user.setHp(200);
-        Time time=new Time();
         Boss boss=new Boss();
         boss.setName("熔岩巨兽");
         boss.setHp(150);
-       FuScence fuScence=new FuScence();
-        //fuScence.setScence("个人boss副本场景");
         while(user.getHp()>0 && boss.getHp()>0){
             boss.bit(user);
-            if(!checktime(user)){
+            if(user.getHp()<=0){
                 System.out.println("玩家死亡挑战失败"+boss.getName()+"胜利");
+                huishou();
             }
             user.attackboss(boss);
-            if(!checktime(user)){
+            if(boss.getHp()<=0){
                 System.out.println("怪兽死亡"+user.getUsername()+"挑战成功");
                 System.out.println("======================");
+                huishou();
             }
         }
 
     }
 
-    private boolean checktime(User user) {
-        if(user!=null && user.getUid()!=null && user.getTime()!=null){
-            long l = System.currentTimeMillis();
+    public void  qiehuan(User user)throws Exception{
+        ExcelReader excelReader = new ExcelReader();
+        List<List<String>> map = excelReader.readXlsx("src\\main\\resources\\Excel\\Ditu.xlsx");
+        System.out.println("个人副本开始请输入移动指令:move");
+        while (true){
+            String cli=read();
+            if("move".equals(cli)){
+                System.out.println(map.get(0).get(3));
+               break;
+            }
         }
-        return false;
+    }
+    //回收场景
+    public void huishou(){
+        Hurt changjing=new Hurt("boss副本");
+        changjing=null;
+        System.gc();
+    }
+    public static String read() throws Exception{
+        String str = "";
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            str = sc.next();
+            break;
+        }
+        return str;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         User user=new User();
-        new Hurt().gongji(user);
+        new Hurt("boss副本").gongji(user);
     }
 }

@@ -35,6 +35,6 @@ public class CountDown {
 
     //Test
     public static void main(String[] args) throws InterruptedException {
-        new CountDown(60);
+        new CountDown(10);
     }
 }
