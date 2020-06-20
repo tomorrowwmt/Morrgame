@@ -2,6 +2,11 @@ package cn.pomit.springwork.netty.Attack;
 import cn.pomit.springwork.netty.entity.Bag;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.mapper.UserMapper;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 public class Batter {
    public void attack(User user)throws Exception {
@@ -58,13 +63,28 @@ public class Batter {
     }
     //升级的方法
     public void upgrade(User user) {
-       //升级之后，将所有属性则增加
+        //升级之后，将所有属性则增加
         System.out.println("终于打赢要升级啦");
-        user.level+=1;
-        user.exp+=50;
-        user.levelExp+=30;
-        System.out.println("玩家等级升级为"+user.level+" "+"玩家经验"+user.exp+" "+"下一级所需要的经验为"+user.levelExp);
+        //先查询玩家当前级别
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        UserMapper userMapper=ac.getBean(UserMapper.class);
+        List<User> queryuser = userMapper.queryuser();
+        //获取玩家当前等级，经验
+        int level = queryuser.get(0).getLevel();
+        int exp = queryuser.get(0).getExp();
+        int levelExp = queryuser.get(0).getLevelExp();
+        level+=1;
+        exp+=30;
+        levelExp+=50;
+        //更新数据库
+        user.setUid(1L);
+        user.setExp(exp);
+        user.setLevel(level);
+        user.setLevelExp(levelExp);
+        int update = userMapper.update(user);
+        System.out.println("玩家等级升级为"+level+" "+"玩家经验"+exp+" "+"下一级所需要的经验为"+levelExp);
     }
+
 
     public static void main(String[] args) throws Exception{
        User user=new User();

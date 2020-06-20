@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.server;
+package cn.pomit.springwork.netty.Server;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.handler.HelloServerInitializer;
@@ -8,8 +8,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import javax.annotation.PostConstruct;
 
 
 import org.apache.log4j.Logger;

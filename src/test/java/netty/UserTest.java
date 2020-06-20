@@ -40,4 +40,16 @@ public class UserTest {
         int user1 = userMapper.addUser(user);
         System.out.println(user1);
     }
+    @Test
+    public void update(){
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        UserMapper userMapper=ac.getBean(UserMapper.class);
+        User user=new User();
+        user.setUid(1L);
+        user.setExp(5);
+        user.setLevel(1);
+        user.setLevelExp(77);
+        int update = userMapper.update(user);
+        System.out.println(update);
+    }
 }

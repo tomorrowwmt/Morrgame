@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.server;
+package cn.pomit.springwork.netty.Server;
 import cn.pomit.springwork.netty.handler.HelloClientInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
