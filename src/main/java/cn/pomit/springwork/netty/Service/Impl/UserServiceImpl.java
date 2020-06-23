@@ -1,7 +1,7 @@
 package cn.pomit.springwork.netty.Service.Impl;
 
 import cn.pomit.springwork.netty.Service.UserService;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,21 +16,23 @@ import java.util.List;
  */
 @Service("UserGuavaCache")
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
     @Override
     @Cacheable(value = "userCache",key="#uid")
     public User queryById(Integer uid) {
-        return userMapper.getUserById(uid);
+        return userMapper.selectByPrimaryKey(uid);
     }
     @Override
     @Cacheable(value = "userCache")
     public List<User> queryAllUser() {
-        return userMapper.queryuser();
+        return userMapper.selectAll();
     }
+    /*
     @Override
     @Cacheable(value = "userCache")
     public int addUser(User user) {
-        return userMapper.addUser(user);
+        return userMapper.insertSelective(user);
     }
+     */
 }

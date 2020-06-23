@@ -12,8 +12,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 //注解方式注入bean，名字是helloServer
@@ -33,6 +36,8 @@ public class HelloServer {
     //程序初始方法入口注解，提示spring这个程序先执行这里
     //@PostConstruct
      public static void main(String[] args) throws Exception {
+         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+         //System.out.println(Arrays.toString(ac.getBeanDefinitionNames()));
          //启动服务器直接加载所有配置资源
         new HelloServer().jiazai();
          EventLoopGroup bossGroup = new NioEventLoopGroup();

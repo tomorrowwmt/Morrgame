@@ -1,7 +1,8 @@
 package cn.pomit.springwork.netty.Attack;
-import cn.pomit.springwork.netty.entity.Bag;
+import cn.pomit.springwork.netty.Entity.Bag;
+import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Monster;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,6 +12,7 @@ import java.util.List;
 public class Batter {
    public void attack(User user)throws Exception {
        Bag bag=new Bag();
+       ExcelReader excelReader = new ExcelReader();
        Monster mas=new Monster();
        user.setUsername("wbl1");
        user.setHp(200);
@@ -18,10 +20,11 @@ public class Batter {
        user.levelExp=20;
        user.setAtk(70);
        mas.setName("雪域魔王");
-       mas.setHp(300);
+      mas.setHp(300);
        mas.sendExp=30;
         while(user.getHp()>0 && mas.getHp()>0){
             user.bit(mas);
+            //bitService.bit(mas);
             //穿装备
             user.wearEquip(4);
             //触发必杀技能
@@ -68,7 +71,7 @@ public class Batter {
         //先查询玩家当前级别
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-        List<User> queryuser = userMapper.queryuser();
+        List<User> queryuser = userMapper.selectAll();
         //获取玩家当前等级，经验
         int level = queryuser.get(0).getLevel();
         int exp = queryuser.get(0).getExp();
@@ -81,11 +84,9 @@ public class Batter {
         user.setExp(exp);
         user.setLevel(level);
         user.setLevelExp(levelExp);
-        int update = userMapper.update(user);
+        int update = userMapper.updateByPrimaryKeySelective(user);
         System.out.println("玩家等级升级为"+level+" "+"玩家经验"+exp+" "+"下一级所需要的经验为"+levelExp);
     }
-
-
     public static void main(String[] args) throws Exception{
        User user=new User();
        new Batter().attack(user);

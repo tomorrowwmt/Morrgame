@@ -1,17 +1,10 @@
 package cn.pomit.springwork.netty.handler;
-import cn.pomit.springwork.netty.Attack.Batter;
-import cn.pomit.springwork.netty.Login.LoginUtil;
 import cn.pomit.springwork.netty.Service.UserService;
-import cn.pomit.springwork.netty.entity.User;
-import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Scanner;
 
 @Slf4j

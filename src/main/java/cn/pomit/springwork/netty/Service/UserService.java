@@ -1,6 +1,6 @@
 package cn.pomit.springwork.netty.Service;
 
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
 
 import java.util.List;
 
@@ -22,6 +22,4 @@ public interface UserService {
      * @return 对象列表
      */
     List<User> queryAllUser();
-    //增加用户
-    int addUser(User user);
 }

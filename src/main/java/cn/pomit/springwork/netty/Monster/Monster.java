@@ -1,8 +1,7 @@
 package cn.pomit.springwork.netty.Monster;
 
 
-import cn.pomit.springwork.netty.entity.User;
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.pomit.springwork.netty.Entity.User;
 
 import javax.sql.rowset.BaseRowSet;
 

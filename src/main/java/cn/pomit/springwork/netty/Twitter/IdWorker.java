@@ -1,31 +1,28 @@
 package cn.pomit.springwork.netty.Twitter;
 /*
-思路 8字节（64位的）占位的模式
-主要分为以下四个部分：时间序列|数据中心序列|机器序列|自增序列
-时间序列：42位，每139年开始重复
-数据中心序列：5位，共能承载32台机器（ID生成机器)
-自增序列：12位，值得范围设定0-4095
  */
 
 public class IdWorker{
 
-    //下面两个每个5位，加起来就是10位的工作机器id
     //工作id
     private long workerId;
     //数据id
     private long datacenterId;
-    //12位的序列号
+    //序列号
     private long sequence;
 
     public IdWorker(long workerId, long datacenterId, long sequence){
         // sanity check for workerId
         if (workerId > maxWorkerId || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0",maxWorkerId));
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0",
+                    maxWorkerId));
         }
         if (datacenterId > maxDatacenterId || datacenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0",maxDatacenterId));
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0",
+                    maxDatacenterId));
         }
-        System.out.printf("worker starting. timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d",
+        System.out.printf("worker starting. timestamp left shift %d, datacenter id bits %d, worker id bits %d, " +
+                        "sequence bits %d, workerid %d",
                 timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId);
         this.workerId = workerId;
         this.datacenterId = datacenterId;
@@ -33,25 +30,25 @@ public class IdWorker{
     }
 
     //初始时间戳
-    private long twepoch = 1288834974657L;
-    //长度为5位
-    private long workerIdBits = 5L;
-    private long datacenterIdBits = 5L;
+    private static final long twepoch = 1565020800000L;
+    //长度
+    private static final long workerIdBits = 5L;
+    private static final long datacenterIdBits = 5L;
     //最大值
-    private long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
+    private static final long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    private static final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
     //序列号id长度
-    private long sequenceBits = 12L;
+    private static final long sequenceBits = 10L;
     //序列号最大值
-    private long sequenceMask = -1L ^ (-1L << sequenceBits);
-    //工作id需要左移的位数，12位
-    private long workerIdShift = sequenceBits;
-    //数据id需要左移位数 12+5=17位
+    private static final long sequenceMask = -1L ^ (-1L << sequenceBits);
+    //工作id需要左移的位数
+    private static final long workerIdShift = sequenceBits;
+    //数据id需要左移位数
     private long datacenterIdShift = sequenceBits + workerIdBits;
-    //时间戳需要左移位数 12+5+5=22位
-    private long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+    //时间戳需要左移位数
+    private static final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
     //上次时间戳，初始值为负数
-    private long lastTimestamp = -1L;
+    private static long  lastTimestamp = -1L;
 
     public long getWorkerId(){
         return workerId;
@@ -60,11 +57,6 @@ public class IdWorker{
     public long getDatacenterId(){
         return datacenterId;
     }
-
-    public long getTimestamp(){
-        return System.currentTimeMillis();
-    }
-
     //下一个ID生成算法
     public synchronized long nextId() {
         long timestamp = timeGen();
@@ -117,7 +109,7 @@ public class IdWorker{
     }
 
     public static void main(String[] args) {
-        IdWorker worker = new IdWorker(1,1,1);
+        IdWorker worker = new IdWorker(1,1,0);
         for (int i = 0; i < 30; i++) {
             System.out.println(worker.nextId());
         }

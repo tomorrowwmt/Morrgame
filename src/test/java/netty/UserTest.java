@@ -1,7 +1,9 @@
 package netty;
 
+import cn.pomit.springwork.netty.Entity.Bag;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.mapper.BagMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -14,17 +16,16 @@ public class UserTest {
     private static Logger log = Logger.getLogger(UserTest.class);
     @Test
     public void test(){
-        System.out.println(66666);
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-         List<User> users=userMapper.queryuser();
+         List<User> users=userMapper.selectAll();
         System.out.println(users);
     }
     @Test
     public void select(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=userMapper.getUserById(1);
+        User user=userMapper.selectByPrimaryKey(1L);
         System.out.println(user);
     }
     @Test
@@ -37,19 +38,18 @@ public class UserTest {
         user.setUid(l);
         user.setUsername("tgtretrgtgr");
         user.setPassword("1111");
-        int user1 = userMapper.addUser(user);
+        int user1 = userMapper.insertSelective(user);
         System.out.println(user1);
     }
     @Test
     public void update(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=new User();
-        user.setUid(1L);
-        user.setExp(5);
-        user.setLevel(1);
-        user.setLevelExp(77);
-        int update = userMapper.update(user);
-        System.out.println(update);
+       UserMapper userMapper=ac.getBean(UserMapper.class);
+       User user=new User();
+       user.setUid(1L);
+        //bag.setIname("hhhh");
+        user.setLevel(10);
+        int result=userMapper.updateByPrimaryKeySelective(user);
+        System.out.println(result);
     }
 }

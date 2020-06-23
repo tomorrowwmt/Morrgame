@@ -2,23 +2,31 @@ package cn.pomit.springwork.netty.FuBen;
 
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Boss;
-import cn.pomit.springwork.netty.entity.User;
-import com.google.common.collect.ImmutableMap;
-import org.checkerframework.checker.units.qual.min;
-import sun.misc.GC;
+import cn.pomit.springwork.netty.Entity.User;
 
-import javax.xml.crypto.Data;
-import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Hurt {
-    public Hurt(String sence)  {
+    //设定最大倒计时10s
+    private static CountDown countDown;
+    static {
+        try {
+            System.out.println("副本打boss倒计时开始");
+            countDown = new CountDown(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+    /*
+    public Hurt(User user) throws Exception {
+        qiehuan(user);
+    }
+     */
     public void gongji(User user) throws Exception {
         //切换场景
-        qiehuan(user);
-        //增加countdown计时器
-        CountDown cd=new CountDown(9);
+        //qiehuan(user);
+
         user.setUsername("wbl1");
         user.setHp(200);
         Boss boss=new Boss();
@@ -26,15 +34,17 @@ public class Hurt {
         boss.setHp(150);
         while(user.getHp()>0 && boss.getHp()>0){
             boss.bit(user);
-            if(user.getHp()<=0){
+            if(user.getHp()<=0 ){
                 System.out.println("玩家死亡挑战失败"+boss.getName()+"胜利");
-                huishou();
+                //huishou(user);
+                break;
             }
             user.attackboss(boss);
             if(boss.getHp()<=0){
                 System.out.println("怪兽死亡"+user.getUsername()+"挑战成功");
                 System.out.println("======================");
-                huishou();
+                //huishou(user);
+                break;
             }
         }
 
@@ -53,11 +63,12 @@ public class Hurt {
         }
     }
     //回收场景
-    public void huishou(){
-        Hurt changjing=new Hurt("boss副本");
+    /*
+    public void huishou(User user) throws Exception {
+        Hurt changjing=new Hurt(user);
         changjing=null;
-        System.gc();
     }
+     */
     public static String read() throws Exception{
         String str = "";
         Scanner sc = new Scanner(System.in);
@@ -70,6 +81,6 @@ public class Hurt {
 
     public static void main(String[] args) throws Exception {
         User user=new User();
-        new Hurt("boss副本").gongji(user);
+        //new Hurt(user).gongji(user);
     }
 }

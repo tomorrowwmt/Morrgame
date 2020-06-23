@@ -1,10 +1,10 @@
 package cn.pomit.springwork.netty.Login;
 
-import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.mapper.UserMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,6 +21,8 @@ public class LoginUtil {
     private  UserService userService;
     @Autowired
     private IdWorker worker;
+    @Resource
+    UserMapper userMapper;
     //定义idworker
     private static IdWorker WORKER=new IdWorker(1,1,1);
     public void  qiehuan(User user)throws Exception{
@@ -63,7 +66,8 @@ public class LoginUtil {
     public void zhuce()throws Exception{
         User user=new User();
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserService userService= (UserService) ac.getBean("UserGuavaCache");
+        //UserService userService= (UserService) ac.getBean("UserGuavaCache");
+        UserMapper userMapper = ac.getBean(UserMapper.class);
         while(true) {
             String name=read();
             if ("wbl1".equals(name)) {
@@ -73,7 +77,7 @@ public class LoginUtil {
                 user.setUsername("wbl2");
                 user.setPassword("44444");
                 user.setHp(100);
-                int i = userService.addUser(user);
+                int i = userMapper.insertSelective(user);
                 System.out.println("注册成功");
             }
         }

@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.entity;
+package cn.pomit.springwork.netty.Entity;
 
 import cn.pomit.springwork.netty.Enum.BagType;
 import cn.pomit.springwork.netty.Enum.EquipType;
@@ -7,32 +7,121 @@ import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Skills.Skill;
 import cn.pomit.springwork.netty.mapper.EquipMapper;
-import lombok.Data;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.Date;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /*
 用户
  */
-@Data
+@Table(name="tb_user")
 public class User {
+    @Id
     private Long uid;
     private String username;
     private String password;
     //当前生命值
-    private int hp;
+    private Integer hp;
     //药水增加的hp或者mp
-    public int yaoshui;
+    private Integer yaoshui;
     //设计玩家的经验
-    public int exp;
+    public Integer exp;
    //等级
-    public  int level;
+   public Integer level;
     //下一级所需经验
-    public  int levelExp;
-    private  int atk;
-    //private int time;
+    public Integer levelExp;
+    public Integer atk;
+    //private Friends fid;
+
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getHp() {
+        return hp;
+    }
+
+    public void setHp(Integer hp) {
+        this.hp = hp;
+    }
+
+    public Integer getYaoshui() {
+        return yaoshui;
+    }
+
+    public void setYaoshui(Integer yaoshui) {
+        this.yaoshui = yaoshui;
+    }
+
+    public Integer getExp() {
+        return exp;
+    }
+
+    public void setExp(Integer exp) {
+        this.exp = exp;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getLevelExp() {
+        return levelExp;
+    }
+
+    public void setLevelExp(Integer levelExp) {
+        this.levelExp = levelExp;
+    }
+
+    public void setAtk(Integer atk) {
+        this.atk = atk;
+    }
+
+    public Integer getAtk() {
+        return atk;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", hp=" + hp +
+                ", yaoshui=" + yaoshui +
+                ", exp=" + exp +
+                ", level=" + level +
+                ", levelExp=" + levelExp +
+                ", atk=" + atk +
+                '}';
+    }
 
     //普通攻击
     public void bit(Monster mas){
@@ -129,7 +218,7 @@ public class User {
     public Equipment getEquipmentById(int id) {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
-        Equipment quer = equipMapper.querid(4);
+        Equipment quer = equipMapper.selectByPrimaryKey(4L);
         System.out.println(quer);
         return quer;
     }
@@ -140,7 +229,7 @@ public class User {
         //脱下装备这里直接采用delete
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
-        int delete = equipMapper.delete(4);
+        int delete = equipMapper.deleteByPrimaryKey(4L);
         System.out.println("解除脱装备完成");
     }
     //副本boss攻击方法

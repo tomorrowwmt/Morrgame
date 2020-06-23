@@ -3,10 +3,9 @@ import java.net.InetAddress;
 import java.util.List;
 
 import cn.pomit.springwork.netty.Attack.Batter;
-import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Login.LoginUtil;
 import cn.pomit.springwork.netty.Service.UserService;
-import cn.pomit.springwork.netty.entity.User;
+import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.Channel;
 
@@ -24,8 +23,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.jws.soap.SOAPBinding;
-
 @Slf4j
 @Service("helloServerHandler")
 @Scope("prototype")
@@ -37,7 +34,7 @@ import javax.jws.soap.SOAPBinding;
 //继承Netty提供的通道传入处理器类，只要复写方法就可以了，简化开发
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
-    private  UserMapper userMapper;
+    //private  UserMapper userMapper;
     public static User user=new User();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -75,7 +72,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().writeAndFlush("打印成功\n");
             return;
         }else if("attack".equals(body)){
-            new Batter().attack(user);
+            //new Batter().attack(user);
             //通知所有玩家
             ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
             UserService userService = (UserService) ac.getBean("UserGuavaCache");
