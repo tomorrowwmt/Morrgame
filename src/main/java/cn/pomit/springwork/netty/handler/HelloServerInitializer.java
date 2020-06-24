@@ -2,6 +2,7 @@ package cn.pomit.springwork.netty.handler;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import io.netty.channel.ChannelInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -12,6 +13,7 @@ import io.netty.handler.codec.string.StringEncoder;
 
 @Service("helloServerInitializer")
 public class HelloServerInitializer extends ChannelInitializer<SocketChannel> {
+    @Qualifier("helloServerHandler")
     @Autowired
     private HelloServerHandler helloServerHandler;
     @Autowired

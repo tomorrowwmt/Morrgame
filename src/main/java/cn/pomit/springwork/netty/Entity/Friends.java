@@ -2,13 +2,17 @@ package cn.pomit.springwork.netty.Entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /*
-玩家跟朋友组队
+与玩家关联的朋友
  */
+@Table(name="tb_friend")
 public class Friends {
+    @Id
     private  Long fid;
     private String name;
-    private  Long uid;
 
     public Long getFid() {
         return fid;
@@ -26,20 +30,12 @@ public class Friends {
         this.name = name;
     }
 
-    public Long getUid() {
-        return uid;
-    }
-
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
 
     @Override
     public String toString() {
         return "Friends{" +
                 "fid=" + fid +
                 ", name='" + name + '\'' +
-                ", uid=" + uid +
                 '}';
     }
 }

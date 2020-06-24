@@ -16,7 +16,7 @@ public class FriendsTest {
     public void  query(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         FriendsMapper friendsMapper=ac.getBean(FriendsMapper.class);
-        List<Friends> friends = friendsMapper.queryfriendbyid(1);
+        List<Friends> friends = friendsMapper.selectAll();
         for(Friends fd:friends){
             System.out.println(fd);
         }

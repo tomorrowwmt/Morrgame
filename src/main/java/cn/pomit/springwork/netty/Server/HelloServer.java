@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class HelloServer {
     private static Logger log = Logger.getLogger(HelloServer.class);
     private static IdWorker WORKER=new IdWorker(1,1,1);
+    private static ApplicationContext  context;
     /**
      * 服务端监听的端口地址
      */
@@ -35,7 +37,7 @@ public class HelloServer {
 
     //程序初始方法入口注解，提示spring这个程序先执行这里
     //@PostConstruct
-     public static void main(String[] args) throws Exception {
+     public void start()throws Exception {
          ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
          //System.out.println(Arrays.toString(ac.getBeanDefinitionNames()));
          //启动服务器直接加载所有配置资源
@@ -61,6 +63,7 @@ public class HelloServer {
             workerGroup.shutdownGracefully();
         }
     }
+
     public void  jiazai()throws Exception {
         //启动服务器直接加载所有配置资源
         ExcelReader excelReader = new ExcelReader();
@@ -75,5 +78,9 @@ public class HelloServer {
                 .put("NPC", say)
                 .put("Skill", skill).build();
         System.out.println("所有地图，怪兽，Npc,技能配置资源加载完成:\n" + immutableMap);
+    }
+    public static void main(String[] args) throws Exception {
+        context = new ClassPathXmlApplicationContext("spring-netty.xml");
+        context.getBean(HelloServer.class).start();
     }
 }

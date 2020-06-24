@@ -33,8 +33,16 @@ public class User {
     //下一级所需经验
     public Integer levelExp;
     public Integer atk;
-    //private Friends fid;
+    //金钱
+    public Integer money;
 
+    public Integer getMoney() {
+        return money;
+    }
+
+    public void setMoney(Integer money) {
+        this.money = money;
+    }
 
     public Long getUid() {
         return uid;
@@ -120,6 +128,7 @@ public class User {
                 ", level=" + level +
                 ", levelExp=" + levelExp +
                 ", atk=" + atk +
+                ", money=" + money +
                 '}';
     }
 
@@ -185,6 +194,8 @@ public class User {
          equip.loaded=0;
          //穿上装备
          wearEquip(4);
+         //穿上毒刀装备
+         wearEquip(2);
          //锁定装备
          equip.setLocked(1);
     }
@@ -195,8 +206,8 @@ public class User {
         //String replaceEquip= getEquipmentById(id).getType();
         //equip.setLoaded(0);
         this.atk=equip.getAtk()+100;
-        System.out.println("穿上"+equip.getName()+",装备类型为"+ EquipType.Weapon.getName() +
-                ",使得攻击力增加"+equip.getAtk()+",触发必杀技能");
+        System.out.println("穿上装备"+",装备类型为"+ EquipType.Weapon.getName() +
+                ",使得攻击力增加"+",继续加大攻击");
         equip.setEndurance(equip.getEndurance()-30);
         if(equip.getEndurance()<=50){
             System.out.println("武器耐久度过低需要去修理一下");
@@ -219,7 +230,9 @@ public class User {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
         Equipment quer = equipMapper.selectByPrimaryKey(4L);
+        Equipment quer1 = equipMapper.selectByPrimaryKey(2L);
         System.out.println(quer);
+        System.out.println(quer1);
         return quer;
     }
     /**
@@ -254,7 +267,14 @@ public class User {
             System.out.println("mp恢复成功");
             System.out.println("=============");
         }
-
+    }
+    //穿上毒刀直接让怪兽中毒减大量的血
+    public void zhongdu(Boss boss){
+        boss.setHp(boss.getHp()-60);
+        if(boss.getHp()<=0){
+            boss.setHp(0);
+        }
+        System.out.println(boss.getName()+"被"+username+"玩家用毒刀斩杀中毒"+"血量为"+boss.getHp());
     }
     public static void main(String[] args) {
         new User().wearEquip(4);

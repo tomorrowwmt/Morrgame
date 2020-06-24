@@ -12,7 +12,6 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/cache
        http://www.springframework.org/schema/cache/spring-cache.xsd">
-
     <!--  <bean id="user" class="com.wayhb.User">
     <property name="userid" value="20"></property>
     <property name="username" value="wayhb"></property>

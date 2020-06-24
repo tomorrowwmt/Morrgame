@@ -10,7 +10,16 @@ public class Boss {
     private  String name;
     //boss血量
     private int hp;
-    public int time;
+    //送出金钱
+    private int sendmoney;
+
+    public int getSendmoney() {
+        return sendmoney;
+    }
+
+    public void setSendmoney(int sendmoney) {
+        this.sendmoney = sendmoney;
+    }
 
     public int getId() {
         return id;
@@ -36,21 +45,13 @@ public class Boss {
         this.hp = hp;
     }
 
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
     @Override
     public String toString() {
         return "Boss{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", hp=" + hp +
-                ", time=" + time +
+                ", sendmoney=" + sendmoney +
                 '}';
     }
 
@@ -69,5 +70,22 @@ public class Boss {
         }
         System.out.println(u.getUsername()+"被"+name+"进行攻击,剩余血量是"+u.getHp());
         System.out.println("=========================");
+    }
+    //怪兽移动
+    public void move(int direction){
+        switch (direction){
+            case 1:
+            System.out.println(this.name+"is moving 1 step NORTH.");
+            break;
+            case 2:
+                System.out.println(this.name + "is moving 1 step EAST.");
+                break;
+            case 3:
+                System.out.println(this.name + "is moving 1 step SOUTH.");
+                break;
+            default:
+                System.out.println(this.name + "is moving 1 step WEST.");
+                break;
+        }
     }
 }

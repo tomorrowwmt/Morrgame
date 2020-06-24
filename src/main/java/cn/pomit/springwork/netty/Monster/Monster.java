@@ -15,6 +15,8 @@ public class Monster extends BaseRowSet {
    public String  Live;
    //送经验值
     public  int sendExp;
+    //送出金币
+    public int sendmoney;
 
     public int getSendExp() {
         return sendExp;

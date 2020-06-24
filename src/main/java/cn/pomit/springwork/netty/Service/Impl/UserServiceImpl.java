@@ -20,13 +20,18 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     @Cacheable(value = "userCache",key="#uid")
-    public User queryById(Integer uid) {
+    public User queryById(Long uid) {
         return userMapper.selectByPrimaryKey(uid);
     }
     @Override
     @Cacheable(value = "userCache")
     public List<User> queryAllUser() {
         return userMapper.selectAll();
+    }
+
+    @Override
+    public int update(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
     }
     /*
     @Override

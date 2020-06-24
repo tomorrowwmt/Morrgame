@@ -11,17 +11,19 @@ import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+@Component
 public class LoginUtil {
     @Autowired
     private  UserService userService;
-    @Autowired
+    //@Autowired
     private IdWorker worker;
-    @Resource
+   @Autowired
     UserMapper userMapper;
     //定义idworker
     private static IdWorker WORKER=new IdWorker(1,1,1);

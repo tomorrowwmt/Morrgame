@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.util.List;
 
 import cn.pomit.springwork.netty.Attack.Batter;
+import cn.pomit.springwork.netty.BossFuBen.FuBen;
 import cn.pomit.springwork.netty.Login.LoginUtil;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
@@ -72,7 +73,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().writeAndFlush("打印成功\n");
             return;
         }else if("attack".equals(body)){
-            //new Batter().attack(user);
+            new Batter().attack(user);
             //通知所有玩家
             ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
             UserService userService = (UserService) ac.getBean("UserGuavaCache");
@@ -87,7 +88,12 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             new LoginUtil().zhuce();
             ctx.channel().writeAndFlush("注册成功\n");
             return;
-        }else{
+        }else if("fuben".equals(body)){
+           new FuBen().gongji(user);
+            ctx.channel().writeAndFlush("退出副本完成\n");
+            return;
+        }
+        else{
             ctx.channel().writeAndFlush("非法操作请输入登陆指令");
         }
         // 返回客户端消息 - 我已经接收到了你的消息

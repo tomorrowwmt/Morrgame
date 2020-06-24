@@ -35,7 +35,7 @@ public class EquipTest {
     public void querid(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         EquipMapper equipMapper = ac.getBean(EquipMapper.class);
-        Equipment querid = equipMapper.selectByPrimaryKey(1L);
+        Equipment querid = equipMapper.selectByPrimaryKey(2L);
         System.out.println(querid);
     }
     @Test

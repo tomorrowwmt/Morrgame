@@ -14,7 +14,7 @@ public interface UserService {
      * @param uid 主键
      * @return 实例对象
      */
-   User queryById(Integer uid);
+   User queryById(Long uid);
 
     /**
      * 查询多条数据
@@ -22,4 +22,8 @@ public interface UserService {
      * @return 对象列表
      */
     List<User> queryAllUser();
+    /*
+    更新数据
+     */
+    int update(User user);
 }

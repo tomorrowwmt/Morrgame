@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.FuBen;
+package cn.pomit.springwork.netty.BossFuBen;
 /**
 
  */

@@ -1,6 +1,4 @@
-package cn.pomit.springwork.netty.Entity;
-
-import lombok.Data;
+package cn.pomit.springwork.netty.zudui;
 
 /*
 队伍实体类
