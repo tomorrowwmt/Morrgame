@@ -77,9 +77,4 @@ public class Shopping {
         int i = bagMapper.updateByPrimaryKeySelective(bag);
 
     }
-
-    public static void main(String[] args) throws Exception {
-        User user=new User();
-        new ShopServiceImpl().shopping(user);
-    }
 }
