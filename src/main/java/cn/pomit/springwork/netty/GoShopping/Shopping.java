@@ -23,19 +23,17 @@ public class Shopping {
         UserMapper userMapper =  SpringUtil.getBean(UserMapper.class);
         Integer usermoney = userMapper.selectByPrimaryKey(1L).getMoney();
         //获取商品金额
-        Integer price1 = shops.get(0).getPrice();
+        Integer productprice= shops.get(0).getPrice();
         //查询背包
         //做物品数量判断，若一旦购买数量<=0直接输出，否则出现负数
         if(shops.get(0).getCount()<=0) {
             System.out.println("库存不足无法购买");
             return;
-        }else if (price1>usermoney){
-            System.out.println("购买失败金额不足");
-        }else {
+        }else if(usermoney>productprice){
             //假设购买红药水
-            Shop goods = shopMapper.selectByPrimaryKey(1L);
+            Shop product= shopMapper.selectByPrimaryKey(1L);
             //查询商品名字
-            String name = goods.getName();
+            String name =  product.getName();
             //购买加入背包
             BagMapper bagMapper =  SpringUtil.getBean(BagMapper.class);
             //在购买之前需查看背包是否有存在这个东西，这里我判断ct只要>1就说明之前有买过
@@ -51,8 +49,8 @@ public class Shopping {
                 int insert = bagMapper.insert(bag);
             }
             //购买后钱减
-            Integer price = goods.getPrice();
-            int userprice = usermoney - price1;
+            Integer price =product.getPrice();
+            int userprice = usermoney -productprice;
             //更新用户金额
             user.setUid(1L);
             user.setMoney(userprice);
@@ -63,6 +61,8 @@ public class Shopping {
             shop.setSid(1L);
             shop.setCount(count);
             shopMapper.updateByPrimaryKeySelective(shop);
+        }else{
+            System.out.println("购买失败金额不足请充值");
         }
     }
     public void shoppingagin(User user){
