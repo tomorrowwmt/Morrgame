@@ -4,10 +4,14 @@ import java.util.List;
 
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.BossFuBen.FuBen;
+import cn.pomit.springwork.netty.Entity.Shop;
+import cn.pomit.springwork.netty.GoShopping.Shopping;
 import cn.pomit.springwork.netty.Login.LoginUtil;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.mapper.ShopMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
+import cn.pomit.springwork.netty.spring.SpringUtil;
 import io.netty.channel.Channel;
 
 import io.netty.channel.ChannelHandler.Sharable;
@@ -18,9 +22,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,6 @@ import org.springframework.stereotype.Service;
 
 //继承Netty提供的通道传入处理器类，只要复写方法就可以了，简化开发
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
-    @Autowired
-    //private  UserMapper userMapper;
     public static User user=new User();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -66,6 +66,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         String body= (String) msg;
         if("login".equals(body)) {
             new LoginUtil().login();
+
             ctx.channel().writeAndFlush("登录成功\n");
             return;
         }else if("aor".equals(body)){
@@ -75,8 +76,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         }else if("attack".equals(body)){
             new Batter().attack(user);
             //通知所有玩家
-            ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
-            UserService userService = (UserService) ac.getBean("UserGuavaCache");
+            UserService userService = (UserService) SpringUtil.getBean("UserGuavaCache");
             List<User> users = userService.queryAllUser();
             ctx.channel().writeAndFlush(users+"\n"+"战斗完成，通知玩家怪兽死亡\n");
             return;
@@ -92,8 +92,25 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
            new FuBen().gongji(user);
             ctx.channel().writeAndFlush("退出副本完成\n");
             return;
-        }
-        else{
+        }else if("shop".equals(body)){
+            System.out.println("用户来到商店");
+            new Shopping().shopping(user);
+            //查询商品物品
+            ShopMapper shopMapper= SpringUtil.getBean(ShopMapper.class);
+            List<Shop> shops = shopMapper.selectAll();
+            //查询用户拥有金额
+            UserMapper userMapper =  SpringUtil.getBean(UserMapper.class);
+            Integer usermoney = userMapper.selectByPrimaryKey(1L).getMoney();
+            //获取商品金额
+            Integer productprice= shops.get(0).getPrice();
+            if(usermoney<productprice){
+                ctx.channel().writeAndFlush("购买失败金额不足请充值\n");
+            }else{
+                System.out.println("用户成功购买");
+                ctx.channel().writeAndFlush("购买完成\n");
+                return;
+            }
+        }else{
             ctx.channel().writeAndFlush("非法操作请输入登陆指令");
         }
         // 返回客户端消息 - 我已经接收到了你的消息

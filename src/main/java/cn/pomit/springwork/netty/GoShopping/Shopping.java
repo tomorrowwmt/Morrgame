@@ -38,7 +38,7 @@ public class Shopping {
             BagMapper bagMapper =  SpringUtil.getBean(BagMapper.class);
             //在购买之前需查看背包是否有存在这个东西，这里我判断ct只要>1就说明之前有买过
             Integer ct = bagMapper.selectByPrimaryKey(12L).getCount();
-            if(ct>1){
+            if(ct>=1){
                 shoppingagin(user);
             }else{
                 IdWorker worker = new IdWorker(1, 1, 1);
@@ -63,6 +63,7 @@ public class Shopping {
             shopMapper.updateByPrimaryKeySelective(shop);
         }else{
             System.out.println("购买失败金额不足请充值");
+            return;
         }
     }
     public void shoppingagin(User user){
