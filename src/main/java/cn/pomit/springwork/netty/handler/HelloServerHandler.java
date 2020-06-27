@@ -5,13 +5,15 @@ import java.util.List;
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.BossFuBen.FuBen;
 import cn.pomit.springwork.netty.Entity.Shop;
+import cn.pomit.springwork.netty.Entity.UserMail;
 import cn.pomit.springwork.netty.GoShopping.Shopping;
 import cn.pomit.springwork.netty.Login.LoginUtil;
+import cn.pomit.springwork.netty.ReviceMail.Mail;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.mapper.ShopMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
-import cn.pomit.springwork.netty.spring.SpringUtil;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import io.netty.channel.Channel;
 
 import io.netty.channel.ChannelHandler.Sharable;
@@ -21,7 +23,6 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -110,7 +111,14 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
                 ctx.channel().writeAndFlush("购买完成\n");
                 return;
             }
-        }else{
+        }else if("sendmail".equals(body)){
+            System.out.println("邮件正在发送");
+            UserMail userMail=new UserMail();
+            new Mail().revicepersonMail(user,userMail);
+            ctx.channel().writeAndFlush("邮件发送完成\n");
+            return;
+        }
+        else{
             ctx.channel().writeAndFlush("非法操作请输入登陆指令");
         }
         // 返回客户端消息 - 我已经接收到了你的消息
