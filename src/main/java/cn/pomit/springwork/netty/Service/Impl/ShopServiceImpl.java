@@ -1,23 +1,15 @@
 package cn.pomit.springwork.netty.Service.Impl;
-
 import cn.pomit.springwork.netty.Entity.Bag;
 import cn.pomit.springwork.netty.Entity.Shop;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Service.ShopService;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.handler.HelloServerHandler;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import cn.pomit.springwork.netty.mapper.ShopMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import org.apache.ibatis.annotations.Insert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.common.Mapper;
-
-import javax.annotation.Resource;
 import java.util.List;
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -41,7 +33,7 @@ public class ShopServiceImpl implements ShopService {
             //查询商品名字
             String name = goods.getName();
             //购买成功加入背包
-            Bag bag=new Bag();
+          Bag bag=new Bag();
           BagMapper bagMapper = ac.getBean(BagMapper.class);
           IdWorker worker=new IdWorker(1,1,1);
             long l=worker.nextId();
@@ -62,10 +54,5 @@ public class ShopServiceImpl implements ShopService {
          shop.setSid(1L);
          shop.setCount(count);
         shopMapper.updateByPrimaryKeySelective(shop);
-    }
-
-    public static void main(String[] args) {
-        User user=new User();
-        new ShopServiceImpl().shopping(user);
     }
 }

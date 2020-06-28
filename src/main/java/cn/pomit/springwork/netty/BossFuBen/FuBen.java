@@ -4,6 +4,7 @@ import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Service.UserService;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -60,8 +61,7 @@ public class FuBen {
     }
     public void getmoney(User user){
         //先查询金币金额
-        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserService userService = ac.getBean(UserService.class);
+        UserService userService=SpringUtil.getBean(UserService.class);
         Integer money = userService.queryById(1L).getMoney();
         //更新
         money+=100;
@@ -76,19 +76,5 @@ public class FuBen {
         String map= ditu.get(0).get(3);
         map=null;
         System.out.println("回收场景完成");
-    }
-    public static String read() throws Exception{
-        String str = "";
-        Scanner sc = new Scanner(System.in);
-        while (sc.hasNext()) {
-            str = sc.next();
-            break;
-        }
-        return str;
-    }
-
-    public static void main(String[] args) throws Exception {
-        User user=new User();
-        new FuBen().gongji(user);
     }
 }

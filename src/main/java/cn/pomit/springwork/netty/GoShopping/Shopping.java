@@ -4,11 +4,10 @@ import cn.pomit.springwork.netty.Entity.Bag;
 import cn.pomit.springwork.netty.Entity.Shop;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import cn.pomit.springwork.netty.mapper.ShopMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
-import cn.pomit.springwork.netty.spring.SpringUtil;
-
 import java.util.List;
 
 public class Shopping {

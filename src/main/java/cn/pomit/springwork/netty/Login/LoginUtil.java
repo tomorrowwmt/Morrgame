@@ -4,6 +4,7 @@ import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -19,9 +20,6 @@ import java.util.Map;
 import java.util.Scanner;
 @Component
 public class LoginUtil {
-    @Autowired
-    private  UserService userService;
-    //@Autowired
     private IdWorker worker;
    @Autowired
     UserMapper userMapper;
@@ -60,16 +58,18 @@ public class LoginUtil {
     }
     public void aor(User user) throws Exception {
         System.out.println("打印实体");
-        ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserService userService = (UserService) ac.getBean("UserGuavaCache");
+        //ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
+        //UserService userService = (UserService) ac.getBean("UserGuavaCache");
+        UserService userService= SpringUtil.getBean("UserGuavaCache");
         List<User> users = userService.queryAllUser();
         System.out.println(users);
     }
     public void zhuce()throws Exception{
         User user=new User();
-        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         //UserService userService= (UserService) ac.getBean("UserGuavaCache");
-        UserMapper userMapper = ac.getBean(UserMapper.class);
+       // UserMapper userMapper = ac.getBean(UserMapper.class);
+        UserMapper userMapper=SpringUtil.getBean(UserMapper.class);
         while(true) {
             String name=read();
             if ("wbl1".equals(name)) {
@@ -83,12 +83,6 @@ public class LoginUtil {
                 System.out.println("注册成功");
             }
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-       // new LoginUtil().login();
-        new LoginUtil().zhuce();
-        // new LoginUtil().peizhi();
     }
     public static String read() throws Exception{
         String str = "";
