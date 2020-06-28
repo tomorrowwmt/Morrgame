@@ -2,6 +2,7 @@ package netty;
 
 import cn.pomit.springwork.netty.Entity.Bag;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.BagMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,9 @@ public class BagTest  {
         IdWorker worker=new IdWorker(1,1,1);
         long l=worker.nextId();
         bag.setId(l);
-        bag.setIname("头盔");
-        bag.setCapacity(108);
-        bag.setCount(10);
+        bag.setIname("圣域令");
+        bag.setCapacity(10);
+        bag.setCount(1);
         int insert = bagMapper.insertSelective(bag);
         System.out.println(insert);
     }

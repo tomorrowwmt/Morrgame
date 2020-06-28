@@ -3,6 +3,7 @@ import cn.pomit.springwork.netty.Entity.Bag;
 import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -69,8 +70,7 @@ public class Batter {
         //升级之后，将所有属性则增加
         System.out.println("终于打赢要升级啦");
         //先查询玩家当前级别
-        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        UserMapper userMapper=ac.getBean(UserMapper.class);
+        UserMapper userMapper= SpringUtil.getBean(UserMapper.class);
         List<User> queryuser = userMapper.selectAll();
         //获取玩家当前等级，经验
         int level = queryuser.get(0).getLevel();
@@ -86,10 +86,5 @@ public class Batter {
         user.setLevelExp(levelExp);
         int update = userMapper.updateByPrimaryKeySelective(user);
         System.out.println("玩家等级升级为"+level+" "+"玩家经验"+exp+" "+"下一级所需要的经验为"+levelExp);
-    }
-    public static void main(String[] args) throws Exception{
-       User user=new User();
-       new Batter().attack(user);
-        //System.out.println(user.getUsername());
     }
 }

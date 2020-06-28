@@ -58,17 +58,12 @@ public class LoginUtil {
     }
     public void aor(User user) throws Exception {
         System.out.println("打印实体");
-        //ApplicationContext ac = new ClassPathXmlApplicationContext("spring-netty.xml");
-        //UserService userService = (UserService) ac.getBean("UserGuavaCache");
         UserService userService= SpringUtil.getBean("UserGuavaCache");
         List<User> users = userService.queryAllUser();
         System.out.println(users);
     }
     public void zhuce()throws Exception{
         User user=new User();
-        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-        //UserService userService= (UserService) ac.getBean("UserGuavaCache");
-       // UserMapper userMapper = ac.getBean(UserMapper.class);
         UserMapper userMapper=SpringUtil.getBean(UserMapper.class);
         while(true) {
             String name=read();

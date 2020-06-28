@@ -1,7 +1,4 @@
 package cn.pomit.springwork.netty.Entity;
-
-import lombok.Data;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 

@@ -57,6 +57,8 @@
         <property name="basePackage" value="cn.pomit.springwork.netty.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+    <bean id="springUtil" class="cn.pomit.springwork.netty.UtilSpring.SpringUtil">
+    </bean>
     <!--
     <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>

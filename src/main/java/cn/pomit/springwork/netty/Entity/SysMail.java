@@ -10,14 +10,14 @@ public class SysMail {
     @Id
     //全服系统邮件Id
     private Long sysMailId;
-    //邮件主题信息
+    //发送者
+    private  String sender;
+    //邮件信标题
     private String title;
+    //邮件内容
+    private String contect;
     //邮件发送时间
     private Date sendtime;
-    //邮件读取状态.0未读 1读取
-    private Integer status;
-    //邮件道具领取状态0为领取，1已领取
-    private Integer recevice;
 
     public Long getSysMailId() {
         return sysMailId;
@@ -41,29 +41,30 @@ public class SysMail {
         this.sendtime = sendtime;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getSender() {
+        return sender;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public Integer getRecevice() {
-        return recevice;
+    public String getContect() {
+        return contect;
     }
 
-    public void setRecevice(Integer recevice) {
-        this.recevice = recevice;
+    public void setContect(String contect) {
+        this.contect = contect;
     }
+
     @Override
     public String toString() {
         return "SysMail{" +
                 "sysMailId=" + sysMailId +
+                ", sender='" + sender + '\'' +
                 ", title='" + title + '\'' +
+                ", contect='" + contect + '\'' +
                 ", sendtime=" + sendtime +
-                ", status=" + status +
-                ", recevice=" + recevice +
                 '}';
     }
 }

@@ -18,8 +18,10 @@ public class UserMail {
     private Date sendtime;
     //邮件读取状态.0未读 1读取
     private Integer status;
-    //附件
+    //附件金币
     private  String annex;
+    //赠送道具
+    private  String daoju;
     //邮件道具领取状态0为领取，1已领取
     private Integer recevice;
 
@@ -80,6 +82,14 @@ public class UserMail {
         this.recevice = recevice;
     }
 
+    public String getDaoju() {
+        return daoju;
+    }
+
+    public void setDaoju(String daoju) {
+        this.daoju = daoju;
+    }
+
     @Override
     public String toString() {
         return "UserMail{" +
@@ -89,6 +99,7 @@ public class UserMail {
                 ", sendtime=" + sendtime +
                 ", status=" + status +
                 ", annex='" + annex + '\'' +
+                ", daoju='" + daoju + '\'' +
                 ", recevice=" + recevice +
                 '}';
     }

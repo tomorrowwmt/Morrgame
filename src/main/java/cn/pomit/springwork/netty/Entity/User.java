@@ -35,6 +35,16 @@ public class User {
     public Integer atk;
     //金钱
     public Integer money;
+    //读取系统邮件状态
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Integer getMoney() {
         return money;
@@ -129,6 +139,7 @@ public class User {
                 ", levelExp=" + levelExp +
                 ", atk=" + atk +
                 ", money=" + money +
+                ", status=" + status +
                 '}';
     }
 
@@ -202,9 +213,6 @@ public class User {
     public void wearEquip(int id) {
         //获取装备
         Equipment equip= getEquipmentById(id);
-        //穿戴类型
-        //String replaceEquip= getEquipmentById(id).getType();
-        //equip.setLoaded(0);
         this.atk=equip.getAtk()+100;
         System.out.println("穿上装备"+",装备类型为"+ EquipType.Weapon.getName() +
                 ",使得攻击力增加"+",继续加大攻击");
@@ -275,8 +283,5 @@ public class User {
             boss.setHp(0);
         }
         System.out.println(boss.getName()+"被"+username+"玩家用毒刀斩杀中毒"+"血量为"+boss.getHp());
-    }
-    public static void main(String[] args) {
-        new User().wearEquip(4);
     }
 }

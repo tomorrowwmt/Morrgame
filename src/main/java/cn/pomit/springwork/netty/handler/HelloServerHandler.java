@@ -5,13 +5,16 @@ import java.util.List;
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.BossFuBen.FuBen;
 import cn.pomit.springwork.netty.Entity.Shop;
+import cn.pomit.springwork.netty.Entity.SysMail;
 import cn.pomit.springwork.netty.Entity.UserMail;
 import cn.pomit.springwork.netty.GoShopping.Shopping;
 import cn.pomit.springwork.netty.Login.LoginUtil;
+import cn.pomit.springwork.netty.PK.PkGongji;
 import cn.pomit.springwork.netty.ReviceMail.Mail;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.mapper.ShopMapper;
+import cn.pomit.springwork.netty.mapper.SysmailMapper;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import io.netty.channel.Channel;
@@ -112,9 +115,24 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             }
         }else if("sendmail".equals(body)){
             System.out.println("邮件正在发送");
+            //发送个人邮件
             UserMail userMail=new UserMail();
             new Mail().revicepersonMail(user,userMail);
-            ctx.channel().writeAndFlush("邮件发送完成\n");
+            //发送系统邮件
+            SysMail sysMail=new SysMail();
+            new Mail().SystemMail(user,sysMail);
+            //查询sysMial邮件title
+            SysmailMapper sysmailMapper=SpringUtil.getBean(SysmailMapper.class);
+            List<SysMail> sysMails = sysmailMapper.selectAll();
+            ctx.channel().writeAndFlush("邮件发送完成\n"+
+                    "系统邮件标题："+sysMails.get(0).getTitle()+",邮件内容:"+sysMails.get(0).getContect()+"\n"+
+            "系统邮件标题："+sysMails.get(1).getTitle()+ ",系统邮件内容:"+sysMails.get(1).getContect()+"\n");
+            return;
+        }else if("pk".equals(body)){
+            User user1=new User();
+            User user2=new User();
+            new PkGongji().pk(user1,user2);
+            ctx.channel().writeAndFlush("玩家詹姆斯胜利\n");
             return;
         }
         else{
