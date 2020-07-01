@@ -1,6 +1,7 @@
 package cn.pomit.springwork.netty.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
 与玩家关联的朋友
@@ -10,6 +11,7 @@ public class Friends {
     @Id
     private  Long fid;
     private String name;
+
 
     public Long getFid() {
         return fid;
@@ -26,7 +28,6 @@ public class Friends {
     public void setName(String name) {
         this.name = name;
     }
-
 
     @Override
     public String toString() {

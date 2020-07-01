@@ -15,7 +15,6 @@ public class Shopping {
     private static Bag bag=new Bag();
     public void shopping(User user) throws Exception {
         //查询商品物品
-        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         ShopMapper shopMapper= SpringUtil.getBean(ShopMapper.class);
         List<Shop> shops = shopMapper.selectAll();
         //查询用户拥有金额
@@ -27,7 +26,6 @@ public class Shopping {
         //做物品数量判断，若一旦购买数量<=0直接输出，否则出现负数
         if(shops.get(0).getCount()<=0) {
             System.out.println("库存不足无法购买");
-            return;
         }else if(usermoney>productprice){
             //假设购买红药水
             Shop product= shopMapper.selectByPrimaryKey(1L);
@@ -62,12 +60,10 @@ public class Shopping {
             shopMapper.updateByPrimaryKeySelective(shop);
         }else{
             System.out.println("购买失败金额不足请充值");
-            return;
         }
     }
     public void shoppingagin(User user){
         //在一次购买更新count
-        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         BagMapper bagMapper= SpringUtil.getBean(BagMapper.class);
         List<Bag> bags =bagMapper.selectAll();
         Integer count = bags.get(3).getCount();

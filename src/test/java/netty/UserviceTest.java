@@ -3,9 +3,11 @@ package netty;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
+import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -15,8 +17,14 @@ public class UserviceTest {
         System.out.println(66666);
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserService userService= (UserService) ac.getBean("UserGuavaCache");
-        List<User> users = userService.queryAllUser();
-        System.out.println(users);
+        //UserMapper userMapper = ac.getBean(UserMapper.class);
+        //List<User> users = userService.queryAllUser();
+        //从数据库查询用户信息
+        //Example example=new Example(User.class);
+        //example.createCriteria().andEqualTo("name",username);
+        //List<User> users = userMapper.selectByExample(example);
+        //User user = userService.checkUserByUsername("wbl1");
+        //System.out.println("\n"+user );
     }
     /*
     @Test

@@ -40,13 +40,4 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
         // 关闭该Channel
         ctx.close();
     }
-    public static String read() throws Exception{
-        String str = "";
-        Scanner sc = new Scanner(System.in);
-        while (sc.hasNext()) {
-            str = sc.next();
-            break;
-        }
-        return str;
-    }
 }

@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 @Slf4j
 public class HelloClient {
-
     public static String host = "127.0.0.1";
     public static int port = 8099;
     public static void main(String[] args) throws InterruptedException, IOException {

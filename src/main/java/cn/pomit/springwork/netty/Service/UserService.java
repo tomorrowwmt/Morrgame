@@ -7,8 +7,18 @@ import java.util.List;
 /**
  */
 public interface UserService {
-
     /**
+     * 登录注册用户
+     * @return
+     */
+   void  registerAndLogin(String username, String password);
+    //ResultCode registerAndLogin(String username, String password);
+    /**
+     * 登录
+     * @return
+     */
+   void  login( String username, String password);
+    /*
      * 通过ID查询单条数据
      *
      * @param uid 主键

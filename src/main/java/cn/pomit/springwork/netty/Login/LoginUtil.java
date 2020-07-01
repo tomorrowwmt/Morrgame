@@ -5,24 +5,17 @@ import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import cn.pomit.springwork.netty.mapper.UserMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 @Component
 public class LoginUtil {
-    private IdWorker worker;
-   @Autowired
-    UserMapper userMapper;
+    private  static Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
     //定义idworker
     private static IdWorker WORKER=new IdWorker(1,1,1);
     public void  qiehuan(User user)throws Exception{
@@ -47,14 +40,12 @@ public class LoginUtil {
             }
         }
     }
-    public void login() throws Exception {
-        //利用guava工具进行缓存用户数据的操作
-        Cache<Object, Object> cache = CacheBuilder.newBuilder().build();
+    public void login(String username,String password) throws Exception {
+        UserService userService = SpringUtil.getBean(UserService.class);
+        userService.login(username,password);
         // 放入一个缓存
-        cache.put("username", "wbl1");
-        // 获取缓存
-        Object username = cache.getIfPresent("username");
-        System.out.println("\n"+username+"玩家登陆成功");
+        cache.put(username,username);
+        System.out.println(cache.getIfPresent(username)+"登陆成功");
     }
     public void aor(User user) throws Exception {
         System.out.println("打印实体");
@@ -62,22 +53,9 @@ public class LoginUtil {
         List<User> users = userService.queryAllUser();
         System.out.println(users);
     }
-    public void zhuce()throws Exception{
-        User user=new User();
-        UserMapper userMapper=SpringUtil.getBean(UserMapper.class);
-        while(true) {
-            String name=read();
-            if ("wbl1".equals(name)) {
-                System.out.println("用户已存在请换名字注册");
-            } else if ("wbl2".equals(name)) {
-                user.setUid(WORKER.nextId());
-                user.setUsername("wbl2");
-                user.setPassword("44444");
-                user.setHp(100);
-                int i = userMapper.insertSelective(user);
-                System.out.println("注册成功");
-            }
-        }
+    public void register(String username,String password){
+        UserService userService = SpringUtil.getBean(UserService.class);
+        userService.registerAndLogin(username,password);
     }
     public static String read() throws Exception{
         String str = "";
@@ -87,6 +65,11 @@ public class LoginUtil {
             break;
         }
         return str;
+    }
+    public static void main(String[] args) throws Exception {
+       // new LoginUtil().login("wbl1");
+        User user=new User();
+       //new LoginUtil().zhuce("wbl3");
     }
 
 }

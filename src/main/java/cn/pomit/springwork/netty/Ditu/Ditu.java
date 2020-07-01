@@ -9,8 +9,6 @@ public class Ditu {
     private Integer mid;
     //地图名称m
     private String mname;
-    //地图描述
-    private String mdesc;
     //临近的地图
     private String neighbor;
 
@@ -30,14 +28,6 @@ public class Ditu {
         this.mname = mname;
     }
 
-    public String getMdesc() {
-        return mdesc;
-    }
-
-    public void setMdesc(String mdesc) {
-        this.mdesc = mdesc;
-    }
-
     public String getNeighbor() {
         return neighbor;
     }
@@ -51,7 +41,6 @@ public class Ditu {
         return "Ditu{" +
                 "mid=" + mid +
                 ", mname='" + mname + '\'' +
-                ", mdesc='" + mdesc + '\'' +
                 ", neighbor='" + neighbor + '\'' +
                 '}';
     }

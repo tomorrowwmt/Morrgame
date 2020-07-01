@@ -7,9 +7,10 @@ import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.mapper.UserMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class Batter {
    public void attack(User user)throws Exception {
        Bag bag=new Bag();
