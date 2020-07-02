@@ -1,6 +1,7 @@
 package cn.pomit.springwork.netty.Service;
 
 import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.session.Session;
 
 import java.util.List;
 
@@ -11,13 +12,13 @@ public interface UserService {
      * 登录注册用户
      * @return
      */
-   void  registerAndLogin(String username, String password);
+   String register(String username, String password);
     //ResultCode registerAndLogin(String username, String password);
     /**
      * 登录
      * @return
      */
-   void  login( String username, String password);
+   String login(Session session, String username, String password);
     /*
      * 通过ID查询单条数据
      *

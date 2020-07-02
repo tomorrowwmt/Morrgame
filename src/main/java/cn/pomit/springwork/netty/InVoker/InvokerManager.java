@@ -1,5 +1,6 @@
-package cn.pomit.springwork.netty.Command;
+package cn.pomit.springwork.netty.InVoker;
 
+import cn.pomit.springwork.netty.InVoker.Invoker;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

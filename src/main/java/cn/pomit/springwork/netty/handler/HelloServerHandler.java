@@ -1,34 +1,24 @@
 package cn.pomit.springwork.netty.handler;
 import java.net.InetAddress;
 import java.util.List;
+import java.util.Map;
 
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.BossFuBen.FuBen;
-import cn.pomit.springwork.netty.Entity.Shop;
-import cn.pomit.springwork.netty.Entity.SysMail;
-import cn.pomit.springwork.netty.Entity.UserMail;
-import cn.pomit.springwork.netty.GoShopping.Shopping;
-import cn.pomit.springwork.netty.Login.LoginUtil;
-import cn.pomit.springwork.netty.PK.PkGongji;
-import cn.pomit.springwork.netty.ReviceMail.Mail;
+import cn.pomit.springwork.netty.Ditu.Ditu;
+import cn.pomit.springwork.netty.Npc.NPC;
+import cn.pomit.springwork.netty.Service.ScenceService;
 import cn.pomit.springwork.netty.Service.UserService;
 import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.mapper.ShopMapper;
-import cn.pomit.springwork.netty.mapper.SysmailMapper;
-import cn.pomit.springwork.netty.mapper.UserMapper;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import cn.pomit.springwork.netty.session.Session;
-import io.netty.channel.Channel;
 
+import cn.pomit.springwork.netty.session.SessionImpl;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -45,6 +35,7 @@ import org.springframework.stereotype.Service;
 //继承Netty提供的通道传入处理器类，只要复写方法就可以了，简化开发
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     private IdWorker worker;
+    private SessionImpl session;
     public static User user=new User();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     //public static ChannelGroup channel = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -55,37 +46,29 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
         String body= (String) msg;
         if("wbl1".equals(body)) {
-            LoginUtil loginUtil=SpringUtil.getBean(LoginUtil.class);
-            loginUtil.login("wbl1","12345");
-            ctx.channel().writeAndFlush("登录成功\n");
-            return;
-        }else if("aor".equals(body)){
-            LoginUtil loginUtil=SpringUtil.getBean(LoginUtil.class);
-             loginUtil.aor(user);
-            ctx.channel().writeAndFlush("打印成功\n");
-            return;
-        }else if("attack".equals(body)){
-           Batter batter=SpringUtil.getBean(Batter.class);
-            batter.attack(user);
-            //new Batter().attack(user);
-            //通知所有玩家
-            UserService userService = (UserService) SpringUtil.getBean("UserGuavaCache");
-            List<User> users = userService.queryAllUser();
-            ctx.channel().writeAndFlush(users+"\n"+"战斗完成，通知玩家怪兽死亡\n");
-            return;
-        }else if("qiehuan".equals(body)){
-            LoginUtil loginUtil=SpringUtil.getBean(LoginUtil.class);
-             loginUtil.qiehuan(user);
-            ctx.channel().writeAndFlush("场景切换完成并与npc谈话\n");
+            UserService userService=SpringUtil.getBean(UserService.class);
+            String user1 = userService.login(session, "wbl1", "12345");
+            ctx.channel().writeAndFlush(user1+"登录成功\n");
             return;
         }else if("zhuce".equals(body)){
-            LoginUtil loginUtil=SpringUtil.getBean(LoginUtil.class);
-            loginUtil.register("wbl3","12345");
-            ctx.channel().writeAndFlush("注册成功\n");
+            UserService userService = (UserService) SpringUtil.getBean(UserService.class);
+            String register= userService.register("wbl3", "12345");
+            ctx.channel().writeAndFlush(register+"注册\n");
             return;
-        }else if("fuben".equals(body)){
-           new FuBen().gongji(user);
-            ctx.channel().writeAndFlush("退出副本完成\n");
+        } else if("aoi".equals(body)){
+            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
+            Map scenceByRole = scenceService.getScenceByRole(user);
+            ctx.channel().writeAndFlush( scenceByRole +"\n");
+            return;
+        }else if("move".equals(body)){
+            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
+            String s = scenceService.moveScence(user);
+            ctx.channel().writeAndFlush( s +"\n");
+            return;
+        }else if("talk".equals(body)){
+            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
+            String talkNpc = scenceService.talkNpc(user);
+            ctx.channel().writeAndFlush( talkNpc +"\n");
             return;
         }
         else{

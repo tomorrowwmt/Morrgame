@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
 用户
@@ -22,6 +23,8 @@ public class User {
     private Long uid;
     private String username;
     private String password;
+    @Transient
+    private String manme;
     //当前生命值
     private Integer hp;
     //药水增加的hp或者mp
@@ -126,12 +129,21 @@ public class User {
         return atk;
     }
 
+    public String getManme() {
+        return manme;
+    }
+
+    public void setManme(String manme) {
+        this.manme = manme;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "uid=" + uid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", manme='起始之地"  + '\'' +
                 ", hp=" + hp +
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +

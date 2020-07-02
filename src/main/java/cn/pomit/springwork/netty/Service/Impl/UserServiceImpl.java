@@ -10,7 +10,6 @@ import cn.pomit.springwork.netty.session.Session;
 import cn.pomit.springwork.netty.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,46 +27,44 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserService userService;
     @Override
-    public void registerAndLogin(String username, String password) {
+    public String register(String username, String password) {
         //检测名字
         User existuser=userMapper.finduserByname(username);
         //玩家名被占用
         while(true){
             if(existuser!=null){
-                System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
-                break;
+                //System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
+                return "用户已存在"+existuser;
             }else {//否则创建账号
                 User user = new User();
                 user.setUid(WORKER.nextId());
                 user.setUsername(username);
                 user.setPassword(password);
                 int i = userMapper.insertSelective(user);
-                //顺便登陆
-                login(username, password);
                 break;
             }
         }
+        return username;
     }
 
     @Override
-    public void  login(String username, String password) {
-        //判断当前会话是否已经登陆了
-        //if(session.getAttachment()!=null){
-           // throw  new ErrorCodeException(ResultCode.HAS_LOGIN);
-        //}
-        //玩家账号不存在问题
-        User user=userMapper.finduserByname(username);
-        if(user==null){
-            throw  new ErrorCodeException(ResultCode.PLAYER_NO_EXIST);
+    public String login(Session session , String username, String password) {
+            //判断玩家账号不存在问题
+            User user = userMapper.finduserByname(username);
+            if (user == null) {
+                throw new ErrorCodeException(ResultCode.PLAYER_NO_EXIST);
+            }else if(user.getUsername()!=null){
+                System.out.println("登录完成"+ResultCode.SUCCESS);
+            }
+            //判断玩家是否在其他地方登陆过
+            boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());
+            if (onlineUser) {
+                Session oldSession = SessionManager.removeSession(user.getUid());
+                //踢下线
+                oldSession.close();
+            }
+            return user.getUsername();
         }
-        //判断玩家是否在其他地方登陆过
-        boolean onlineUser= SessionManager.isOnlinePlayer(user.getUid());
-        if(onlineUser){
-            Session oldSession= SessionManager.removeSession(user.getUid());
-            //踢下线
-            oldSession.close();
-        }
-    }
 
     @Override
     @Cacheable(value = "userCache",key="#uid")

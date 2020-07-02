@@ -61,4 +61,8 @@ public interface ResultCode {
 	 * 请先登录
 	 */
 	int LOGIN_PLEASE = 11;
+	//移动成功
+	int MOVE_SUCESS=12;
+	//移动失败
+	int MOVE_FAIL=13;
 }

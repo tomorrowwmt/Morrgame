@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.Command;
+package cn.pomit.springwork.netty.InVoker;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

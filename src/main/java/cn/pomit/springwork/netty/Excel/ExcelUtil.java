@@ -104,14 +104,14 @@ public class ExcelUtil {
     }
     public static void main(String[] args) {
         //String filePath = "src\\main\\resources\\Excel\\Ditu.xlsx";
-       String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
-        String[] keys = new String[]{"mid","name","neighbor"};
+        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
+        String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
         List<Map<String, Object>> impList;
         try {
             impList = ExcelUtil.imp(filepath,keys);
             for (Map<String, Object> map : impList) {
-                System.out.println(map.get("name"));
-                //System.out.println(map.get("neighbor"));
+                //System.out.println(map.get("name"));
+                System.out.println(map.get("neighbor"));
             }
         } catch (Exception e) {
             e.printStackTrace();

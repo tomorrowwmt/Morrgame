@@ -1,10 +1,14 @@
 package cn.pomit.springwork.netty.handler;
+import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.Service.ScenceService;
 import cn.pomit.springwork.netty.Service.UserService;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Scanner;
 
 @Slf4j
@@ -12,6 +16,7 @@ import java.util.Scanner;
 public class HelloClientHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private UserService userService;
+    public static User user=new User();
     @Override
     public  void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Server say : " + msg);
@@ -39,5 +44,14 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
 
         // 关闭该Channel
         ctx.close();
+    }
+    public static String read() throws Exception{
+        String str = "";
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            str = sc.next();
+            break;
+        }
+        return str;
     }
 }
