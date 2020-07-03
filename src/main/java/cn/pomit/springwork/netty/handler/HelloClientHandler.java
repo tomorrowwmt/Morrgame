@@ -25,6 +25,8 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
         }
         //收到数据
         String data = (String) msg;
+        if(data.contains("wbl1")){
+        }
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

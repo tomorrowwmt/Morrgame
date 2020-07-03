@@ -5,7 +5,12 @@ import java.util.Map;
 
 import cn.pomit.springwork.netty.Attack.Batter;
 import cn.pomit.springwork.netty.BossFuBen.FuBen;
+import cn.pomit.springwork.netty.Command.MapReplace;
+import cn.pomit.springwork.netty.DTO.ResultCode;
 import cn.pomit.springwork.netty.Ditu.Ditu;
+import cn.pomit.springwork.netty.InVoker.Invoker;
+import cn.pomit.springwork.netty.InVoker.InvokerManager;
+import cn.pomit.springwork.netty.Module.Module;
 import cn.pomit.springwork.netty.Npc.NPC;
 import cn.pomit.springwork.netty.Service.ScenceService;
 import cn.pomit.springwork.netty.Service.UserService;
@@ -13,11 +18,14 @@ import cn.pomit.springwork.netty.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 
+import cn.pomit.springwork.netty.request.Request;
+import cn.pomit.springwork.netty.request.Response;
 import cn.pomit.springwork.netty.session.SessionImpl;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -39,26 +47,25 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public static User user=new User();
     //获取现有通道，一个通道channel就是一个socket链接在这里
     //public static ChannelGroup channel = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
         String body= (String) msg;
-        if("wbl1".equals(body)) {
+        if("login".equals(body)) {
             UserService userService=SpringUtil.getBean(UserService.class);
-            String user1 = userService.login(session, "wbl1", "12345");
-            ctx.channel().writeAndFlush(user1+"登录成功\n");
+           String user1 = userService.login(session, "wbl1", "12345");
+            ctx.channel().writeAndFlush(user1+"登录成功,有以下操作1.aoi 2.move 3.talk 4.attack 5.bag\"\n");
             return;
         }else if("zhuce".equals(body)){
             UserService userService = (UserService) SpringUtil.getBean(UserService.class);
             String register= userService.register("wbl3", "12345");
             ctx.channel().writeAndFlush(register+"注册\n");
             return;
-        } else if("aoi".equals(body)){
-            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
+        } else if(body.contains("aoi")) {
+            ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
             Map scenceByRole = scenceService.getScenceByRole(user);
-            ctx.channel().writeAndFlush( scenceByRole +"\n");
+            ctx.channel().writeAndFlush(scenceByRole + "\n");
             return;
         }else if("move".equals(body)){
             ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
@@ -72,15 +79,39 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         else{
-            ctx.channel().writeAndFlush("非法操作请输入登陆指令");
+           ctx.channel().writeAndFlush("非法操作请输入登陆指令");
         }
         // 返回客户端消息 - 我已经接收到了你的消息
         ctx.writeAndFlush("------Received your message !\n");
     }
-
     /*
-    消息处理
-     */
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
+        handlerMessage(new SessionImpl(ctx.channel()), request);
+        ctx.channel().writeAndFlush(request);
+    }
+    private void handlerMessage(SessionImpl session, Request request) {
+        Response response = new Response(request);
+        System.out.println("module:" + request.getModule() + "   " + "cmd：" + request.getCommand());
+        Invoker invoker = InvokerManager.getInvoker(request.getModule(),request.getCommand());
+        if(invoker!=null){
+            try{
+                ResultCode result=null;
+                if(request.getModule()== Module.Auth){
+                    result= (ResultCode) invoker.invoke(session,request.getData());
+                }else{
+                    Object attachment = session.getAttachment();
+                    User user= (User) attachment;
+                    result= (ResultCode) invoker.invoke(user.getUid(),request.getData());
+                }
+                session.write(response);
+                return;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    */
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

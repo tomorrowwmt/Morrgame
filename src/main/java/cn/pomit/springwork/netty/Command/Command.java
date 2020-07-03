@@ -9,4 +9,5 @@ public interface Command {
     String AOR="aor";
     String TALK="talk";
     String ATTACK="attck";
+
 }

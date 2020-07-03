@@ -2,8 +2,8 @@ package cn.pomit.springwork.netty.handler;
 
 import cn.pomit.springwork.netty.InVoker.Invoker;
 import cn.pomit.springwork.netty.InVoker.InvokerManager;
-import cn.pomit.springwork.netty.Module.SoCommand;
-import cn.pomit.springwork.netty.Module.SoModule;
+import cn.pomit.springwork.netty.annotation.SoCommand;
+import cn.pomit.springwork.netty.annotation.SoModule;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -41,6 +41,7 @@ public class HandlerScanner implements BeanPostProcessor {
                         final String cmd = hutuCommand.command();
                         if(InvokerManager.getInvoker(module, cmd) == null){
                             InvokerManager.addInvoker(module, cmd, Invoker.valueOf(method, bean));
+                            System.out.println(cmd);
                         }else{
                             System.out.println("重复命令"+cmd);
                         }

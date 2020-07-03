@@ -51,9 +51,9 @@ public class ScenceServiceImpl implements ScenceService {
         String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
         List<Map<String, Object>> impList = ExcelUtil.imp(filepath,keys);
             for (Map<String, Object> map : impList) {
-                System.out.println("\n"+username+"移动<"+ map.get("neighbor")+">");
+               return username+"移动<"+ map.get("neighbor")+">"+"\n"+"移动完成";
             }
-       return "移动成功"+ResultCode.MOVE_SUCESS;
+       return "移动成功";
     }
 
     @Override
@@ -61,13 +61,6 @@ public class ScenceServiceImpl implements ScenceService {
         UserService userService= SpringUtil.getBean(UserService.class);
         String username = userService.queryById(1L).getUsername();
         NPC npc=new NPC();
-        return (username+"玩家talk<"+npc.getTalk()+">");
-    }
-
-    public static void main(String[] args) throws Exception {
-        User user=new User();
-        Monster monster=new Monster();
-        //new ScenceServiceImpl().getMonster(monster);
-        new ScenceServiceImpl().moveScence(user);
+        return (username+"玩家talk<"+npc.getTalk()+">"+"\n"+"谈话完成");
     }
 }

@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.Module;
+package cn.pomit.springwork.netty.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

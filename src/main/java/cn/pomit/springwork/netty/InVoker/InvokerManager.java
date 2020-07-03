@@ -16,16 +16,16 @@ public class InvokerManager {
     /**
      * 添加命令调用
      * @param module
-     * @param cmd
      * @param invoker
      */
-    public static void addInvoker(int module, String cmd, Invoker invoker){
+    public static void addInvoker(int module, String command, Invoker invoker){
         Map<String, Invoker> map = invokers.get(module);
         if(map == null){
             map = new HashMap<>();
             invokers.put(module, map);
         }
-        map.put(cmd,invoker);
+        System.out.println(command);
+        map.put(command,invoker);
     }
 
 

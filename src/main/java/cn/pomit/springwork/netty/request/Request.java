@@ -1,4 +1,4 @@
-package cn.pomit.springwork.netty.DTO;
+package cn.pomit.springwork.netty.request;
 
 public class Request {
     /**
@@ -9,7 +9,7 @@ public class Request {
     /**
      * 命令号
      */
-    private String cmd;
+    private String command;
 
     /**
      * 目标
@@ -24,12 +24,12 @@ public class Request {
         this.module = module;
     }
 
-    public String getCmd() {
-        return cmd;
+    public String getCommand() {
+        return command;
     }
 
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public String getData() {
@@ -43,13 +43,12 @@ public class Request {
     /**
      * 获得实体对象
      * @param module
-     * @param cmd
      * @param data
      * @return
      */
-    public static Request getRequestDTO(Integer module, String cmd, String data){
+    public static Request getRequestDTO(Integer module, String command, String data){
         Request requestDTO = new Request();
-        requestDTO.setCmd(cmd);
+        requestDTO.setCommand(command);
         requestDTO.setData(data);
         requestDTO.setModule(module);
         return requestDTO;

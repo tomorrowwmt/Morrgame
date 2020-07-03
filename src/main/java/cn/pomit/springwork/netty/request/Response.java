@@ -1,4 +1,8 @@
-package cn.pomit.springwork.netty.DTO;
+package cn.pomit.springwork.netty.request;
+
+import cn.pomit.springwork.netty.DTO.ResultCode;
+import cn.pomit.springwork.netty.request.Request;
+
 /**
  * 回复消息
  *
@@ -30,7 +34,7 @@ public class Response {
 	
 	public Response(Request message) {
 		this.module = message.getModule();
-		this.cmd = message.getCmd();
+		this.cmd = message.getCommand();
 	}
 	
 	public Response(Integer module, String cmd, String data){
