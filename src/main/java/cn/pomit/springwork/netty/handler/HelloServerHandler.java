@@ -51,29 +51,26 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
+        UserService userService=SpringUtil.getBean(UserService.class);
+        ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
         String body= (String) msg;
         if("login".equals(body)) {
-            UserService userService=SpringUtil.getBean(UserService.class);
            String user1 = userService.login(session, "wbl1", "12345");
             ctx.channel().writeAndFlush(user1+"登录成功,有以下操作1.aoi 2.move 3.talk 4.attack 5.bag\"\n");
             return;
         }else if("zhuce".equals(body)){
-            UserService userService = (UserService) SpringUtil.getBean(UserService.class);
             String register= userService.register("wbl3", "12345");
             ctx.channel().writeAndFlush(register+"注册\n");
             return;
         } else if(body.contains("aoi")) {
-            ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
             Map scenceByRole = scenceService.getScenceByRole(user);
             ctx.channel().writeAndFlush(scenceByRole + "\n");
             return;
         }else if("move".equals(body)){
-            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
             String s = scenceService.moveScence(user);
             ctx.channel().writeAndFlush( s +"\n");
             return;
         }else if("talk".equals(body)){
-            ScenceService scenceService=SpringUtil.getBean(ScenceService.class);
             String talkNpc = scenceService.talkNpc(user);
             ctx.channel().writeAndFlush( talkNpc +"\n");
             return;
