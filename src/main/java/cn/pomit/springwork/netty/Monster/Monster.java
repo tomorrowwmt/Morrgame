@@ -1,7 +1,7 @@
 package cn.pomit.springwork.netty.Monster;
 
 
-import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.User.Entity.User;
 
 import javax.sql.rowset.BaseRowSet;
 

@@ -1,12 +1,9 @@
 package cn.pomit.springwork.netty.Attack;
-import cn.pomit.springwork.netty.Entity.Bag;
-import cn.pomit.springwork.netty.Excel.ExcelReader;
+import cn.pomit.springwork.netty.Bag.Entity.Bag;
+import cn.pomit.springwork.netty.Mapper.UserMapper;
 import cn.pomit.springwork.netty.Monster.Monster;
-import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import cn.pomit.springwork.netty.mapper.UserMapper;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +11,6 @@ import java.util.List;
 public class Batter {
    public void attack(User user)throws Exception {
        Bag bag=new Bag();
-       ExcelReader excelReader = new ExcelReader();
        Monster mas=new Monster();
        user.setUsername("wbl1");
        user.setHp(200);

@@ -1,7 +1,7 @@
 package cn.pomit.springwork.netty.PK;
 
 import cn.pomit.springwork.netty.BossFuBen.CountDown;
-import cn.pomit.springwork.netty.Entity.User;
+import cn.pomit.springwork.netty.User.Entity.User;
 
 public class PkGongji {
     //设定最大倒计时10s

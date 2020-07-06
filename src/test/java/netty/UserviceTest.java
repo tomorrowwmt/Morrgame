@@ -1,15 +1,9 @@
 package netty;
 
-import cn.pomit.springwork.netty.Service.UserService;
-import cn.pomit.springwork.netty.Entity.User;
-import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.mapper.UserMapper;
+import cn.pomit.springwork.netty.User.Service.UserService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import tk.mybatis.mapper.entity.Example;
-
-import java.util.List;
 
 public class UserviceTest {
     @Test

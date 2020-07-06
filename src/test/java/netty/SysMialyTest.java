@@ -1,9 +1,7 @@
 package netty;
 
-import cn.pomit.springwork.netty.Entity.SysMail;
-import cn.pomit.springwork.netty.Entity.UserMail;
-import cn.pomit.springwork.netty.mapper.SysmailMapper;
-import cn.pomit.springwork.netty.mapper.UsermailMapper;
+import cn.pomit.springwork.netty.EMail.SysMail;
+import cn.pomit.springwork.netty.EMail.Mapper.SysmailMapper;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

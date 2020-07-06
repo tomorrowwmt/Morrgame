@@ -1,7 +1,6 @@
 package cn.pomit.springwork.netty.Monster;
 
-import cn.pomit.springwork.netty.Entity.User;
-import lombok.Data;
+import cn.pomit.springwork.netty.User.Entity.User;
 
 public class Boss {
     //id

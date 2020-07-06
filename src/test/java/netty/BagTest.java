@@ -1,9 +1,8 @@
 package netty;
 
-import cn.pomit.springwork.netty.Entity.Bag;
+import cn.pomit.springwork.netty.Bag.Entity.Bag;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import cn.pomit.springwork.netty.mapper.BagMapper;
+import cn.pomit.springwork.netty.Mapper.BagMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

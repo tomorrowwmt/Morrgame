@@ -1,7 +1,7 @@
 package netty;
 
-import cn.pomit.springwork.netty.Entity.Shop;
-import cn.pomit.springwork.netty.mapper.ShopMapper;
+import cn.pomit.springwork.netty.Shopping.Entity.Shop;
+import cn.pomit.springwork.netty.Mapper.ShopMapper;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

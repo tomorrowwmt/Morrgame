@@ -1,8 +1,8 @@
 package netty;
 
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.Entity.Equipment;
-import cn.pomit.springwork.netty.mapper.EquipMapper;
+import cn.pomit.springwork.netty.Equip.Equipment;
+import cn.pomit.springwork.netty.Mapper.EquipMapper;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

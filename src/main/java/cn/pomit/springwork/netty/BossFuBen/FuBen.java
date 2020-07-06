@@ -1,13 +1,10 @@
 package cn.pomit.springwork.netty.BossFuBen;
 
-import cn.pomit.springwork.netty.Excel.ExcelReader;
 import cn.pomit.springwork.netty.Monster.Boss;
-import cn.pomit.springwork.netty.Entity.User;
-import cn.pomit.springwork.netty.Service.UserService;
+import cn.pomit.springwork.netty.User.Entity.User;
+import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import cn.pomit.springwork.netty.mapper.UserMapper;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.alibaba.excel.ExcelReader;
 
 import java.util.*;
 
@@ -71,10 +68,6 @@ public class FuBen {
     }
     //回收场景
     public void huishou(User user) throws Exception {
-        ExcelReader excelReader = new ExcelReader();
-        List<List<String>> ditu= excelReader.readXlsx("src\\main\\resources\\Excel\\Ditu.xlsx");
-        String map= ditu.get(0).get(3);
-        map=null;
         System.out.println("回收场景完成");
     }
 }
