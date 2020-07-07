@@ -7,25 +7,24 @@ import cn.pomit.springwork.netty.Monster.Service.BitUserService;
 import cn.pomit.springwork.netty.Skills.Enum.SkillType;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Monster.Monster;
+import cn.pomit.springwork.netty.User.Service.BagService;
+import cn.pomit.springwork.netty.User.Service.EquipService;
 import cn.pomit.springwork.netty.User.Service.HurtService;
 import cn.pomit.springwork.netty.Skills.Entity.Skill;
+import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class HurtServiceImpl implements HurtService {
-    @Autowired
-    private  HurtService hurtService;
     @Override
     //普攻
     public void  bit(User user,Monster mas) {
         Skill skill=new Skill();
         skill.cd=1;
         skill.mp=30;
-        mas.setHp(mas.getHp()-10);
+        mas.setHp((int) (mas.getHp()-Math.random()*10));
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
@@ -45,11 +44,32 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
+    public void bitmas(User user, Monster mas) {
+        Skill skill=new Skill();
+        skill.cd=1;
+        skill.mp=30;
+        mas.setHp((int) (mas.getHp()-Math.random()*20));
+        if(mas.getHp()<=0){
+            mas.setHp(0);
+        }
+        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ SkillType.Common1.getName()
+                +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
+        System.out.println("CD恢复");
+        skill.setMp(skill.getMp()-5);
+        if(skill.getMp()<=0){
+            System.out.println("mp值过低无法使用技能");
+        }else{
+            System.out.println("mp等待1s自动恢复");
+            System.out.println("mp恢复成功");
+        }
+    }
+
+    @Override
     public void MagicAttack( User user,Monster mas) {
         Skill skill=new Skill();
         skill.cd=3;
         skill.mp=30;
-        mas.setHp(mas.getHp()-30);
+        mas.setHp((mas.getHp()-30));
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
@@ -64,9 +84,7 @@ public class HurtServiceImpl implements HurtService {
             System.out.println("mp值过低无法使用技能");
         }else{
             System.out.println("mp等待1s自动恢复");
-            System.out.println("=============");
             System.out.println("mp恢复成功");
-            System.out.println("=============");
         }
     }
     //使用药水恢复hp或者mp
@@ -75,7 +93,9 @@ public class HurtServiceImpl implements HurtService {
     public void drug(User user){
         //设计0.15倍数
         int hp=user.getHp();
-        int yaoshui=user.getYaoshui();
+        //先去查询缓存玩家目前拥有药水的数量
+        UserService userService=SpringUtil.getBean(UserService.class);
+        Integer yaoshui = userService.queryAllUser().get(0).getYaoshui();
         yaoshui= (int) Math.round(hp*0.15);
         hp=hp+yaoshui;
         System.out.println("["+user.getUsername()+"使用背包中的物品"+ BagType.Yaoshui.getName() +",增加了血量hp="+yaoshui+"的血量!]");
@@ -83,50 +103,55 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public String batter(User user) throws Exception {
+    public String batter(User user,Monster mas, Bag bag) throws Exception {
         BitUserService bitUserService = SpringUtil.getBean(BitUserService.class);
+        BagService bagService=SpringUtil.getBean(BagService.class);
+        EquipService equipService=SpringUtil.getBean(EquipService.class);
+        UserService userService = SpringUtil.getBean(UserService.class);
         String result=null;
-        Bag bag=new Bag();
-        Monster mas=new Monster();
         user.setUsername("wbl1");
-        user.setHp(200);
+        user.setHp(500);
         user.exp=0;
         user.levelExp=20;
         user.setAtk(70);
         mas.setName("雪域魔王");
-        mas.setHp(300);
+        mas.setHp(500);
         mas.sendExp=30;
         while(user.getHp()>0 && mas.getHp()>0){
+            //一刀普攻
             bit(user,mas);
+            //二刀普攻
+            bitmas(user,mas);
             //穿装备
-            //user.wearEquip(4);
-            //触发必杀技能
-            //user.MagicAttack(mas);
-           // MagicAttack(user,mas);
+            equipService.wearEquip(user,4L);
+           MagicAttack(user,mas);
             if(mas.getHp()<=0){
-                System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"胜利");
-                result=mas.Live="怪兽死亡"+user.getUsername()+"胜利";
+                System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
+                //缓存查出场景内玩家
+                List<User> users = userService.queryAllUser();
+                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+"通知玩家在场景怪兽死亡了"+users+
+                        "\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
                 //设计怪兽死亡后，送出相应的经验值
                 user.exp+=mas.sendExp;
                 //设计死亡后看下经验时候足够升级
                 checkUpgrade(user);
             }
             bitUserService.bit(mas,user);
-           //mas.bit(user);
             //做一个设计当hp<100时；利用药水恢复hp
             if(user.getHp()>0){
-                if(user.getHp()<=150){
-                    user.drug(user);
+                if(user.getHp()<=100){
+                    drug(user);
                     //吃药后药水减1
-                    bag.useconsumable(bag);
+                    bagService.useconsumable(user,bag);
                     //可以继续叠加药水
-                    bag.diejia(bag);
+                    bagService.diejia(user,bag);
                 }
-            }else{
+            }else {
                 break;
             }
             if(user.getHp()<=0){
                 System.out.println("玩家死亡"+mas.getName()+"胜利");
+                return result="玩家死亡"+mas.getName()+"胜利";
             }
         }
         return result;
@@ -139,7 +164,8 @@ public class HurtServiceImpl implements HurtService {
         }
     }
     //升级的方法
-    public void upgrade(User user) {
+    public String upgrade(User user) {
+        String ret=null;
         //升级之后，将所有属性则增加
         System.out.println("终于打赢要升级啦");
         //先查询玩家当前级别
@@ -159,6 +185,7 @@ public class HurtServiceImpl implements HurtService {
         user.setLevelExp(levelExp);
         int update = userMapper.updateByPrimaryKeySelective(user);
         System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
+        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp;
     }
 
 }

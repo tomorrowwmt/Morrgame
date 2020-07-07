@@ -6,7 +6,8 @@ public enum SkillType {
     bisha表示必杀攻击
      */
     Common("末日风暴",1),
-    Bisha("屠龙大刀", 2);
+    Common1("唤雷术",2),
+    Bisha("屠龙大刀", 3);
     // 成员变量
     private String name;
     private int index;

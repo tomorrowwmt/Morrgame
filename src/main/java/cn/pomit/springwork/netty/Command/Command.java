@@ -1,13 +1,16 @@
 package cn.pomit.springwork.netty.Command;
+
+import cn.pomit.springwork.netty.User.Entity.User;
+
 /*
 指令操作
  */
 public interface Command {
-    public String handle(String content) throws Exception;
+  String handle(User user,String content) throws Exception;
     String  LOGIN="login";
     String ZHUCE="zhuce";
     String MOVE="move";
-    String AOR="aor";
+    String AOi="aoi";
     String TALK="talk";
     String ATTACK="attck";
 

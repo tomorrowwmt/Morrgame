@@ -27,7 +27,7 @@ public interface UserService {
      */
    User queryById(Long uid);
    //通过玩家名字查询
-   User FindUserByName(String username);
+   User findUserByName(String username);
     /**
      * 查询多条数据
      *

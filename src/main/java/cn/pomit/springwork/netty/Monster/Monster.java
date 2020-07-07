@@ -69,21 +69,4 @@ public class Monster extends BaseRowSet {
                 ", sendExp=" + sendExp +
                 '}';
     }
-
-    public void bit(User u){
-        //做一个伤害
-        int injury = (int)(Math.random()*10);
-        //获取用户的血量
-        int hp = u.getHp();
-        hp -= injury;
-        //血量为0时
-        if(hp>=0) {
-            u.setHp(hp);
-        }else {
-            u.setHp(0);
-        }
-       //u.setHp((u.getHp()-1));
-        System.out.println(u.getUsername()+"被"+name+"进行攻击,剩余血量是"+u.getHp());
-        System.out.println("=========================");
-    }
 }

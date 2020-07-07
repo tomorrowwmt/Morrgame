@@ -7,16 +7,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 @Component
-public class Aoi implements  Command{
+public class Move  implements  Command{
     @Override
     public String handle(User user,String content) throws Exception {
         if(content==null){
-            return  content;
+            return null;
         }
-        ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
-        String scenceByRole = scenceService.getScenceByRole(user);
-        return scenceByRole;
+        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+       // ScenceService scenceService = ac.getBean(ScenceService.class);
+       ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
+        String moveScence = scenceService.moveScence(user);
+        System.out.println(moveScence);
+        return moveScence;
     }
+
 }

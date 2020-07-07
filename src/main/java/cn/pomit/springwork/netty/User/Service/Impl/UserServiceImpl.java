@@ -27,12 +27,11 @@ public class UserServiceImpl implements UserService {
     UserService userService;
     @Override
     public String register(String username, String password) {
-        //查询缓存检测名字
-        User existuser=userService.FindUserByName(username);
+        //检测名字;
+        User existuser= userMapper.findUserByName(username);
         //玩家名被占用
-        while(true){
             if(existuser!=null){
-                //System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
+                System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
                 return "用户已存在"+existuser;
             }else {//否则创建账号
                 User user = new User();
@@ -40,16 +39,14 @@ public class UserServiceImpl implements UserService {
                 user.setUsername(username);
                 user.setPassword(password);
                 int i = userMapper.insertSelective(user);
-                break;
             }
-        }
         return username;
     }
 
     @Override
     public String login(Session session , String username, String password) {
             //从缓存判断玩家账号不存在问题
-            User user = userService.FindUserByName(username);
+            User user = userService.findUserByName(username);
             if (user == null) {
                return "账号不存在"+ResultCode.PLAYER_NO_EXIST;
             }else if(user.getUsername()!=null){
@@ -70,10 +67,10 @@ public class UserServiceImpl implements UserService {
     public User queryById(Long uid) {
         return userMapper.selectByPrimaryKey(uid);
     }
-    @Cacheable(value = "userCache",key="#username")
     @Override
-    public User FindUserByName(String username) {
-        return userMapper.FindUserByName(username);
+    @Cacheable(value = "userCache",key="#username")
+    public User findUserByName(String username) {
+        return userMapper.findUserByName(username);
     }
     @Override
     @Cacheable(value = "userCache")

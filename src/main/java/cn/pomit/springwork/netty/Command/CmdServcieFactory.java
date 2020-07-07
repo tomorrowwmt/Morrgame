@@ -9,8 +9,11 @@ public class CmdServcieFactory {
     static Map<String, Command> operates = new HashMap<String, Command>();
     static {
         operates.put("aoi",new Aoi());
+        operates.put("move",new Move());
+        operates.put("attack",new Attack());
     }
-    public static  Command getCommandSevice(String  operateType){
+    public static  Command getCommandSevice(String  operateType)
+    {
         return  operates.get(operateType);
     }
 }
