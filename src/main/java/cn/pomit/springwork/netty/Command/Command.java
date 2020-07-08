@@ -12,6 +12,6 @@ public interface Command {
     String MOVE="move";
     String AOi="aoi";
     String TALK="talk";
-    String ATTACK="attck";
+    String ATTACK="attack";
 
 }

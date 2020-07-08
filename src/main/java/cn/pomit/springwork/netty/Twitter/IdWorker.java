@@ -3,7 +3,6 @@ package cn.pomit.springwork.netty.Twitter;
  */
 
 public class IdWorker{
-
     //工作id
     private long workerId;
     //数据id

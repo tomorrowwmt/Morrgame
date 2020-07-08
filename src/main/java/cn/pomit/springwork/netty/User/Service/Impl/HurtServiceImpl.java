@@ -104,10 +104,12 @@ public class HurtServiceImpl implements HurtService {
 
     @Override
     public String batter(User user,Monster mas, Bag bag) throws Exception {
+        //拿到相关bean
         BitUserService bitUserService = SpringUtil.getBean(BitUserService.class);
         BagService bagService=SpringUtil.getBean(BagService.class);
         EquipService equipService=SpringUtil.getBean(EquipService.class);
         UserService userService = SpringUtil.getBean(UserService.class);
+        //result作为服务端返回客户端的变量
         String result=null;
         user.setUsername("wbl1");
         user.setHp(500);
@@ -123,7 +125,8 @@ public class HurtServiceImpl implements HurtService {
             //二刀普攻
             bitmas(user,mas);
             //穿装备
-            equipService.wearEquip(user,4L);
+            Long id = equipService.queryAllEquip().get(3).getId();
+            equipService.wearEquip(user,id);
            MagicAttack(user,mas);
             if(mas.getHp()<=0){
                 System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
@@ -179,7 +182,7 @@ public class HurtServiceImpl implements HurtService {
         exp += 30;
         levelExp += 50;
         //更新数据库
-        user.setUid(1L);
+        user.setUid(queryuser.get(0).getUid());
         user.setExp(exp);
         user.setLevel(level);
         user.setLevelExp(levelExp);

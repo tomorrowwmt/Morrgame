@@ -70,6 +70,8 @@
         <property name="cacheNames">
             <list>
                 <value>userCache</value>
+                <value>equipCache</value>
+                <value>bagCache</value>
             </list>
         </property>
     </bean>

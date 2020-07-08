@@ -33,8 +33,6 @@ public class ScenceServiceImpl implements ScenceService {
     @Override
     public String moveScence(User user) throws Exception {
         //先缓存拿到用户数据
-        //ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
-       // UserService userService = ac.getBean(UserService.class);
         UserService userService= SpringUtil.getBean(UserService.class);
         String username = userService.queryById(1L).getUsername();
         //地图信息

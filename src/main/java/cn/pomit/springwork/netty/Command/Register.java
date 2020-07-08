@@ -1,23 +1,23 @@
 package cn.pomit.springwork.netty.Command;
 
 import cn.pomit.springwork.netty.User.Entity.User;
-import cn.pomit.springwork.netty.User.Service.ScenceService;
+import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Move  implements  Command{
+public class Register implements  Command {
     @Override
     public String handle(User user,String content) throws Exception {
         if(content==null){
-            return null;
+            return  content;
         }
-       ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
-        String moveScence = scenceService.moveScence(user);
-        System.out.println(moveScence);
-        return moveScence;
+        user.setUsername("wbl3");
+        user.setPassword("12345");
+        UserService userService=SpringUtil.getBean(UserService.class);
+        String register = userService.register(user.getUsername(), user.getPassword());
+        return register;
     }
-
 }
