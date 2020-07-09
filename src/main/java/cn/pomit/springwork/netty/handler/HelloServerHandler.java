@@ -42,7 +42,6 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     private SessionImpl session;
     public static User user=new User();
     public static Boss boss=new Boss();
-    public static  Monster monster=new Monster();
     public  static Bag bag=new Bag();
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -52,19 +51,19 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
-        if("wbl1".equals(body)) {
+        if("login".equals(body)) {
             Command command = CmdServcieFactory.getCommandSevice("login");
-            String user1= command.handle(user,"登录");
-            ctx.channel().writeAndFlush(user1+"登录成功有以下操作1.aoi 2.move 3.talk 4.attack\n");
-        } else if("wbl3".equals(body)){
+            String use= command.handle(user,"登录");
+            ctx.channel().writeAndFlush(use+"登录成功有以下操作1.aoi 2.move 3.talk 4.attack\n");
+        }else if("wbl3".equals(body)){
             Command cd = CmdServcieFactory.getCommandSevice("register");
             String register= cd.handle(user,"玩家注册");
             ctx.channel().writeAndFlush(register+"注册\n");
-        } else if("aoi".equals(body)){
+        }else  if("aoi".equals(body)){
             Command com = CmdServcieFactory.getCommandSevice("aoi");
             String  scenceByRole= com.handle(user, "打印实体");
             ctx.channel().writeAndFlush(scenceByRole + "\n");
-        } else if("move".equals(body)){
+        } else if("move<魔化之地>".equals(body)){
             Command command = CmdServcieFactory.getCommandSevice("move");
             String s = command.handle(user, "移动场景");
             ctx.channel().writeAndFlush( s +"\n");

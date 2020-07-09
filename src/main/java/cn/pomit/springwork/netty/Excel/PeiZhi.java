@@ -7,31 +7,40 @@ import java.util.List;
 import java.util.Map;
 @Component
 public class PeiZhi {
-    public static Map<String, Object> jiazai( ) throws Exception {
+   public static  Map<String, Object> immutableMap;
+    static {
+        try {
+            immutableMap = new ImmutableMap.Builder<String, Object>()
+                    .put("Ditu",ditu())
+                    .put("Monster",monster())
+                    .put("Skill",skill()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public  static String ditu() throws Exception {
         //地图
-       String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
-       String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
+        String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
+        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
         List<Map<String, Object>> maps = ExcelUtil.imp(filepath, keys);
-        //Monster
-        keys=new String[]{"id","name","hp"};
-        filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Monster.xlsx").getPath();
+        return maps.toString();
+    }
+    public  static String monster() throws Exception{
+       String[] keys=new String[]{"id","name","hp"};
+        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Monster.xlsx").getPath();
         List<Map<String, Object>> moster = ExcelUtil.imp(filepath, keys);
-        //SKill
-        keys=new String[]{"id","name","type","cd","mp"};
-        filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx").getPath();
-        List<Map<String, Object>> Skill= ExcelUtil.imp(filepath, keys);
-        //输出全部
-        //System.out.println("\n"+maps+"\n"+moster+"\n"+NPC+"\n"+Skill);
-        Map<String, Object> immutableMap= new ImmutableMap.Builder<String, Object>()
-                .put("Ditu",maps)
-                .put("Monster",moster)
-                .put("Skill",Skill).build();
-        return immutableMap;
+        return moster.toString();
+    }
+    public  static String skill() throws Exception{
+       String[] keys=new String[]{"id","name","type","cd","mp"};
+       String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx").getPath();
+        List<Map<String, Object>> skill = ExcelUtil.imp(filepath, keys);
+        return skill.toString();
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("============================");
-
+       System.out.println( immutableMap.get("Monster"));
+        System.out.println("------------");
     }
 
 }

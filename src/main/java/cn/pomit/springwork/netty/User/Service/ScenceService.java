@@ -1,5 +1,6 @@
 package cn.pomit.springwork.netty.User.Service;
 
+import cn.pomit.springwork.netty.Npc.NPC;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Monster.Monster;
 

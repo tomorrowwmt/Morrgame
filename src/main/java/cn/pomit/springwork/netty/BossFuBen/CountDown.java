@@ -2,13 +2,14 @@ package cn.pomit.springwork.netty.BossFuBen;
 /**
 
  */
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.TimeUnit;
 /**
  * Description: 倒计时实现方式1：使用ScheduledExecutor实现
  * 								使用两个线程；
  */
 import java.util.concurrent.*;
-
 public class CountDown {
     //记录倒计时时间
     private volatile int limitSec;
@@ -20,7 +21,7 @@ public class CountDown {
         this.curSec = limitSec;
         System.out.println("count down form " + limitSec);
         ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-        exec.scheduleAtFixedRate(new Task(), 0, 1, TimeUnit.SECONDS);
+        exec.scheduleAtFixedRate(new Task(), 1, 1, TimeUnit.SECONDS);
         TimeUnit.SECONDS.sleep(limitSec);
         exec.shutdownNow();
         System.out.println("Time out！");

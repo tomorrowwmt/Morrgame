@@ -23,7 +23,7 @@ public class HelloServer {
     public static void main(String[] args) throws Exception {
          ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
          //启动服务器直接加载所有配置资源
-        PeiZhi.jiazai();
+        //PeiZhi.jiazai();
          EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

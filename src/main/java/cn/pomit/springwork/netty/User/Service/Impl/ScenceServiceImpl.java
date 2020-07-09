@@ -13,30 +13,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class ScenceServiceImpl implements ScenceService {
     private ResultCode resultCode;
-
     @Override
     public String getScenceByRole(User user) throws Exception {
         //先查询当前场景用户,这里直接使用Uservice中缓存 @Cacheable(value = "userCache")查询
         UserService userService= SpringUtil.getBean(UserService.class);
         List<User> users = userService.queryAllUser();
-        //在调用配置类方法读取配置表加载当前怪兽数量，npc等等
-        Object ditu = PeiZhi.jiazai().get("Ditu");
-        Object monster = PeiZhi.jiazai().get("Monster");
-        System.out.println("\n"+users+ditu+""+""+monster);
-        return "当前场景玩家"+users+"\n"+"当前场景信息"+ditu+monster;
+        //在调用配置类方法读取配置表加载当前怪兽数量，npc等
+        String ditu = PeiZhi.ditu();
+        String mas=PeiZhi.monster();
+        NPC npc=new NPC("村花莉萌","大傻逼你来了");
+        System.out.println("\n"+users+ditu+""+""+mas+npc.getName());
+        return "当前场景玩家"+users+"\n"+"当前场景信息"+ditu+mas+"\n"+"当前场景npc:"+npc.getName();
     }
-
     @Override
     public String moveScence(User user) throws Exception {
         //先缓存拿到用户数据
         UserService userService= SpringUtil.getBean(UserService.class);
-        String username = userService.queryById(1L).getUsername();
+        Long uid = userService.queryAllUser().get(0).getUid();
+        String username = userService.queryById(uid).getUsername();
         //地图信息
-        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
+        String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx")).getPath();
         String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
         List<Map<String, Object>> impList = ExcelUtil.imp(filepath,keys);
             for (Map<String, Object> map : impList) {
@@ -48,7 +49,7 @@ public class ScenceServiceImpl implements ScenceService {
     @Override
     public String talkNpc(User user) throws Exception {
         UserService userService= SpringUtil.getBean(UserService.class);
-        String username = userService.queryById(1L).getUsername();
+        String username = userService.queryAllUser().get(0).getUsername();
         NPC npc=new NPC();
         return (username+"玩家talk<"+npc.getTalk()+">"+"\n"+"谈话完成");
     }

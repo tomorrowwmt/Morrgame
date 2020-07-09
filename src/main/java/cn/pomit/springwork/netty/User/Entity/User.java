@@ -13,7 +13,7 @@ public class User {
     private String username;
     private String password;
     @Transient
-    private String manme;
+    private String map;
     //当前生命值
     private Integer hp;
     //药水增加的hp或者mp
@@ -118,12 +118,12 @@ public class User {
         return atk;
     }
 
-    public String getManme() {
-        return manme;
+    public String getMap() {
+        return map;
     }
 
-    public void setManme(String manme) {
-        this.manme = manme;
+    public void setMap(String map) {
+        this.map = map;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class User {
                 "uid=" + uid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", manme='起始之地"  + '\'' +
+                ", map='起始之地"  + '\'' +
                 ", hp=" + hp +
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +

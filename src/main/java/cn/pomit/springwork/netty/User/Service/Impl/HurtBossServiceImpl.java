@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HurtBossServiceImpl implements HurtBossService {
+     // static CountDown countDown=new CountDown(10);
     @Override
     public void attackboss(User user, Boss boss) {
         Skill skill=new Skill();
@@ -46,10 +47,8 @@ public class HurtBossServiceImpl implements HurtBossService {
         }
         System.out.println(boss.getName()+"被"+user.getUsername()+"玩家用毒刀斩杀中毒"+"血量为"+boss.getHp());
     }
-
     @Override
     public String gongji(User user, Boss boss) throws Exception {
-        CountDown countDown=new CountDown(10);
         String res=null;
         BossService bossService=SpringUtil.getBean(BossService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
@@ -75,7 +74,8 @@ public class HurtBossServiceImpl implements HurtBossService {
             }
             hurtBossService.attackboss(user,boss);
             //使用毒刀装备
-            equipService.wearEquip(user,2L);
+            Long id = equipService.queryAllEquip().get(1).getId();
+            equipService.wearEquip(user,id);
             //用毒刀加大攻击
             hurtBossService.zhongdu(user,boss);
             if(boss.getHp()<=0){
@@ -93,12 +93,13 @@ public class HurtBossServiceImpl implements HurtBossService {
     }
 
     public void getmoney(User user){
-        //先查询金币金额
+        //先缓存查询金币金额
         UserService userService= SpringUtil.getBean(UserService.class);
-        Integer money = userService.queryById(1L).getMoney();
+        Long uid = userService.queryAllUser().get(0).getUid();
+        Integer money = userService.queryById(uid).getMoney();
         //更新
         money+=100;
-        user.setUid(1L);
+        user.setUid(uid);
         user.setMoney(money);
         int update = userService.update(user);
     }

@@ -7,7 +7,8 @@ public class NPC {
     //npc的名字
     private  String name;
     //对话
-   String talk="你好我是大傻逼起始村村花莉萌，终于等到你来了";
+   String talk="你好我是大傻逼起始村村花莉萌，终于等到你来了" +"\n"+
+            "哦，我才不想看见你呵呵呵";
     public NPC(String name,String  talk){
         this.name=name;
         this.talk=talk;
@@ -32,8 +33,16 @@ public class NPC {
         this.talk = talk;
     }
 
+   // @Override
+    //public String toString() {
+      //return name+"村花莉萌"+talk;
+    //}
+
     @Override
     public String toString() {
-      return name+"玩家"+talk;
+        return "NPC{" +
+                ", name='村花莉萌" + name + '\'' +
+                ", talk='" + talk + '\'' +
+                '}';
     }
 }
