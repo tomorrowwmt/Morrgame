@@ -24,11 +24,11 @@ public class EquipServiceImpl implements EquipService {
         equip.loaded=0;
         //缓存查询装备
         EquipMapper equipMapper=SpringUtil.getBean(EquipMapper.class);
-        Long equipment= equipService.queryAllEquip().get(1).getId();
+        Long eq= equipService.queryAllEquip().get(1).getId();
         Long id = equipService.queryAllEquip().get(3).getId();
-        //穿上装备
-        wearEquip(user,equipment);
         //穿上毒刀装备
+        wearEquip(user,eq);
+        //穿上屠龙刀装备
         wearEquip(user,id);
         //锁定装备
         equip.setLocked(1);
@@ -37,8 +37,6 @@ public class EquipServiceImpl implements EquipService {
     public void wearEquip(User user,Long id) {
         //获取装备
         Equipment equip= getEquipmentById(id);
-        user.setAtk(equip.getAtk()+100);
-       // this.atk=equip.getAtk()+100;
         System.out.println("穿上装备"+",装备类型为"+ EquipType.Weapon.getName() +
                 ",使得攻击力增加"+",继续加大攻击");
         equip.setEndurance(equip.getEndurance()-20);

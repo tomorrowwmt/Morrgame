@@ -28,7 +28,6 @@ public class BagServiceImpl implements BagService {
         }
         //查询缓存数据库背包是否有药水物品
         BagMapper bagMapper = SpringUtil.getBean(BagMapper.class);
-        //List<Bag> bags = bagMapper.selectAll();
         List<Bag> bags = bagService.queryAllBag();
         //根据查询结果获取药水count
         Integer yaoshui = bags.get(0).getCount();
@@ -66,7 +65,7 @@ public class BagServiceImpl implements BagService {
         return bagMapper.selectAll();
     }
     @Override
-    @Cacheable(value = "userCache",key="#id")
+    @Cacheable(value = "bagCache",key="#id")
     public Bag queryBagId(Long id) {
         return bagMapper.selectByPrimaryKey(id);
     }

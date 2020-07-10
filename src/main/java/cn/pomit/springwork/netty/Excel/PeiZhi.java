@@ -1,10 +1,14 @@
 package cn.pomit.springwork.netty.Excel;
 
+import cn.pomit.springwork.netty.Ditu.Ditu;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 @Component
 public class PeiZhi {
    public static  Map<String, Object> immutableMap;
@@ -37,10 +41,14 @@ public class PeiZhi {
         List<Map<String, Object>> skill = ExcelUtil.imp(filepath, keys);
         return skill.toString();
     }
-
+    public static Object getpeizhiSevice(String key)
+    {
+        return  immutableMap.get(key);
+    }
     public static void main(String[] args) throws Exception {
-       System.out.println( immutableMap.get("Monster"));
-        System.out.println("------------");
+        //Object ditu = immutableMap.get("Ditu").toString();
+        //System.out.println(ditu);
+        String ditu = PeiZhi.ditu();
     }
 
 }

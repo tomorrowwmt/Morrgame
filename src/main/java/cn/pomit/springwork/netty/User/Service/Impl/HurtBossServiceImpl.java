@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HurtBossServiceImpl implements HurtBossService {
-     // static CountDown countDown=new CountDown(10);
     @Override
     public void attackboss(User user, Boss boss) {
         Skill skill=new Skill();
@@ -49,6 +48,7 @@ public class HurtBossServiceImpl implements HurtBossService {
     }
     @Override
     public String gongji(User user, Boss boss) throws Exception {
+        CountDown countDown=new CountDown(10);
         String res=null;
         BossService bossService=SpringUtil.getBean(BossService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);

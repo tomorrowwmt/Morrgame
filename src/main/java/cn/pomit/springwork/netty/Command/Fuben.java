@@ -1,5 +1,6 @@
 package cn.pomit.springwork.netty.Command;
 
+import cn.pomit.springwork.netty.BossFuBen.CountDown;
 import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.User.Service.HurtBossService;

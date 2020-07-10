@@ -124,9 +124,10 @@ public class HurtServiceImpl implements HurtService {
             bit(user,mas);
             //二刀普攻
             bitmas(user,mas);
-            //穿装备
+            //穿上屠龙刀装备
             Long id = equipService.queryAllEquip().get(3).getId();
             equipService.wearEquip(user,id);
+            //穿上装备触发大招
            MagicAttack(user,mas);
             if(mas.getHp()<=0){
                 System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
@@ -154,7 +155,7 @@ public class HurtServiceImpl implements HurtService {
             }
             if(user.getHp()<=0){
                 System.out.println("玩家死亡"+mas.getName()+"胜利");
-                return result="玩家死亡"+mas.getName()+"胜利";
+                 result="玩家死亡"+mas.getName()+"胜利";
             }
         }
         return result;
@@ -172,23 +173,26 @@ public class HurtServiceImpl implements HurtService {
         //升级之后，将所有属性则增加
         System.out.println("终于打赢要升级啦");
         //先查询玩家当前级别
-        UserMapper userMapper = SpringUtil.getBean(UserMapper.class);
-        List<User> queryuser = userMapper.selectAll();
+       UserService userService=SpringUtil.getBean(UserService.class);
+        List<User> queryuser =userService.queryAllUser();
         //获取玩家当前等级，经验
         int level = queryuser.get(0).getLevel();
         int exp = queryuser.get(0).getExp();
         int levelExp = queryuser.get(0).getLevelExp();
+        int atk=queryuser.get(0).getAtk();
         level += 1;
         exp += 30;
         levelExp += 50;
+        atk+=70;
         //更新数据库
         user.setUid(queryuser.get(0).getUid());
         user.setExp(exp);
         user.setLevel(level);
         user.setLevelExp(levelExp);
-        int update = userMapper.updateByPrimaryKeySelective(user);
+        user.setAtk(atk);
+        int update = userService.update(user);
         System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
-        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp;
+        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp+" ";
     }
 
 }

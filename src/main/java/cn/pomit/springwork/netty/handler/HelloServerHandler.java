@@ -51,22 +51,26 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
-        if("login".equals(body)) {
+        if("wbl1".equals(body)) {
             Command command = CmdServcieFactory.getCommandSevice("login");
             String use= command.handle(user,"登录");
             ctx.channel().writeAndFlush(use+"登录成功有以下操作1.aoi 2.move 3.talk 4.attack\n");
+            return;
         }else if("wbl3".equals(body)){
             Command cd = CmdServcieFactory.getCommandSevice("register");
             String register= cd.handle(user,"玩家注册");
             ctx.channel().writeAndFlush(register+"注册\n");
+            return;
         }else  if("aoi".equals(body)){
             Command com = CmdServcieFactory.getCommandSevice("aoi");
             String  scenceByRole= com.handle(user, "打印实体");
             ctx.channel().writeAndFlush(scenceByRole + "\n");
+            return;
         } else if("move<魔化之地>".equals(body)){
             Command command = CmdServcieFactory.getCommandSevice("move");
             String s = command.handle(user, "移动场景");
             ctx.channel().writeAndFlush( s +"\n");
+            return;
         } else if("attack".equals(body)){
             Command cm = CmdServcieFactory.getCommandSevice("attack");
             String batter=cm.handle(user, "场景打怪");
@@ -74,12 +78,16 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         }else if("talk".equals(body)){
             String talkNpc = scenceService.talkNpc(user);
             ctx.channel().writeAndFlush( talkNpc +"\n");
+            return;
         }else if("fuben".equals(body)){
             String ret=hurtBossService.gongji(user,boss);
             ctx.channel().writeAndFlush(ret + "\n");
+            return;
         }else {
             ctx.channel().writeAndFlush("非法操作");
         }
+        // 返回客户端消息 - 我已经接收到了你的消息
+        ctx.writeAndFlush("------Received your message !\n");
     }
 
     @Override

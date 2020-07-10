@@ -24,8 +24,10 @@ public class ScenceServiceImpl implements ScenceService {
         UserService userService= SpringUtil.getBean(UserService.class);
         List<User> users = userService.queryAllUser();
         //在调用配置类方法读取配置表加载当前怪兽数量，npc等
-        String ditu = PeiZhi.ditu();
-        String mas=PeiZhi.monster();
+       // String ditu = PeiZhi.ditu();
+        //String mas=PeiZhi.monster();
+        Object ditu = PeiZhi.getpeizhiSevice("Ditu");
+        Object mas= PeiZhi.getpeizhiSevice("Monster");
         NPC npc=new NPC("村花莉萌","大傻逼你来了");
         System.out.println("\n"+users+ditu+""+""+mas+npc.getName());
         return "当前场景玩家"+users+"\n"+"当前场景信息"+ditu+mas+"\n"+"当前场景npc:"+npc.getName();
@@ -40,10 +42,10 @@ public class ScenceServiceImpl implements ScenceService {
         String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx")).getPath();
         String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
         List<Map<String, Object>> impList = ExcelUtil.imp(filepath,keys);
-            for (Map<String, Object> map : impList) {
+           for (Map<String, Object> map : impList) {
                return username+"移动<"+ map.get("neighbor")+">"+"\n"+"移动完成";
             }
-       return "移动成功";
+        return "移动成功";
     }
 
     @Override
