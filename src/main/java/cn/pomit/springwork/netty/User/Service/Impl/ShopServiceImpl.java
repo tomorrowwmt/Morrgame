@@ -14,6 +14,11 @@ import java.util.List;
 @Service
 public class ShopServiceImpl implements ShopService {
     private static  Shop shop=new Shop();
+
+    @Override
+    public void shopping(User user) {
+    }
+    /*
     @Override
     public void shopping(User user) {
         //查询商品物品
@@ -55,4 +60,5 @@ public class ShopServiceImpl implements ShopService {
          shop.setCount(count);
         shopMapper.updateByPrimaryKeySelective(shop);
     }
+    */
 }

@@ -10,7 +10,7 @@ public interface HurtService {
     //二加普通攻击
     void bitmas(User user ,Monster mas);
     //必杀
-    void MagicAttack(User user,Monster mas);
+    void magicAttack(User user, Monster mas);
     //增加药水
     void drug(User user);
     //进行跟master打怪

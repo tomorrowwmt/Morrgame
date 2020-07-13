@@ -1,5 +1,6 @@
 package cn.pomit.springwork.netty.handler;
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,16 +16,15 @@ import cn.pomit.springwork.netty.User.Service.ScenceService;
 import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
-import cn.pomit.springwork.netty.User.Session.Session;
 import cn.pomit.springwork.netty.User.Session.SessionImpl;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import com.google.common.collect.ImmutableMap;
-import com.sun.xml.internal.ws.api.message.Packet;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +61,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             String register= cd.handle(user,"玩家注册");
             ctx.channel().writeAndFlush(register+"注册\n");
             return;
-        }else  if("aoi".equals(body)){
+        }else if("aoi".equals(body)){
             Command com = CmdServcieFactory.getCommandSevice("aoi");
             String  scenceByRole= com.handle(user, "打印实体");
             ctx.channel().writeAndFlush(scenceByRole + "\n");

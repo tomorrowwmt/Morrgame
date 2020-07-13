@@ -4,6 +4,8 @@ import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.User.Entity.User;
 
 public interface HurtBossService {
+    //进入副本场景
+    String copyScenece(User user);
     //攻击副本boss
     void attackboss(User user,Boss boss);
     //穿上毒刀直接让怪兽中毒减大量的血

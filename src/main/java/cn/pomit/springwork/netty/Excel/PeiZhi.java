@@ -4,10 +4,7 @@ import cn.pomit.springwork.netty.Ditu.Ditu;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class PeiZhi {
@@ -25,19 +22,19 @@ public class PeiZhi {
     public  static String ditu() throws Exception {
         //地图
         String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
-        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
+        String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx")).getPath();
         List<Map<String, Object>> maps = ExcelUtil.imp(filepath, keys);
         return maps.toString();
     }
     public  static String monster() throws Exception{
        String[] keys=new String[]{"id","name","hp"};
-        String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Monster.xlsx").getPath();
+        String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Monster.xlsx")).getPath();
         List<Map<String, Object>> moster = ExcelUtil.imp(filepath, keys);
         return moster.toString();
     }
     public  static String skill() throws Exception{
        String[] keys=new String[]{"id","name","type","cd","mp"};
-       String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx").getPath();
+       String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx")).getPath();
         List<Map<String, Object>> skill = ExcelUtil.imp(filepath, keys);
         return skill.toString();
     }
@@ -48,7 +45,7 @@ public class PeiZhi {
     public static void main(String[] args) throws Exception {
         //Object ditu = immutableMap.get("Ditu").toString();
         //System.out.println(ditu);
-        String ditu = PeiZhi.ditu();
+        //String ditu = PeiZhi.ditu();
     }
 
 }

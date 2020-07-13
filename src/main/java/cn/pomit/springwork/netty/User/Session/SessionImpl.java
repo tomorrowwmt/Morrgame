@@ -34,8 +34,8 @@ public class SessionImpl implements Session {
 	
 	@Override
 	public void removeAttachment() {
-//		channel.attr(ATTACHMENT_KEY).remove();	//netty4.0.41.Final Deprecated
-		channel.attr(ATTACHMENT_KEY).set(null);	//use set(null)
+		//use set(null)
+		channel.attr(ATTACHMENT_KEY).set(null);
 	}
 
 	@Override

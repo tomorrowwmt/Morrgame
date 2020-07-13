@@ -65,7 +65,7 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public void MagicAttack( User user,Monster mas) {
+    public void magicAttack(User user, Monster mas) {
         Skill skill=new Skill();
         skill.cd=3;
         skill.mp=30;
@@ -117,7 +117,7 @@ public class HurtServiceImpl implements HurtService {
         user.levelExp=20;
         user.setAtk(70);
         mas.setName("雪域魔王");
-        mas.setHp(500);
+        mas.setHp(300);
         mas.sendExp=30;
         while(user.getHp()>0 && mas.getHp()>0){
             //一刀普攻
@@ -128,7 +128,7 @@ public class HurtServiceImpl implements HurtService {
             Long id = equipService.queryAllEquip().get(3).getId();
             equipService.wearEquip(user,id);
             //穿上装备触发大招
-           MagicAttack(user,mas);
+           magicAttack(user,mas);
             if(mas.getHp()<=0){
                 System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
                 //缓存查出场景内玩家

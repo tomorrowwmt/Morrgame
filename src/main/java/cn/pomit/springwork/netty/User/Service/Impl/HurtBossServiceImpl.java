@@ -8,12 +8,18 @@ import cn.pomit.springwork.netty.Skills.Enum.SkillType;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.User.Service.EquipService;
 import cn.pomit.springwork.netty.User.Service.HurtBossService;
+import cn.pomit.springwork.netty.User.Service.ScenceService;
 import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HurtBossServiceImpl implements HurtBossService {
+    @Override
+    public String copyScenece(User user) {
+        return "玩家进入副本场景开启.............";
+    }
+
     @Override
     public void attackboss(User user, Boss boss) {
         Skill skill=new Skill();
@@ -48,11 +54,14 @@ public class HurtBossServiceImpl implements HurtBossService {
     }
     @Override
     public String gongji(User user, Boss boss) throws Exception {
-        CountDown countDown=new CountDown(10);
+        String copyScenece = copyScenece(user);
+        //CountDown countDown=new CountDown(10);
+        //返回变量
         String res=null;
         BossService bossService=SpringUtil.getBean(BossService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         EquipService equipService=SpringUtil.getBean(EquipService.class);
+        //开始赋值
         user.setUsername("wbl1");
         user.setHp(200);
         user.setMoney(0);
@@ -89,7 +98,7 @@ public class HurtBossServiceImpl implements HurtBossService {
                 break;
             }
         }
-        return res+"\n"+"退出副本完成";
+        return copyScenece+"\n"+res+"\n"+"退出副本完成";
     }
 
     public void getmoney(User user){

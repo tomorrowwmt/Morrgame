@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
+
 @Slf4j
 public class HelloClient {
     public static String host = "127.0.0.1";
@@ -24,7 +26,7 @@ public class HelloClient {
 
             // 连接服务端
             Channel ch = b.connect(host, port).sync().channel();
-
+            read();
             // 控制台输入
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             //也可以用while循环
@@ -40,9 +42,16 @@ public class HelloClient {
                  * */
                 ch.writeAndFlush(line + "\r\n");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             // The connection is closed automatically on shutdown.
             group.shutdownGracefully();
         }
+    }
+    public static String read() throws Exception{
+        String str = "";
+        Scanner sc = new Scanner(System.in);
+        return str;
     }
 }

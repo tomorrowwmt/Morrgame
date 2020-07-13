@@ -40,6 +40,11 @@ public class BagServiceImpl implements BagService {
 
     @Override
     public void diejia(User user, Bag bag) {
+        //判断背包容量是否超过了最大限度
+        Integer bagcapacity = bagService.queryAllBag().get(0).getCapacity();
+        if(bagcapacity>100){
+            return;
+        }
         //药水可叠加，装备不能叠加,key表示位置，value表示数量
         Map<Integer,Integer> map=new HashMap<>();
         //直接添加

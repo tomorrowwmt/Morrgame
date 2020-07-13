@@ -1,7 +1,6 @@
 package cn.pomit.springwork.netty.User.Session;
 /**
  * 会话抽象接口
- * @author -琴兽-
  *
  */
 public interface Session {

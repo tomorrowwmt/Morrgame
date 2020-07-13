@@ -15,6 +15,7 @@ public class Shopping {
     private static Shop shop=new Shop();
     private static Bag bag=new Bag();
     public void shopping(User user) throws Exception {
+        /*
         //查询商品物品
         ShopMapper shopMapper= SpringUtil.getBean(ShopMapper.class);
         List<Shop> shops = shopMapper.selectAll();
@@ -73,5 +74,7 @@ public class Shopping {
         bag.setCount(count);
         int i = bagMapper.updateByPrimaryKeySelective(bag);
 
+    }
+         */
     }
 }

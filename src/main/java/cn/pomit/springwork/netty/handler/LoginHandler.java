@@ -17,10 +17,11 @@ import io.netty.channel.ChannelHandler.Sharable;
 @Sharable
 public class LoginHandler extends ChannelInboundHandlerAdapter {
     public static User user=new User();
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        String body= (String) msg;
+    public void channelRead(ChannelHandlerContext ctx, String msg) throws Exception {
+        String body= msg;
         if("login".equals(body)){
+            user.setUsername("wbl1");
+            user.setPassword("12345");
             Command command = CmdServcieFactory.getCommandSevice("login");
             String user1= command.handle(user,"登录");
             ctx.channel().writeAndFlush(user1+"登录成功,有以下操作1.aoi 2.move 3.talk 4.attack\n");
