@@ -17,16 +17,20 @@ import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.User.Session.SessionImpl;
+import cn.pomit.springwork.netty.User.Session.SessionManager;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import com.google.common.collect.ImmutableMap;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @Service("helloServerHandler")
@@ -46,27 +50,28 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
-        System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
+        System.out.println("\n"+ctx.channel().remoteAddress() + " Say : " + msg);
         UserService userService=SpringUtil.getBean(UserService.class);
         ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
-        if("wbl1".equals(body)) {
+        //Command command = SpringUtil.getBean(body);
+        if("login".equals(body)) {
             Command command = CmdServcieFactory.getCommandSevice("login");
             String use= command.handle(user,"登录");
-            ctx.channel().writeAndFlush(use+"登录成功有以下操作1.aoi 2.move 3.talk 4.attack\n");
+            ctx.channel().writeAndFlush(use+"登录\n");
             return;
         }else if("wbl3".equals(body)){
             Command cd = CmdServcieFactory.getCommandSevice("register");
             String register= cd.handle(user,"玩家注册");
-            ctx.channel().writeAndFlush(register+"注册\n");
+            ctx.channel().writeAndFlush("注册\n");
             return;
         }else if("aoi".equals(body)){
             Command com = CmdServcieFactory.getCommandSevice("aoi");
             String  scenceByRole= com.handle(user, "打印实体");
             ctx.channel().writeAndFlush(scenceByRole + "\n");
             return;
-        } else if("move<魔化之地>".equals(body)){
+        } else if("move".equals(body)){
             Command command = CmdServcieFactory.getCommandSevice("move");
             String s = command.handle(user, "移动场景");
             ctx.channel().writeAndFlush( s +"\n");
@@ -86,13 +91,12 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
         }else {
             ctx.channel().writeAndFlush("非法操作");
         }
-        // 返回客户端消息 - 我已经接收到了你的消息
-        ctx.writeAndFlush("------Received your message !\n");
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
+        //ctx.writeAndFlush(SessionManager.putSession(user.getUid(),session));
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
         super.channelActive(ctx);
     }

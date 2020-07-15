@@ -1,4 +1,6 @@
 package cn.pomit.springwork.netty.User.Entity;
+import cn.pomit.springwork.netty.User.Session.Session;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -10,6 +12,7 @@ import javax.persistence.Transient;
 public class User {
     @Id
     private Long uid;
+    private Long mid;
     private String username;
     private String password;
     @Transient
@@ -24,11 +27,29 @@ public class User {
    public Integer level;
     //下一级所需经验
     public Integer levelExp;
+    @Transient
+    private Session session;
     public Integer atk;
     //金钱
     public Integer money;
     //读取系统邮件状态
     private Integer status;
+
+    public Long getMid() {
+        return mid;
+    }
+
+    public void setMid(Long mid) {
+        this.mid = mid;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
 
     public Integer getStatus() {
         return status;
@@ -130,14 +151,16 @@ public class User {
     public String toString() {
         return "User{" +
                 "uid=" + uid +
+                ",mid=" + mid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", map='起始之地"  + '\'' +
+                ", map='起始之地" + '\'' +
                 ", hp=" + hp +
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +
                 ", level=" + level +
                 ", levelExp=" + levelExp +
+                ", session=" + session +
                 ", atk=" + atk +
                 ", money=" + money +
                 ", status=" + status +

@@ -14,9 +14,11 @@ public class Register implements  Command {
         if(content==null){
             return  content;
         }
-        user.setUsername("wbl3");
-        user.setPassword("12345");
-        UserService userService=SpringUtil.getBean(UserService.class);
+        //user.setUsername("wbl3");
+       // user.setPassword("12345");
+        ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+        UserService userService=ac.getBean(UserService.class);
+        //UserService userService=SpringUtil.getBean(UserService.class);
         String register = userService.register(user.getUsername(), user.getPassword());
         return register;
     }

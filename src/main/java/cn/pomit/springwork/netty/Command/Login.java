@@ -18,6 +18,7 @@ public class Login implements Command{
         if(content==null){
             return  content;
         }
+        user.setUid(1L);
         user.setUsername("wbl1");
         user.setPassword("12345");
         UserService userService=SpringUtil.getBean(UserService.class);

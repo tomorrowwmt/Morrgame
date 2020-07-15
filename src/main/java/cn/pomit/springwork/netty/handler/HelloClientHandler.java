@@ -1,4 +1,7 @@
 package cn.pomit.springwork.netty.handler;
+import cn.pomit.springwork.netty.Command.CmdOrder;
+import cn.pomit.springwork.netty.Command.CmdServcieFactory;
+import cn.pomit.springwork.netty.Command.Command;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.User.Service.UserService;
 import io.netty.channel.*;
@@ -6,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Scanner;
 
 @Slf4j
@@ -26,7 +30,6 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Client active ");
-        super.channelActive(ctx);
     }
 
     @Override

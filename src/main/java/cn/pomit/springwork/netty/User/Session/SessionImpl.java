@@ -18,7 +18,8 @@ public class SessionImpl implements Session {
 	 * 实际会话对象
 	 */
 	private Channel channel;
-	public SessionImpl(Channel channel) {
+	public SessionImpl(Channel channel)
+	{
 		this.channel = channel;
 	}
 

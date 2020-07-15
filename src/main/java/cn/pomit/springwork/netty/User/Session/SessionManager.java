@@ -1,4 +1,6 @@
 package cn.pomit.springwork.netty.User.Session;
+import io.netty.channel.Channel;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Map;
@@ -9,13 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * 会话管理者
  *
  */
+@Component
 public class SessionManager {
 
 	/**
 	 * 在线会话
 	 */
 	private static final Map<Long, Session> onlineSessions = new ConcurrentHashMap<>();
-	
+	private static  final Map<Long, Channel> userchannels=new ConcurrentHashMap<>();
 	/**
 	 * 加入
 	 * @return
@@ -27,7 +30,9 @@ public class SessionManager {
 		}
 		return false;
 	}
-	
+	public  Channel getChanell(Long uid){
+		return  userchannels.get(uid);
+	}
 	/**
 	 * 移除
 	 * @param

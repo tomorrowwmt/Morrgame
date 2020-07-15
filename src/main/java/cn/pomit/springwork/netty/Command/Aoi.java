@@ -16,7 +16,7 @@ public class Aoi implements  Command{
             return  content;
         }
         ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
-        String scenceByRole = scenceService.getScenceByRole(user);
+       String scenceByRole = scenceService.getScenceByRole(user);
         return scenceByRole;
     }
 }

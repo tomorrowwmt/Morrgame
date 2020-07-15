@@ -6,6 +6,7 @@ import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.User.Session.Session;
+import cn.pomit.springwork.netty.User.Session.SessionImpl;
 import cn.pomit.springwork.netty.User.Session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +22,7 @@ import java.util.List;
 @Service("UserGuavaCache")
 public class UserServiceImpl implements UserService {
     private static IdWorker WORKER=new IdWorker(1,1,1);
+    private SessionImpl session;
     @Resource
     private UserMapper userMapper;
     @Autowired
@@ -33,24 +35,26 @@ public class UserServiceImpl implements UserService {
             if(existuser!=null){
                 System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
                 return "用户已存在"+existuser;
-            }else {//否则创建账号
+            } else {//否则创建账号
                 User user = new User();
                 user.setUid(WORKER.nextId());
                 user.setUsername(username);
                 user.setPassword(password);
                 int i = userMapper.insertSelective(user);
+                System.out.println("注册完成"+i);
             }
+        //login(session,username,password);
         return username;
     }
 
     @Override
     public String login(Session session , String username, String password) {
-            //从缓存判断玩家账号不存在问题
+            //判断玩家账号不存在问题
             User user = userService.findUserByName(username);
             if (user == null) {
                return "账号不存在"+ResultCode.PLAYER_NO_EXIST;
             }else if(user.getUsername()!=null){
-                System.out.println("登录完成"+ResultCode.SUCCESS);
+                return "登录完成"+ResultCode.SUCCESS;
             }
             //判断玩家是否在其他地方登陆过
             boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());

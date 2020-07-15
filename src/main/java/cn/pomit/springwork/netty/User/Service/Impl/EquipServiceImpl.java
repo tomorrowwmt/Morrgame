@@ -43,14 +43,14 @@ public class EquipServiceImpl implements EquipService {
         if(equip.getEndurance()<=60){
             System.out.println("武器耐久度过低需要去修理一下");
             //修理方法，这里做一个假输出
-            XiuLi();
+            xiuLi();
         }else{
             System.out.println("武器耐久度正常不需要修理");
             System.out.println("=========================");
         }
     }
     //修理方法
-    public void XiuLi() {
+    public void xiuLi() {
         System.out.println("1s自动修复");
         System.out.println("=================");
         System.out.println("修复完成");

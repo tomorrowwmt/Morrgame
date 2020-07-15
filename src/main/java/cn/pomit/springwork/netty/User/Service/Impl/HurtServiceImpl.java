@@ -19,6 +19,11 @@ import java.util.List;
 @Service
 public class HurtServiceImpl implements HurtService {
     @Override
+    public String enterHurtMonster(User user, Monster mas) {
+        return user.getUsername()+"进入打怪场景请查看打斗结果。。。。。。。";
+    }
+
+    @Override
     //普攻
     public void  bit(User user,Monster mas) {
         Skill skill=new Skill();
@@ -66,6 +71,7 @@ public class HurtServiceImpl implements HurtService {
 
     @Override
     public void magicAttack(User user, Monster mas) {
+        //技能赋值
         Skill skill=new Skill();
         skill.cd=3;
         skill.mp=30;
@@ -104,6 +110,7 @@ public class HurtServiceImpl implements HurtService {
 
     @Override
     public String batter(User user,Monster mas, Bag bag) throws Exception {
+        String enterHurtMonster = enterHurtMonster(user, mas);
         //拿到相关bean
         BitUserService bitUserService = SpringUtil.getBean(BitUserService.class);
         BagService bagService=SpringUtil.getBean(BagService.class);
@@ -158,7 +165,7 @@ public class HurtServiceImpl implements HurtService {
                  result="玩家死亡"+mas.getName()+"胜利";
             }
         }
-        return result;
+        return enterHurtMonster+"\n"+result;
     }
     public void checkUpgrade(User user){
         //检查是否升级，自己的经验是否大于升级所需要的经验
@@ -173,7 +180,7 @@ public class HurtServiceImpl implements HurtService {
         //升级之后，将所有属性则增加
         System.out.println("终于打赢要升级啦");
         //先查询玩家当前级别
-       UserService userService=SpringUtil.getBean(UserService.class);
+        UserService userService=SpringUtil.getBean(UserService.class);
         List<User> queryuser =userService.queryAllUser();
         //获取玩家当前等级，经验
         int level = queryuser.get(0).getLevel();

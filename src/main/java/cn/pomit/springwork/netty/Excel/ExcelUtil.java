@@ -3,14 +3,14 @@ package cn.pomit.springwork.netty.Excel;
 import cn.pomit.springwork.netty.Ditu.Ditu;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExcelUtil {
     /**
@@ -102,10 +102,47 @@ public class ExcelUtil {
 
         return list;
     }
-    public static void main(String[] args) {
+    //需要解析的是xlsx文件
+    public List<List<String>> readXlsx(String path) throws Exception{
+        //获取文件输入流
+        InputStream is = new FileInputStream(path);
+        //获取读取的实例
+        XSSFWorkbook xssfWorkbook=new XSSFWorkbook(is);
+        //记录Excel结果的变量
+        List<List<String>> result = new ArrayList<List<String>>();
+        //遍历每一页
+        //for(int index=0;index<hssfWorkbook.getNumberOfSheets();index++)
+        //HSSFSheet hssfSheet=hssfWorkbook.getSheetAt(index);
+        for(int index=0;index<xssfWorkbook.getNumberOfSheets();index++) {
+            XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(index);
+            if(xssfSheet == null) {
+                continue;
+            }
+            //遍历每一行
+            for(int row=1;row<=xssfSheet.getLastRowNum();row++) {
+                XSSFRow xssfRow = xssfSheet.getRow(row);
+
+                int minCol = xssfRow.getFirstCellNum();
+                int maxCol = xssfRow.getLastCellNum();
+                List<String> rowList = new ArrayList<String>();
+                //遍历该行，获取每个celll元素
+                for(int col = minCol;col<maxCol;col++) {
+                    XSSFCell cell = xssfRow.getCell(col);
+                    if(cell==null) {
+                        continue;
+                    }
+                    rowList.add(cell.toString());
+                }
+                result.add(rowList);
+            }
+        }
+        xssfWorkbook.close();
+        return result;
+    }
+    public static void main(String[] args) throws Exception {
         //String filePath = "src\\main\\resources\\Excel\\Ditu.xlsx";
         String filepath=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
-        String[] keys = new String[]{"mid","name","desc","neighbor","monsterStr"};
+        String[] keys = new String[]{"mid","mname","desc","neighbor","monsterStr"};
         List<Map<String, Object>> impList;
         try {
             impList = ExcelUtil.imp(filepath,keys);
@@ -116,6 +153,10 @@ public class ExcelUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String filepath1=Thread.currentThread().getContextClassLoader().getResource("Excel/Ditu.xlsx").getPath();
+        ExcelUtil excelUtil=new ExcelUtil();
+        String s = excelUtil.readXlsx(filepath1).get(0).get(3);
+        System.out.println(s);
     }
 
 }

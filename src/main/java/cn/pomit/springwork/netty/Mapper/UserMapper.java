@@ -9,4 +9,6 @@ public interface UserMapper extends Mapper<User> {
     User findUserByName(String username);
     //@Select("select * from tb_user where username=#{username} and password=#{password}")
     //User findByUserNameAndPassword(@Param("username")String username, @Param("password")String password);
+    @Select("select * from tb_user where mid=#{mid}")
+   Long  findUserBymap(Long mid);
 }

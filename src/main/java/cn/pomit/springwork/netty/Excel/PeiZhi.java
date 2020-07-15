@@ -43,9 +43,9 @@ public class PeiZhi {
         return  immutableMap.get(key);
     }
     public static void main(String[] args) throws Exception {
-        //Object ditu = immutableMap.get("Ditu").toString();
-        //System.out.println(ditu);
-        //String ditu = PeiZhi.ditu();
+        Object ditu1 = immutableMap.get("Ditu");
+        String ditu = ditu();
+        System.out.println(ditu);
     }
 
 }
