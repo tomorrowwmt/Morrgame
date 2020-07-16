@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserService userService;
     @Override
-    public String register(String username, String password) {
+    public String register(String username, String password,String sex,String profession) {
         //检测名字;
         User existuser= userMapper.findUserByName(username);
         //玩家名被占用
@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
                 user.setUid(WORKER.nextId());
                 user.setUsername(username);
                 user.setPassword(password);
+                user.setSex(sex);
+                user.setProfession(profession);
                 int i = userMapper.insertSelective(user);
                 System.out.println("注册完成"+i);
             }
@@ -51,10 +53,13 @@ public class UserServiceImpl implements UserService {
     public String login(Session session , String username, String password) {
             //判断玩家账号不存在问题
             User user = userService.findUserByName(username);
+            String ret=null;
             if (user == null) {
-               return "账号不存在"+ResultCode.PLAYER_NO_EXIST;
-            }else if(user.getUsername()!=null){
-                return "登录完成"+ResultCode.SUCCESS;
+               ret= "账号不存在"+ResultCode.PLAYER_NO_EXIST;
+            }else if(user.getUsername()!=null && user.getPassword().equals(password)) {
+                ret= "登录完成" + ResultCode.SUCCESS;
+            }else {
+               ret="用户名或者密码错误";
             }
             //判断玩家是否在其他地方登陆过
             boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());
@@ -63,7 +68,7 @@ public class UserServiceImpl implements UserService {
                 //踢下线
                 oldSession.close();
             }
-            return user.getUsername();
+            return ret;
         }
 
     @Override
@@ -83,7 +88,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "userCache")
     public int update(User user) {
         return userMapper.updateByPrimaryKeySelective(user);
+    }
+    @Override
+    @Cacheable(value = "userCache")
+    public List<User> findUserBymap(Long mid) {
+        return userMapper.findUserBymap(mid);
     }
 }

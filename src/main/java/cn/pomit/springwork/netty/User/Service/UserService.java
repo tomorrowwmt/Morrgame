@@ -12,7 +12,7 @@ public interface UserService {
      * 登录注册用户
      * @return
      */
-   String register(String username, String password);
+   String register(String username, String password,String sex,String profession);
     //ResultCode registerAndLogin(String username, String password);
     /**
      * 登录
@@ -38,4 +38,5 @@ public interface UserService {
     更新数据
      */
     int update(User user);
+    List<User> findUserBymap(Long mid);
 }

@@ -23,8 +23,11 @@ public class UserTest {
     public void select(){
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         UserMapper userMapper=ac.getBean(UserMapper.class);
-        User user=userMapper.selectByPrimaryKey(1L);
-        System.out.println(user);
+        //String user=userMapper.findUserBymap(1L).getMap();
+       //List<User> userBy = userMapper.findUserBy(1L);
+        User user1=new User();
+        //user1.setUsername(userBy.toString());
+       //System.out.println(user);
     }
     @Test
     public void insert(){

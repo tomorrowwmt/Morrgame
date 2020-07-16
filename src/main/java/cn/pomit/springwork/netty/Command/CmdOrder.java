@@ -14,7 +14,7 @@ public class CmdOrder {
     public static SessionImpl session;
     public static User user=new User();
     public static void  jiazai() throws Exception {
-        System.out.println("请选择一下操作1.login 2.register 3.aoi 4.attack.talk");
+        System.out.println("\n请选择一下操作1.login 2.register");
         while (true) {
             Scanner sc = new Scanner(System.in);
             String s = sc.nextLine();
@@ -29,23 +29,47 @@ public class CmdOrder {
                     System.out.println("请输入密码：");
                     String password=sc.nextLine();
                     UserService userService = SpringUtil.getBean(UserService.class);
+                    ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
                     String login = userService.login(session, username, password);
-                    System.out.println(login);
+                    System.out.println(login+"请进行操作1.aoi 2.move 3.talk 4.attack");
+                    String operateType = sc.next();
+                    if("aoi".equals(operateType)){
+                        Command com = CmdServcieFactory.getCommandSevice(operateType);
+                        String  scenceByRole= com.handle(user, "打印实体");
+                        System.out.println(scenceByRole);
+                    }
+                    String operateType1=sc.next();
+                    if("move".equals(operateType1)){
+                        Command command = CmdServcieFactory.getCommandSevice(operateType1);
+                        String movescence = command.handle(user, "移动场景");
+                        System.out.println(movescence);
+                    }
+                    String operateType2=sc.next();
+                    if("talk".equals(operateType2)){
+                        String talkNpc = scenceService.talkNpc(user);
+                        System.out.println(talkNpc);
+                    }
+                    String operateType3=sc.next();
+                    if("attack".equals(operateType3)){
+                        Command command = CmdServcieFactory.getCommandSevice(operateType3);
+                        String s1 = command.handle(user, "打怪");
+                        System.out.println(s1);
+                    }
                     break;
                 case "register":
                     System.out.println("请输入账号：");
                     String username1 = sc.nextLine();
                     System.out.println("请输入密码：");
                     String password1 = sc.nextLine();
+                    System.out.println("请输入性别：");
+                    String sex=sc.nextLine();
+                    System.out.println("请输入职业：");
+                    String profession=sc.nextLine();
                     UserService userService1 = SpringUtil.getBean(UserService.class);
-                    String register = userService1.register(username1, password1);
-                    break;
-                case "aoi":
-                   ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
-                    String scenceByRole =  scenceService.getScenceByRole(user);
+                    String register = userService1.register(username1, password1,sex,profession);
                     break;
                 default:
-                    System.out.println("错误操作请重新选择");
+                    System.out.println("非法操作，请重新输入");
             }
         }
     }

@@ -16,7 +16,6 @@ public class Move  implements  Command{
         }
        ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
         String moveScence = scenceService.moveScence(user);
-        System.out.println(moveScence);
         return moveScence;
     }
 

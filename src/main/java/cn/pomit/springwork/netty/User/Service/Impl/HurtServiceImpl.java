@@ -101,7 +101,7 @@ public class HurtServiceImpl implements HurtService {
         int hp=user.getHp();
         //先去查询缓存玩家目前拥有药水的数量
         UserService userService=SpringUtil.getBean(UserService.class);
-        Integer yaoshui = userService.queryAllUser().get(0).getYaoshui();
+        Integer yaoshui = userService.queryById(1L).getYaoshui();
         yaoshui= (int) Math.round(hp*0.15);
         hp=hp+yaoshui;
         System.out.println("["+user.getUsername()+"使用背包中的物品"+ BagType.Yaoshui.getName() +",增加了血量hp="+yaoshui+"的血量!]");
@@ -137,10 +137,10 @@ public class HurtServiceImpl implements HurtService {
             //穿上装备触发大招
            magicAttack(user,mas);
             if(mas.getHp()<=0){
-                System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
-                //缓存查出场景内玩家
-                List<User> users = userService.queryAllUser();
-                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+"通知玩家在场景怪兽死亡了"+users+
+                //System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
+                //查出场景内玩家
+                List<User> userBymap = userService.findUserBymap(1L);
+                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+"通知玩家在场景怪兽死亡了"+userBymap+
                         "\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
                 //设计怪兽死亡后，送出相应的经验值
                 user.exp+=mas.sendExp;
@@ -161,7 +161,7 @@ public class HurtServiceImpl implements HurtService {
                 break;
             }
             if(user.getHp()<=0){
-                System.out.println("玩家死亡"+mas.getName()+"胜利");
+                //System.out.println("玩家死亡"+mas.getName()+"胜利");
                  result="玩家死亡"+mas.getName()+"胜利";
             }
         }
@@ -177,8 +177,6 @@ public class HurtServiceImpl implements HurtService {
     //升级的方法
     public String upgrade(User user) {
         String ret=null;
-        //升级之后，将所有属性则增加
-        System.out.println("终于打赢要升级啦");
         //先查询玩家当前级别
         UserService userService=SpringUtil.getBean(UserService.class);
         List<User> queryuser =userService.queryAllUser();
@@ -198,7 +196,7 @@ public class HurtServiceImpl implements HurtService {
         user.setLevelExp(levelExp);
         user.setAtk(atk);
         int update = userService.update(user);
-        System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
+        //System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
         return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp+" ";
     }
 

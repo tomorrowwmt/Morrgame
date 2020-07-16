@@ -1,14 +1,8 @@
 package cn.pomit.springwork.netty.Server;
 import cn.pomit.springwork.netty.Command.CmdOrder;
-import cn.pomit.springwork.netty.Command.CmdServcieFactory;
-import cn.pomit.springwork.netty.Command.Command;
 import cn.pomit.springwork.netty.Twitter.IdWorker;
 import cn.pomit.springwork.netty.User.Entity.User;
-import cn.pomit.springwork.netty.User.Service.UserService;
-import cn.pomit.springwork.netty.User.Session.Session;
 import cn.pomit.springwork.netty.User.Session.SessionImpl;
-import cn.pomit.springwork.netty.User.Session.SessionManager;
-import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import cn.pomit.springwork.netty.handler.HelloClientInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -49,7 +43,7 @@ public class HelloClient {
             // 连接服务端
             Channel ch = b.connect(host, port).sync().channel();
             // 控制台输入
-            //CmdOrder.jiazai();
+            CmdOrder.jiazai();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             //也可以用while循环
           for (;;) {

@@ -2,6 +2,8 @@ package cn.pomit.springwork.netty.User.Service;
 
 import cn.pomit.springwork.netty.User.Entity.User;
 
+import java.util.List;
+
 public interface ScenceService {
     //进入场景
     String onEnterScene(User user) ;

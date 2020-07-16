@@ -12,9 +12,12 @@ import javax.persistence.Transient;
 public class User {
     @Id
     private Long uid;
+    @Transient
     private Long mid;
     private String username;
     private String password;
+    private String sex;
+    private String profession;
     @Transient
     private String map;
     //当前生命值
@@ -34,6 +37,22 @@ public class User {
     public Integer money;
     //读取系统邮件状态
     private Integer status;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
 
     public Long getMid() {
         return mid;
@@ -151,16 +170,17 @@ public class User {
     public String toString() {
         return "User{" +
                 "uid=" + uid +
-                ",mid=" + mid +
+                ", mid=" + mid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", sex='" + sex + '\'' +
+                ", profession='" + profession + '\'' +
                 ", map='起始之地" + '\'' +
                 ", hp=" + hp +
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +
                 ", level=" + level +
                 ", levelExp=" + levelExp +
-                ", session=" + session +
                 ", atk=" + atk +
                 ", money=" + money +
                 ", status=" + status +
