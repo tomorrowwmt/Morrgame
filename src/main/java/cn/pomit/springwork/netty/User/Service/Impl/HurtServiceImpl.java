@@ -18,10 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class HurtServiceImpl implements HurtService {
-    @Override
-    public String enterHurtMonster(User user, Monster mas) {
-        return user.getUsername()+"进入打怪场景请查看打斗结果。。。。。。。";
-    }
 
     @Override
     //普攻
@@ -109,8 +105,7 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public String batter(User user,Monster mas, Bag bag) throws Exception {
-        String enterHurtMonster = enterHurtMonster(user, mas);
+    public String batter(User user,Monster mas, Bag bag)  {
         //拿到相关bean
         BitUserService bitUserService = SpringUtil.getBean(BitUserService.class);
         BagService bagService=SpringUtil.getBean(BagService.class);
@@ -165,7 +160,7 @@ public class HurtServiceImpl implements HurtService {
                  result="玩家死亡"+mas.getName()+"胜利";
             }
         }
-        return enterHurtMonster+"\n"+result;
+        return result;
     }
     public void checkUpgrade(User user){
         //检查是否升级，自己的经验是否大于升级所需要的经验

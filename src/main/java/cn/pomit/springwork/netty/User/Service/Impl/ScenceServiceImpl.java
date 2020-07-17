@@ -17,7 +17,7 @@ public class ScenceServiceImpl implements ScenceService {
          String ret;
          //UserMapper userMapper= SpringUtil.getBean(UserMapper.class);
          //设置开始地图mid=1，查看玩家
-        List<User> userBymap = userService.findUserBymap(1L);
+         List<User> userBymap = userService.findUserBymap(1L);
          user.setUsername(userBymap.toString());
          user.setMap("起始之地");
          //配置表mid=1数据

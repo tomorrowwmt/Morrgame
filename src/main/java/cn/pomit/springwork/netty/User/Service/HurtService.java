@@ -5,8 +5,6 @@ import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.Monster.Monster;
 
 public interface HurtService {
-    //进入打怪场景
-    String enterHurtMonster(User user,Monster mas);
     //一加普通攻击怪兽
     void bit(User user,Monster mas);
     //二加普通攻击
