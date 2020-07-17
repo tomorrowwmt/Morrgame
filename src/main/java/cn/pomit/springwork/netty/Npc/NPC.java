@@ -7,7 +7,7 @@ public class NPC {
     //npc的名字
     private  String name;
     //对话
-   String talk="你好我是大傻逼村花莉萌，终于等到你来了" +"\n"+
+   String talk="你好我是美丽大方的开心萌萌，终于等到你来了" +"\n"+
             "哦，我才不想看见你呵呵呵";
     public NPC(String name,String  talk){
         this.name=name;

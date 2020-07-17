@@ -29,7 +29,6 @@ public class HelloClient {
     public static Channel channel;
     public static User user=new User();
     public static SessionImpl session;
-    private static IdWorker WORKER=new IdWorker(1,1,1);
     public static void main(String[] args) throws InterruptedException, IOException {
         ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
         final Logger logger = LoggerFactory.getLogger(HelloClient.class);
@@ -44,20 +43,6 @@ public class HelloClient {
             Channel ch = b.connect(host, port).sync().channel();
             // 控制台输入
             CmdOrder.jiazai();
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            //也可以用while循环
-          for (;;) {
-             String line = in.readLine();
-               if (line == null) {
-                   continue;
-              }
-               /*
-                * 向服务端发送在控制台输入的文本 并用"\r\n"结尾
-                * 之所以用\r\n结尾 是因为我们在handler中添加了 DelimiterBasedFrameDecoder 帧解码。
-                * 这个解码器是一个根据\n符号位分隔符的解码器。所以每条消息的最后必须加上\n否则无法识别和解码
-                * */
-               ch.writeAndFlush(line + "\r\n");
-           }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

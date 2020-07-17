@@ -3,16 +3,20 @@ package cn.pomit.springwork.netty.Command;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.User.Service.ScenceService;
 import cn.pomit.springwork.netty.User.Service.UserService;
+import cn.pomit.springwork.netty.User.Session.Session;
 import cn.pomit.springwork.netty.User.Session.SessionImpl;
+import cn.pomit.springwork.netty.User.Session.SessionManager;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
+import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Scanner;
 @Component
 public class CmdOrder {
-    public static SessionImpl session;
+    public static Session session;
     public static User user=new User();
+    private static Channel channel;
     public static void  jiazai() throws Exception {
         System.out.println("\n请选择一下操作1.login 2.register");
         while (true) {
@@ -31,7 +35,7 @@ public class CmdOrder {
                     UserService userService = SpringUtil.getBean(UserService.class);
                     ScenceService scenceService= SpringUtil.getBean(ScenceService.class);
                     String login = userService.login(session, username, password);
-                    System.out.println(login+"请进行操作1.aoi 2.move 3.talk 4.attack");
+                    System.out.println(login);
                     String operateType = sc.next();
                     if("aoi".equals(operateType)){
                         Command com = CmdServcieFactory.getCommandSevice(operateType);

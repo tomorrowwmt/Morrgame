@@ -175,7 +175,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", sex='" + sex + '\'' +
                 ", profession='" + profession + '\'' +
-                ", map='起始之地" + '\'' +
                 ", hp=" + hp +
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +

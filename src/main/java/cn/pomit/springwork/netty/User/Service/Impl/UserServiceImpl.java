@@ -30,12 +30,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public String register(String username, String password,String sex,String profession) {
         //检测名字;
-        User existuser= userMapper.findUserByName(username);
+        User existuser= userService.findUserByName(username);
         //玩家名被占用
             if(existuser!=null){
                 System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
-                return "用户已存在"+existuser;
-            } else {//否则创建账号
+            }else{
+                //否则创建账号
                 User user = new User();
                 user.setUid(WORKER.nextId());
                 user.setUsername(username);
@@ -45,8 +45,7 @@ public class UserServiceImpl implements UserService {
                 int i = userMapper.insertSelective(user);
                 System.out.println("注册完成"+i);
             }
-        //login(session,username,password);
-        return username;
+            return username;
     }
 
     @Override
@@ -56,13 +55,14 @@ public class UserServiceImpl implements UserService {
             String ret=null;
             if (user == null) {
                ret= "账号不存在"+ResultCode.PLAYER_NO_EXIST;
-            }else if(user.getUsername()!=null && user.getPassword().equals(password)) {
+            }else if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 ret= "登录完成" + ResultCode.SUCCESS;
             }else {
                ret="用户名或者密码错误";
             }
             //判断玩家是否在其他地方登陆过
-            boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());
+          assert user != null;
+          boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());
             if (onlineUser) {
                 Session oldSession = SessionManager.removeSession(user.getUid());
                 //踢下线
@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService {
     public List<User> queryAllUser() {
         return userMapper.selectAll();
     }
-
     @Override
     @Cacheable(value = "userCache")
     public int update(User user) {

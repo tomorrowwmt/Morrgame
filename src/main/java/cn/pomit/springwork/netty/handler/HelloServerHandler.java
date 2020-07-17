@@ -20,10 +20,15 @@ import cn.pomit.springwork.netty.User.Session.SessionImpl;
 import cn.pomit.springwork.netty.User.Session.SessionManager;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import com.google.common.collect.ImmutableMap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -42,25 +47,39 @@ import javax.annotation.Resource;
 
 //继承Netty提供的通道传入处理器类，只要复写方法就可以了，简化开发
 public class HelloServerHandler extends ChannelInboundHandlerAdapter {
-    private IdWorker worker;
+    private static IdWorker WORKER=new IdWorker(1,1,1);
     private SessionImpl session;
     public static User user=new User();
     public static Boss boss=new Boss();
     public  static Bag bag=new Bag();
+    public static ChannelGroup channelGroup=new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println("\n"+ctx.channel().remoteAddress() + " Say : " + msg);
-        UserService userService=SpringUtil.getBean(UserService.class);
-        ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
-        HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
+       // UserService userService=SpringUtil.getBean(UserService.class);
+        //ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
+       // HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
+        //获取当前发送消息的客户端
+        Channel channel=ctx.channel();
+        //循环客户端,channelgroup实现了set接口
+        channelGroup.forEach(ch->{
+            if(channel!=ch){
+                ch.writeAndFlush(channel.remoteAddress()+"发送消息:"+msg+"\n");
+            }else{
+                ch.writeAndFlush("[自己]"+msg+"\n");
+            }
+        });
+        ctx.writeAndFlush("------Received your message !\n");
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
-        //ctx.writeAndFlush(SessionManager.putSession(user.getUid(),session));
+        System.out.println("\nRamoteAddress : " + ctx.channel().remoteAddress() + " active !");
+        channelGroup.add(ctx.channel());
+        user.setUid(WORKER.nextId());
+        SessionManager.add(user.getUid(),ctx.channel());
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
         super.channelActive(ctx);
     }

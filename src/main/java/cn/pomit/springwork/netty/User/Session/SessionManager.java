@@ -1,4 +1,6 @@
 package cn.pomit.springwork.netty.User.Session;
+import cn.pomit.springwork.netty.Twitter.IdWorker;
+import cn.pomit.springwork.netty.User.Entity.User;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class SessionManager {
-
+	private static IdWorker WORKER=new IdWorker(1,1,1);
 	/**
 	 * 在线会话
 	 */
@@ -25,12 +27,16 @@ public class SessionManager {
 	 */
 	public static boolean putSession(long uid, Session session){
 		if(!onlineSessions.containsKey(uid)){
-			boolean success = onlineSessions.putIfAbsent(uid, session)== null? true : false;
-			return success;
+			return onlineSessions.putIfAbsent(uid, session) == null;
 		}
 		return false;
 	}
-	public  Channel getChanell(Long uid){
+	public  static  void add(Long uid, Channel channel){
+		User user=new User();
+		user.setUid(WORKER.nextId());
+		userchannels.put(user.getUid(),channel);
+	}
+	public  static Channel getChanell(Long uid){
 		return  userchannels.get(uid);
 	}
 	/**

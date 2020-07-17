@@ -2,6 +2,8 @@ package cn.pomit.springwork.netty.User.Session;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * 会话封装类
