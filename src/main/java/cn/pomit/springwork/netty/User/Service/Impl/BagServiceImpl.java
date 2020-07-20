@@ -45,7 +45,7 @@ public class BagServiceImpl implements BagService {
     @Override
     public void diejia(Bag bag) {
         //判断背包容量是否超过了最大限度
-        Integer bagcapacity = bagService.queryAllBag().get(0).getCapacity();
+        Integer bagcapacity = bagService.queryBagId(1L).getCapacity();
         if(bagcapacity>100){
             return;
         }

@@ -15,7 +15,6 @@ public class ScenceServiceImpl implements ScenceService {
     @Override
     public  String getScenceByRole(User user) throws Exception {
          String ret;
-         //UserMapper userMapper= SpringUtil.getBean(UserMapper.class);
          //设置开始地图mid=1，查看玩家
          List<User> userBymap = userService.findUserBymap(1L);
          user.setUsername(userBymap.toString());

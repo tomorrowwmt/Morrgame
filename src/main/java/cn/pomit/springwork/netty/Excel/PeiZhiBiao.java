@@ -13,6 +13,14 @@ public class PeiZhiBiao {
         String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Monster.xlsx")).getPath();
         return excelUtil.readXlsx(filepath);
     }
+    public static List<List<String>> boss() throws Exception {
+        String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Boss.xlsx")).getPath();
+        return excelUtil.readXlsx(filepath);
+    }
+    public static List<List<String>> skill() throws Exception {
+        String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx")).getPath();
+        return excelUtil.readXlsx(filepath);
+    }
      /*
    public static  Map<String, Object> immutableMap;
     static {

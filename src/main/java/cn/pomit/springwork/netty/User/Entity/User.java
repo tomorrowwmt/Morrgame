@@ -29,7 +29,7 @@ public class User {
    //等级
    public Integer level;
     //下一级所需经验
-    public Integer levelExp;
+    public Integer levexp;
     @Transient
     private Session session;
     public Integer atk;
@@ -142,14 +142,6 @@ public class User {
         this.level = level;
     }
 
-    public Integer getLevelExp() {
-        return levelExp;
-    }
-
-    public void setLevelExp(Integer levelExp) {
-        this.levelExp = levelExp;
-    }
-
     public void setAtk(Integer atk) {
         this.atk = atk;
     }
@@ -166,6 +158,14 @@ public class User {
         this.map = map;
     }
 
+    public Integer getLevexp() {
+        return levexp;
+    }
+
+    public void setLevexp(Integer levexp) {
+        this.levexp = levexp;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -179,7 +179,7 @@ public class User {
                 ", yaoshui=" + yaoshui +
                 ", exp=" + exp +
                 ", level=" + level +
-                ", levelExp=" + levelExp +
+                ", levexp=" + levexp +
                 ", atk=" + atk +
                 ", money=" + money +
                 ", status=" + status +

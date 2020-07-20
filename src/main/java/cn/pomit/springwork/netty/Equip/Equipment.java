@@ -102,8 +102,6 @@ public class Equipment {
                 ", name='" + name + '\'' +
                 ", atk=" + atk +
                 ", endurance=" + endurance +
-                ", loaded=" + loaded +
-                ", locked=" + locked +
                 '}';
     }
 }

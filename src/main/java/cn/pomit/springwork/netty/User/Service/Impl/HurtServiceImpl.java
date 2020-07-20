@@ -21,18 +21,22 @@ import tk.mybatis.mapper.util.StringUtil;
 import java.util.List;
 @Service
 public class HurtServiceImpl implements HurtService {
-
+    static  Skill skill=new Skill();
     @Override
     //普攻
-    public void  bit(User user,Monster mas) {
-        Skill skill=new Skill();
-        skill.cd=1;
-        skill.mp=30;
+    public void  bit(User user,Monster mas) throws Exception {
+        //读取配置表Skill
+        String skillname = PeiZhiBiao.skill().get(0).get(1);
+        String cd = PeiZhiBiao.skill().get(0).get(3).substring(0,1);
+        String mp= PeiZhiBiao.skill().get(0).get(4).substring(0,2);
+        skill.cd=Integer.parseInt(cd);
+        skill.mp=Integer.parseInt(mp);
+        //怪物血量赋值
         mas.setHp((int) (mas.getHp()-Math.random()*10));
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
-        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ SkillType.Common.getName()
+        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ skillname
                 +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
         System.out.println("==========================================");
         System.out.println("CD恢复");
@@ -48,15 +52,19 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public void bitmas(User user, Monster mas) {
-        Skill skill=new Skill();
-        skill.cd=1;
-        skill.mp=30;
+    public void bitmas(User user, Monster mas) throws Exception {
+        //读取配置表Skill
+        String skillname = PeiZhiBiao.skill().get(1).get(1);
+        String cd = PeiZhiBiao.skill().get(0).get(3).substring(0,1);
+        String mp= PeiZhiBiao.skill().get(0).get(4).substring(0,2);
+        skill.cd=Integer.parseInt(cd);
+        skill.mp=Integer.parseInt(mp);
+        //怪物血量赋值
         mas.setHp((int) (mas.getHp()-Math.random()*20));
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
-        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ SkillType.Common1.getName()
+        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+skillname
                 +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
         System.out.println("CD恢复");
         skill.setMp(skill.getMp()-5);
@@ -69,16 +77,19 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public void magicAttack(User user, Monster mas) {
-        //技能赋值
-        Skill skill=new Skill();
-        skill.cd=3;
-        skill.mp=30;
+    public void magicAttack(User user, Monster mas) throws Exception {
+        //配置表技能赋值
+        String skillname = PeiZhiBiao.skill().get(2).get(1);
+        String cd = PeiZhiBiao.skill().get(2).get(3).substring(0,1);
+        String mp= PeiZhiBiao.skill().get(2).get(4).substring(0,2);
+        skill.cd=Integer.parseInt(cd);
+        skill.mp=Integer.parseInt(mp);
+        //怪物血量赋值
         mas.setHp((mas.getHp()-30));
         if(mas.getHp()<=0){
             mas.setHp(0);
         }
-        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ SkillType.Bisha.getName()
+        System.out.println(mas.getName()+"被"+user.getUsername()+"玩家利用"+ skillname
                 +"攻击，剩余血量是"+mas.getHp()+"\n"+"技能CD需要"+skill.cd+"秒后恢复");
         System.out.println("==========================================");
         System.out.println("==========================================");
@@ -86,9 +97,11 @@ public class HurtServiceImpl implements HurtService {
         System.out.println("CD恢复");
         skill.setMp(skill.getMp()-5);
         if(skill.getMp()<=0){
+            skill.setMp(0);
             System.out.println("mp值过低无法使用技能");
         }else{
             System.out.println("mp等待1s自动恢复");
+            skill.setMp(30);
             System.out.println("mp恢复成功");
         }
     }
@@ -121,13 +134,15 @@ public class HurtServiceImpl implements HurtService {
         user.setUsername(select.getUsername());
         user.setHp(select.getHp());
         user.exp=0;
-        user.levelExp=20;
+        user.levexp=20;
         user.setAtk(70);
+        //读取配置表赋值给Monster对象
         String masname = PeiZhiBiao.monster().get(0).get(1);
-        String s= PeiZhiBiao.monster().get(0).get(2).substring(0,3);
+        String mashp= PeiZhiBiao.monster().get(0).get(2).substring(0,3);
+        String sendexp= PeiZhiBiao.monster().get(0).get(3).substring(0, 2);
         mas.setName(masname);
-        mas.setHp(Integer.parseInt(s));
-        mas.sendExp=30;
+        mas.setHp(Integer.parseInt(mashp));
+        mas.sendExp=Integer.parseInt(sendexp);
         while(user.getHp()>0 && mas.getHp()>0){
             //一刀普攻
             bit(user,mas);
@@ -172,7 +187,7 @@ public class HurtServiceImpl implements HurtService {
     public void checkUpgrade(User user){
         //检查是否升级，自己的经验是否大于升级所需要的经验
         //如果升级就调用升级方法
-        if(user.exp>=user.levelExp){
+        if(user.exp>=user.levexp){
             upgrade(user);
         }
     }
@@ -185,21 +200,21 @@ public class HurtServiceImpl implements HurtService {
         //获取玩家当前等级，经验
         int level =userMapper.selectByPrimaryKey(1L) .getLevel();
         int exp = userMapper.selectByPrimaryKey(1L) .getExp();
-       int levelExp =userMapper.selectByPrimaryKey(1L) .getLevelExp();
+        int levexp =userMapper.selectByPrimaryKey(1L).getLevexp();
         int atk=userMapper.selectByPrimaryKey(1L).getAtk();
         level += 1;
-        exp += 30;
-        levelExp += 50;
+        exp += 60;
+        levexp += 50;
         atk+=70;
         //更新数据库
         user.setUid(1L);
         user.setExp(exp);
         user.setLevel(level);
-        user.setLevelExp(levelExp);
+        user.setLevexp(levexp);
         user.setAtk(atk);
         int update = userService.update(user);
         //System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
-        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp+" ";
+        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levexp+" ";
     }
 
 }

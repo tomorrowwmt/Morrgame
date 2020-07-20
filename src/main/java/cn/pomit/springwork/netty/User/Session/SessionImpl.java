@@ -56,6 +56,4 @@ public class SessionImpl implements Session {
 		channel.close();
 	}
 
-
-
 }

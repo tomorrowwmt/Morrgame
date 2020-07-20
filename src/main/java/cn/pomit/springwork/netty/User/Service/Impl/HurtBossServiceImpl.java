@@ -1,6 +1,8 @@
 package cn.pomit.springwork.netty.User.Service.Impl;
 
 import cn.pomit.springwork.netty.BossFuBen.CountDown;
+import cn.pomit.springwork.netty.Excel.PeiZhiBiao;
+import cn.pomit.springwork.netty.Mapper.UserMapper;
 import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.Monster.Service.BossService;
 import cn.pomit.springwork.netty.Skills.Entity.Skill;
@@ -61,13 +63,19 @@ public class HurtBossServiceImpl implements HurtBossService {
         BossService bossService=SpringUtil.getBean(BossService.class);
         HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         EquipService equipService=SpringUtil.getBean(EquipService.class);
-        //开始赋值
-        user.setUsername("wbl1");
-        user.setHp(200);
+        UserMapper userMapper = SpringUtil.getBean(UserMapper.class);
+        User select = userMapper.selectByPrimaryKey(1L);
+        //result作为服务端返回客户端的变量
+        String result=null;
+        user.setUsername(select.getUsername());
+        user.setHp(select.getHp());
         user.setMoney(0);
-        boss.setName("狂血妖王");
-        boss.setHp(150);
-        boss.setSendmoney(100);
+        String bossname = PeiZhiBiao.boss().get(0).get(1);
+        String s= PeiZhiBiao.boss().get(0).get(2).substring(0,3);
+        String sendmoney = PeiZhiBiao.boss().get(0).get(3).substring(0, 2);
+        boss.setName(bossname);
+        boss.setHp(Integer.parseInt(s));
+        boss.setSendmoney(Integer.parseInt(sendmoney));
         while(user.getHp()>0 && boss.getHp()>0){
             bossService.bit(boss,user);
             //设计怪兽打完移动一下

@@ -24,8 +24,8 @@ public class EquipServiceImpl implements EquipService {
         equip.loaded=0;
         //缓存查询装备
         EquipMapper equipMapper=SpringUtil.getBean(EquipMapper.class);
-        Long eq= equipService.queryAllEquip().get(1).getId();
-        Long id = equipService.queryAllEquip().get(3).getId();
+        Long eq= equipService.queryEquipById(2L).getId();
+        Long id = equipService.queryEquipById(4L).getId();
         //穿上毒刀装备
         wearEquip(user,eq);
         //穿上屠龙刀装备
@@ -39,8 +39,8 @@ public class EquipServiceImpl implements EquipService {
         Equipment equip= getEquipmentById(id);
         System.out.println("穿上装备"+",装备类型为"+ EquipType.Weapon.getName() +
                 ",使得攻击力增加"+",继续加大攻击");
-        equip.setEndurance(equip.getEndurance()-20);
-        if(equip.getEndurance()<=60){
+        equip.setEndurance(equip.getEndurance()-5);
+        if(equip.getEndurance()<=65){
             System.out.println("武器耐久度过低需要去修理一下");
             //修理方法，这里做一个假输出
             xiuLi();
@@ -60,8 +60,8 @@ public class EquipServiceImpl implements EquipService {
     public Equipment getEquipmentById(Long id) {
         //缓存查询装备
         EquipMapper equipMapper=SpringUtil.getBean(EquipMapper.class);
-        Long equipment= equipService.queryAllEquip().get(1).getId();
-        Long equ = equipService.queryAllEquip().get(3).getId();
+        Long equipment= equipService.queryEquipById(2L).getId();;
+        Long equ = equipService.queryEquipById(4L).getId();;
         //传入相关参数
         Equipment quer= equipService.queryEquipById(equipment);
         Equipment que= equipService.queryEquipById(equ);
