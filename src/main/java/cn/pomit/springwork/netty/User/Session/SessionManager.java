@@ -19,32 +19,32 @@ public class SessionManager {
 	/**
 	 * 在线会话
 	 */
-	private static final Map<Long, Session> onlineSessions = new ConcurrentHashMap<>();
-	private static  final Map<Long, Channel> userchannels=new ConcurrentHashMap<>();
+	private static final Map<Long, Session> ONLINE_SESSIONS = new ConcurrentHashMap<>();
+	private static  final Map<Long, Channel> USERCHANNELS =new ConcurrentHashMap<>();
 	/**
 	 * 加入
 	 * @return
 	 */
 	public static boolean putSession(long uid, Session session){
-		if(!onlineSessions.containsKey(uid)){
-			return onlineSessions.putIfAbsent(uid, session) == null;
+		if(!ONLINE_SESSIONS.containsKey(uid)){
+			return ONLINE_SESSIONS.putIfAbsent(uid, session) == null;
 		}
 		return false;
 	}
 	public  static  void add(Long uid, Channel channel){
 		User user=new User();
 		user.setUid(WORKER.nextId());
-		userchannels.put(user.getUid(),channel);
+		USERCHANNELS.put(user.getUid(),channel);
 	}
 	public  static Channel getChanell(Long uid){
-		return  userchannels.get(uid);
+		return USERCHANNELS.get(uid);
 	}
 	/**
 	 * 移除
 	 * @param
 	 */
 	public static Session removeSession(long uid){
-		return onlineSessions.remove(uid);
+		return ONLINE_SESSIONS.remove(uid);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class SessionManager {
 	 * @return
 	 */
 	public static boolean isOnlinePlayer(long uid){
-		return onlineSessions.containsKey(uid);
+		return ONLINE_SESSIONS.containsKey(uid);
 	}
 	
 	/**
@@ -61,6 +61,6 @@ public class SessionManager {
 	 * @return
 	 */
 	public static Set<Long> getOnlinePlayers() {
-		return Collections.unmodifiableSet(onlineSessions.keySet());
+		return Collections.unmodifiableSet(ONLINE_SESSIONS.keySet());
 	}
 }

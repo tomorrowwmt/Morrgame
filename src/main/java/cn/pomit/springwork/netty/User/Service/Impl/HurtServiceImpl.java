@@ -2,6 +2,8 @@ package cn.pomit.springwork.netty.User.Service.Impl;
 
 import cn.pomit.springwork.netty.Bag.Entity.Bag;
 import cn.pomit.springwork.netty.Bag.Enum.BagType;
+import cn.pomit.springwork.netty.Equip.Equipment;
+import cn.pomit.springwork.netty.Excel.PeiZhiBiao;
 import cn.pomit.springwork.netty.Mapper.UserMapper;
 import cn.pomit.springwork.netty.Monster.Service.BitUserService;
 import cn.pomit.springwork.netty.Skills.Enum.SkillType;
@@ -14,6 +16,7 @@ import cn.pomit.springwork.netty.Skills.Entity.Skill;
 import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.List;
 @Service
@@ -105,21 +108,25 @@ public class HurtServiceImpl implements HurtService {
     }
 
     @Override
-    public String batter(User user,Monster mas, Bag bag)  {
+    public String batter(User user,Monster mas, Bag bag) throws Exception {
         //拿到相关bean
         BitUserService bitUserService = SpringUtil.getBean(BitUserService.class);
         BagService bagService=SpringUtil.getBean(BagService.class);
         EquipService equipService=SpringUtil.getBean(EquipService.class);
         UserService userService = SpringUtil.getBean(UserService.class);
+        UserMapper userMapper = SpringUtil.getBean(UserMapper.class);
+        User select = userMapper.selectByPrimaryKey(1L);
         //result作为服务端返回客户端的变量
         String result=null;
-        user.setUsername("wbl1");
-        user.setHp(500);
+        user.setUsername(select.getUsername());
+        user.setHp(select.getHp());
         user.exp=0;
         user.levelExp=20;
         user.setAtk(70);
-        mas.setName("雪域魔王");
-        mas.setHp(300);
+        String masname = PeiZhiBiao.monster().get(0).get(1);
+        String s= PeiZhiBiao.monster().get(0).get(2).substring(0,3);
+        mas.setName(masname);
+        mas.setHp(Integer.parseInt(s));
         mas.sendExp=30;
         while(user.getHp()>0 && mas.getHp()>0){
             //一刀普攻
@@ -127,7 +134,7 @@ public class HurtServiceImpl implements HurtService {
             //二刀普攻
             bitmas(user,mas);
             //穿上屠龙刀装备
-            Long id = equipService.queryAllEquip().get(3).getId();
+            Long id = equipService.queryEquipById(4L).getId();
             equipService.wearEquip(user,id);
             //穿上装备触发大招
            magicAttack(user,mas);
@@ -150,7 +157,7 @@ public class HurtServiceImpl implements HurtService {
                     //吃药后药水减1
                     bagService.useconsumable(user,bag);
                     //可以继续叠加药水
-                    bagService.diejia(user,bag);
+                    bagService.diejia(bag);
                 }
             }else {
                 break;
@@ -174,18 +181,18 @@ public class HurtServiceImpl implements HurtService {
         String ret=null;
         //先查询玩家当前级别
         UserService userService=SpringUtil.getBean(UserService.class);
-        List<User> queryuser =userService.queryAllUser();
+        UserMapper userMapper = SpringUtil.getBean(UserMapper.class);
         //获取玩家当前等级，经验
-        int level = queryuser.get(0).getLevel();
-        int exp = queryuser.get(0).getExp();
-        int levelExp = queryuser.get(0).getLevelExp();
-        int atk=queryuser.get(0).getAtk();
+        int level =userMapper.selectByPrimaryKey(1L) .getLevel();
+        int exp = userMapper.selectByPrimaryKey(1L) .getExp();
+       int levelExp =userMapper.selectByPrimaryKey(1L) .getLevelExp();
+        int atk=userMapper.selectByPrimaryKey(1L).getAtk();
         level += 1;
         exp += 30;
         levelExp += 50;
         atk+=70;
         //更新数据库
-        user.setUid(queryuser.get(0).getUid());
+        user.setUid(1L);
         user.setExp(exp);
         user.setLevel(level);
         user.setLevelExp(levelExp);

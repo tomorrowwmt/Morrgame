@@ -9,7 +9,7 @@ public interface BagService {
     //消耗药品;
     void useconsumable(User user,Bag bag);
     //叠加药水
-    void diejia(User user,Bag bag);
+    void diejia(Bag bag);
     //把背包数据放入guava缓存
     List<Bag> queryAllBag();
     //查询某一个背包物品

@@ -3,6 +3,7 @@ import cn.pomit.springwork.netty.Bag.Entity.Bag;
 import cn.pomit.springwork.netty.Mapper.BagMapper;
 import cn.pomit.springwork.netty.User.Entity.User;
 import cn.pomit.springwork.netty.User.Service.BagService;
+import cn.pomit.springwork.netty.User.Service.UserService;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,20 +26,25 @@ public class BagServiceImpl implements BagService {
         if(bag==null){
             return;
         }
+        UserService userService = SpringUtil.getBean(UserService.class);
+        User queryById = userService.queryById(1L);
         //查询缓存数据库背包是否有药水物品
-        //BagMapper bagMapper = SpringUtil.getBean(BagMapper.class);
-        List<Bag> bags = bagService.queryAllBag();
-        //根据查询结果获取药水count
-        Integer yaoshui = bags.get(0).getCount();
+        //  Integer yaoshui根据查询结果获取药水count;
+        //BagService bagService = ac.getBean(BagService.class);
+        Integer yaoshui=bagService.queryBagId(1L).getCount();
         //每次使用药水减1，执行更新count进入数据库
         yaoshui--;
-        bag.setId(bags.get(0).getId());
+        bag.setId(1L);
         bag.setCount(yaoshui);
+        user.setUid(1L);
+        user.setYaoshui(yaoshui);
+        //BagMapper bagMapper=ac.getBean(BagMapper.class);
         int result=bagMapper.updateByPrimaryKeySelective(bag);
+        int ret=userService.update(user);
     }
 
     @Override
-    public void diejia(User user, Bag bag) {
+    public void diejia(Bag bag) {
         //判断背包容量是否超过了最大限度
         Integer bagcapacity = bagService.queryAllBag().get(0).getCapacity();
         if(bagcapacity>100){
