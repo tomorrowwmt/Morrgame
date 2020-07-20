@@ -30,7 +30,6 @@ public class BagServiceImpl implements BagService {
         User queryById = userService.queryById(1L);
         //查询缓存数据库背包是否有药水物品
         //  Integer yaoshui根据查询结果获取药水count;
-        //BagService bagService = ac.getBean(BagService.class);
         Integer yaoshui=bagService.queryBagId(1L).getCount();
         //每次使用药水减1，执行更新count进入数据库
         yaoshui--;
@@ -55,17 +54,15 @@ public class BagServiceImpl implements BagService {
         //直接添加
         map.put(1, 10);
         //查询数据药水物品
-        //查询缓存背包是否有药水物品
-       // BagMapper bagMapper = SpringUtil.getBean(BagMapper.class);
-        List<Bag> bags = bagService.queryAllBag();
+        Bag bags = bagService.queryBagId(1L);
         //根据查询结果获取药水count
-        Integer ys= bags.get(0).getCount();
+        Integer ys= bags.getCount();
         //获取map里的value
         int count= map.get(1);
         //叠加插入更新数据库
         count+=ys;
         //更新操作
-        bag.setId(bags.get(0).getId());
+        bag.setId(1L);
         bag.setCount(count);
         int result=bagMapper.updateByPrimaryKeySelective(bag);
     }
