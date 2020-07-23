@@ -21,6 +21,11 @@ public class PeiZhiBiao {
         String filepath= Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("Excel/Skill.xlsx")).getPath();
         return excelUtil.readXlsx(filepath);
     }
+
+    public static void main(String[] args) throws Exception {
+        List<List<String>> ditu = ditu();
+        System.out.println(ditu);
+    }
      /*
    public static  Map<String, Object> immutableMap;
     static {

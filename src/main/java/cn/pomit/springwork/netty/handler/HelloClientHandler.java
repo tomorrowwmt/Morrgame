@@ -1,7 +1,14 @@
 package cn.pomit.springwork.netty.handler;
+import cn.pomit.springwork.netty.Command.CmdOrder;
+import cn.pomit.springwork.netty.Command.CmdServcieFactory;
+import cn.pomit.springwork.netty.Command.Command;
 import cn.pomit.springwork.netty.User.Entity.User;
+import cn.pomit.springwork.netty.User.Service.ScenceService;
 import cn.pomit.springwork.netty.User.Service.UserService;
+import cn.pomit.springwork.netty.User.Session.SessionImpl;
 import cn.pomit.springwork.netty.User.Session.SessionManager;
+import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
+import com.sun.xml.internal.ws.wsdl.writer.document.soap.Body;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
@@ -10,32 +17,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.channels.GatheringByteChannel;
 import java.util.Date;
 import java.util.Scanner;
 
 @Slf4j
 @Component
-public class HelloClientHandler extends ChannelInboundHandlerAdapter {
+public class HelloClientHandler extends ChannelInboundHandlerAdapter  {
     @Autowired
     private UserService userService;
     public static User user=new User();
+    private SessionImpl session;
     public static ChannelGroup channelGroup=new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     @Override
     public  void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Server say : " + msg);
-        if (null == msg) {
-            return;
-        }
         //收到数据
         String data = (String) msg;
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Client active ");
-        SessionManager.add(user.getUid(),ctx.channel());
+        System.out.println("\nClient active ");
+        SessionManager.add(user,ctx.channel());
     }
-
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Client close ");

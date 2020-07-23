@@ -38,7 +38,7 @@ public class UserTest {
         long l=worker.nextId();
         user.setUid(l);
         user.setUsername("tgtretrgtgr");
-        user.setPassword("1111");
+        //user.setPassword(1111);
         int user1 = userMapper.insertSelective(user);
         System.out.println(user1);
     }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * (User)表服务实现类
@@ -30,10 +31,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String register(String username, String password,String sex,String profession) {
         //检测名字;
-        User existuser= userService.findUserByName(username);
+        User existuser= userMapper.findUserByName(username);
         //玩家名被占用
             if(existuser!=null){
-                System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
+                //System.out.println("用户已经存在了"+ResultCode.PLAYER_EXIST);
+                return "用户已经存在了";
             }else{
                 //否则创建账号
                 User user = new User();
@@ -43,27 +45,29 @@ public class UserServiceImpl implements UserService {
                 user.setSex(sex);
                 user.setProfession(profession);
                 int i = userMapper.insertSelective(user);
-                System.out.println("注册完成"+i);
+                return "注册完成";
+                //System.out.println("注册完成"+i);
             }
-            return username;
     }
 
     @Override
-    public String login(Session session , String username, String password) {
+    public String login(Session session , String username,String password) {
             //判断玩家账号不存在问题
             User user = userService.findUserByName(username);
             String ret=null;
             if (user == null) {
-               ret= "账号不存在"+ResultCode.PLAYER_NO_EXIST;
+               ret= "账号不存在";
             }else if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                ret= "登录完成" + ResultCode.SUCCESS;
+                ret= "登录完成" ;
             }else {
                ret="用户名或者密码错误";
             }
             //判断玩家是否在其他地方登陆过
-          assert user != null;
-          boolean onlineUser = SessionManager.isOnlinePlayer(user.getUid());
-            if (onlineUser) {
+        boolean onlineUser = false;
+        if (user != null) {
+            onlineUser = SessionManager.isOnlinePlayer(user.getUid());
+        }
+        if (onlineUser) {
                 Session oldSession = SessionManager.removeSession(user.getUid());
                 //踢下线
                 oldSession.close();

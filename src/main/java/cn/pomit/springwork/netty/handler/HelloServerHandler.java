@@ -24,6 +24,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelOutboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -57,29 +58,36 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println("\n"+ctx.channel().remoteAddress() + " Say : " + msg);
-       // UserService userService=SpringUtil.getBean(UserService.class);
-        //ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
-       // HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
+         UserService userService=SpringUtil.getBean(UserService.class);
+        ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
+        // HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
-        //获取当前发送消息的客户端
-        Channel channel=ctx.channel();
-        //循环客户端,channelgroup实现了set接口
-        channelGroup.forEach(ch->{
-            if(channel!=ch){
-                ch.writeAndFlush(channel.remoteAddress()+"发送消息:"+msg+"\n");
-            }else{
-                ch.writeAndFlush("[自己]"+msg+"\n");
-            }
-        });
-        ctx.writeAndFlush("------Received your message !\n");
+        if("登录完成哈哈".equals(body)) {
+            Command com = CmdServcieFactory.getCommandSevice("aoi");
+            String  scenceByRole= com.handle(user, "打印实体");
+            ctx.writeAndFlush(scenceByRole+"\n");
+            Command command = CmdServcieFactory.getCommandSevice("move");
+            String movescence = command.handle(user, "移动场景");
+            ctx.writeAndFlush(movescence+"\n");
+            String talkNpc = scenceService.talkNpc(user);
+            ctx.writeAndFlush(talkNpc+"\n");
+            Command ca = CmdServcieFactory.getCommandSevice("attack");
+            String s1 = ca.handle(user, "打怪");
+            ctx.writeAndFlush(s1+"\n");
+            return;
+        }else if("注册完成".equals(body)){
+            ctx.writeAndFlush("收到注册over\n");
+            return;
+        }else if("用户已经存在了".equals(body)){
+            ctx.writeAndFlush("用户已经存在了over\n");
+        }
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("\nRamoteAddress : " + ctx.channel().remoteAddress() + " active !");
         channelGroup.add(ctx.channel());
-        user.setUid(WORKER.nextId());
-        SessionManager.add(user.getUid(),ctx.channel());
+        SessionManager.add(user, ctx.channel());
         ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
         super.channelActive(ctx);
     }

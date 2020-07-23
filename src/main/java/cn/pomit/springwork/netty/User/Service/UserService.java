@@ -12,13 +12,13 @@ public interface UserService {
      * 登录注册用户
      * @return
      */
-   String register(String username, String password,String sex,String profession);
+   String register(String username, String  password,String sex,String profession);
     //ResultCode registerAndLogin(String username, String password);
     /**
      * 登录
      * @return
      */
-   String login(Session session, String username, String password);
+   String login(Session session, String username,String password);
     /*
      * 通过ID查询单条数据
      *

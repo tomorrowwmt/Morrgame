@@ -111,10 +111,7 @@ public class HurtServiceImpl implements HurtService {
     public void drug(User user){
         //设计0.15倍数
         int hp=user.getHp();
-        //先去查询缓存玩家目前拥有药水的数量
-        UserService userService=SpringUtil.getBean(UserService.class);
-        Integer yaoshui = userService.queryById(1L).getYaoshui();
-        yaoshui= (int) Math.round(hp*0.15);
+        int yaoshui= (int) Math.round(hp*0.15);
         hp=hp+yaoshui;
         System.out.println("["+user.getUsername()+"使用背包中的物品"+ BagType.Yaoshui.getName() +",增加了血量hp="+yaoshui+"的血量!]");
         System.out.println("喝了药水后迅速恢复hp="+hp);
@@ -154,11 +151,7 @@ public class HurtServiceImpl implements HurtService {
             //穿上装备触发大招
            magicAttack(user,mas);
             if(mas.getHp()<=0){
-                //System.out.println(mas.Live="怪兽死亡"+user.getUsername()+"玩家胜利");
-                //查出场景内玩家
-                List<User> userBymap = userService.findUserBymap(1L);
-                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+"通知玩家在场景怪兽死亡了"+userBymap+
-                        "\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
+                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+ "\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
                 //设计怪兽死亡后，送出相应的经验值
                 user.exp+=mas.sendExp;
                 //设计死亡后看下经验时候足够升级
@@ -202,19 +195,21 @@ public class HurtServiceImpl implements HurtService {
         int exp = userMapper.selectByPrimaryKey(1L) .getExp();
         int levexp =userMapper.selectByPrimaryKey(1L).getLevexp();
         int atk=userMapper.selectByPrimaryKey(1L).getAtk();
-        level += 1;
-        exp += 60;
-        levexp += 50;
-        atk+=70;
         //更新数据库
+        level+=1;
+        exp+=60;
+        levexp+=30;
+        atk+=70;
         user.setUid(1L);
         user.setExp(exp);
         user.setLevel(level);
         user.setLevexp(levexp);
         user.setAtk(atk);
         int update = userService.update(user);
-        //System.out.println("玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levelExp);
-        return  ret="玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levexp+" ";
+        //查出场景内玩家
+        List<User> userBymap = userService.findUserBymap(1L);
+        return  ret="通知玩家在场景怪兽死亡了"+userBymap+"\n"+
+                "玩家等级升级为" + level + " " + "玩家经验" + exp + " " + "下一级所需要的经验为" + levexp+" ";
     }
 
 }

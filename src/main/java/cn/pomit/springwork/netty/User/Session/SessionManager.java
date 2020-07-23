@@ -15,12 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class SessionManager {
-	private static IdWorker WORKER=new IdWorker(1,1,1);
+	private static final IdWorker WORKER=new IdWorker(1,1,1);
 	/**
 	 * 在线会话
 	 */
-	private static final Map<Long, Session> ONLINE_SESSIONS = new ConcurrentHashMap<>();
-	private static  final Map<Long, Channel> USERCHANNELS =new ConcurrentHashMap<>();
+	private static final Map<Long , Session> ONLINE_SESSIONS = new ConcurrentHashMap<>();
+	private static  final Map<User, Channel> USERCHANNELS =new ConcurrentHashMap<>();
 	/**
 	 * 加入
 	 * @return
@@ -31,20 +31,16 @@ public class SessionManager {
 		}
 		return false;
 	}
-	public  static  void add(Long uid, Channel channel){
-		User user=new User();
+	public  static  void add(User user, Channel channel){
 		user.setUid(WORKER.nextId());
-		USERCHANNELS.put(user.getUid(),channel);
-	}
-	public  static Channel getChanell(Long uid){
-		return USERCHANNELS.get(uid);
+		USERCHANNELS.put(user,channel);
 	}
 	/**
 	 * 移除
 	 * @param
 	 */
-	public static Session removeSession(long uid){
-		return ONLINE_SESSIONS.remove(uid);
+	public static Session removeSession(Long uid){
+		return  ONLINE_SESSIONS.remove(uid);
 	}
 	
 	/**
@@ -52,15 +48,8 @@ public class SessionManager {
 	 * @param
 	 * @return
 	 */
-	public static boolean isOnlinePlayer(long uid){
-		return ONLINE_SESSIONS.containsKey(uid);
+	public static boolean isOnlinePlayer(Long uid){
+		return ONLINE_SESSIONS.containsKey(WORKER.nextId());
 	}
-	
-	/**
-	 * 获取所有在线玩家
-	 * @return
-	 */
-	public static Set<Long> getOnlinePlayers() {
-		return Collections.unmodifiableSet(ONLINE_SESSIONS.keySet());
-	}
+
 }

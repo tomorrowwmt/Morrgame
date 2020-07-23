@@ -27,9 +27,8 @@ public class BagServiceImpl implements BagService {
             return;
         }
         UserService userService = SpringUtil.getBean(UserService.class);
-        User queryById = userService.queryById(1L);
         //查询缓存数据库背包是否有药水物品
-        //  Integer yaoshui根据查询结果获取药水count;
+        //Integer yaoshui根据查询结果获取药水count;
         Integer yaoshui=bagService.queryBagId(1L).getCount();
         //每次使用药水减1，执行更新count进入数据库
         yaoshui--;
@@ -37,7 +36,6 @@ public class BagServiceImpl implements BagService {
         bag.setCount(yaoshui);
         user.setUid(1L);
         user.setYaoshui(yaoshui);
-        //BagMapper bagMapper=ac.getBean(BagMapper.class);
         int result=bagMapper.updateByPrimaryKeySelective(bag);
         int ret=userService.update(user);
     }

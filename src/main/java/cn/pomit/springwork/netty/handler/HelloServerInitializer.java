@@ -17,6 +17,6 @@ public class HelloServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("encoder", new StringEncoder());
         // 自己的逻辑Handler
         pipeline.addLast("handler",new HelloServerHandler());
-        //pipeline.addLast("loginHandler",new LoginHandler());
+        //pipeline.addLast("loginServerHandler",new LoginServerHandler());
     }
 }

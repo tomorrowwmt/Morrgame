@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Monster>
+        <id>1</id>
+        <name>雪域魔王</name>
+        <hp>500</hp>
+        <sendExp>30</sendExp>
+        <id>2</id>
+        <name>九天狐王</name>
+        <hp>500</hp>
+        <sendExp>30</sendExp>
+</Monster>

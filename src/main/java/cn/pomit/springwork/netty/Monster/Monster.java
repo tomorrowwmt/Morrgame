@@ -4,19 +4,26 @@ package cn.pomit.springwork.netty.Monster;
 import cn.pomit.springwork.netty.User.Entity.User;
 
 import javax.sql.rowset.BaseRowSet;
-
-public class Monster extends BaseRowSet {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "",propOrder = {
+        "id",
+        "name",
+        "hp",
+        "sendExp"
+})
+@XmlRootElement(name="Monster")
+public class Monster {
     private  int  id;
     //怪兽名字
     private String name;
     //当前生命值
     private int  hp;
-    //状态
-   public String  Live;
    //送经验值
     public  int sendExp;
-    //送出金币
-    public int sendmoney;
 
     public int getSendExp() {
         return sendExp;
@@ -50,22 +57,12 @@ public class Monster extends BaseRowSet {
     public void setHp(int hp) {
         this.hp = hp;
     }
-
-    public String getLive() {
-        return Live;
-    }
-
-    public void setLive(String live) {
-        Live = live;
-    }
-
     @Override
     public String toString() {
         return "Monster{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", hp=" + hp +
-                ", Live='" + Live + '\'' +
                 ", sendExp=" + sendExp +
                 '}';
     }

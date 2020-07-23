@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Equipment>
+        <id>1</id>
+        <name>尖牙</name>
+        <atk>50</atk>
+        <endurance>100</endurance>
+        <id>2</id>
+        <name>利爪</name>
+        <atk>50</atk>
+        <endurance>100</endurance>
+</Equipment>

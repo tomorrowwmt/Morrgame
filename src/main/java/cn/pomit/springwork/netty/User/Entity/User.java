@@ -30,13 +30,19 @@ public class User {
    public Integer level;
     //下一级所需经验
     public Integer levexp;
-    @Transient
-    private Session session;
     public Integer atk;
     //金钱
     public Integer money;
     //读取系统邮件状态
     private Integer status;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getSex() {
         return sex;
@@ -61,15 +67,6 @@ public class User {
     public void setMid(Long mid) {
         this.mid = mid;
     }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -102,13 +99,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Integer getHp() {
         return hp;

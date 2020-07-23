@@ -22,8 +22,8 @@ public class HelloClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         pipeline.addLast("decoder", new StringDecoder());
         pipeline.addLast("encoder", new StringEncoder());
-
         // 客户端的逻辑
         pipeline.addLast("handler", new HelloClientHandler());
+        //pipeline.addLast("loginClientHandler",new LoginClientHandler());
     }
 }

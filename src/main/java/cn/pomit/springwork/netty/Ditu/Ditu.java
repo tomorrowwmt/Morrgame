@@ -2,14 +2,26 @@ package cn.pomit.springwork.netty.Ditu;
 
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /*
 地图
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "",propOrder = {
+        "mid",
+        "mname",
+        "neighbor",
+        "monsterStr"
+})
+@XmlRootElement(name="Ditu")
 public class Ditu {
     private Integer mid;
     //地图名称m
     private String mname;
-    private String desc;
     private String monsterStr;
     //临近的地图
     private String neighbor;
@@ -38,14 +50,6 @@ public class Ditu {
         this.neighbor = neighbor;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     public String getMonsterStr() {
         return monsterStr;
     }
@@ -59,7 +63,6 @@ public class Ditu {
         return "Ditu{" +
                 "mid=" + mid +
                 ", mname='" + mname + '\'' +
-                ", desc='" + desc + '\'' +
                 ", monsterStr='" + monsterStr + '\'' +
                 ", neighbor='" + neighbor + '\'' +
                 '}';

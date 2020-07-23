@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Ditu>
+        <mid>1</mid>
+        <mname>起始之地</mname>
+        <neighbor>魔化之地</neighbor>
+        <monsterStr>[{"id":1,"count":3}][{"id":2,"count":2}]</monsterStr>
+</Ditu>
