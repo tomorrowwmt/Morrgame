@@ -3,6 +3,7 @@ package cn.pomit.springwork.netty.User.Service.Impl;
 import cn.pomit.springwork.netty.Bag.Entity.Bag;
 import cn.pomit.springwork.netty.Bag.Enum.BagType;
 import cn.pomit.springwork.netty.Equip.Equipment;
+import cn.pomit.springwork.netty.Excel.JaxbUtil;
 import cn.pomit.springwork.netty.Excel.PeiZhiBiao;
 import cn.pomit.springwork.netty.Mapper.UserMapper;
 import cn.pomit.springwork.netty.Monster.Service.BitUserService;
@@ -129,17 +130,17 @@ public class HurtServiceImpl implements HurtService {
         //result作为服务端返回客户端的变量
         String result=null;
         user.setUsername(select.getUsername());
-        user.setHp(select.getHp());
+        user.setHp(500);
         user.exp=0;
         user.levexp=20;
         user.setAtk(70);
         //读取配置表赋值给Monster对象
-        String masname = PeiZhiBiao.monster().get(0).get(1);
-        String mashp= PeiZhiBiao.monster().get(0).get(2).substring(0,3);
-        String sendexp= PeiZhiBiao.monster().get(0).get(3).substring(0, 2);
+        String masname = JaxbUtil.masxmlTojava().getName();
+        int mashp=JaxbUtil.masxmlTojava().getHp();
+        int sendExp = JaxbUtil.masxmlTojava().getSendExp();
         mas.setName(masname);
-        mas.setHp(Integer.parseInt(mashp));
-        mas.sendExp=Integer.parseInt(sendexp);
+        mas.setHp(mashp);
+        mas.sendExp=sendExp;
         while(user.getHp()>0 && mas.getHp()>0){
             //一刀普攻
             bit(user,mas);
@@ -151,7 +152,7 @@ public class HurtServiceImpl implements HurtService {
             //穿上装备触发大招
            magicAttack(user,mas);
             if(mas.getHp()<=0){
-                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+ "\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
+                result="怪兽死亡"+user.getUsername()+"胜利"+"\n"+"打怪胜利升级啦啦啦,"+upgrade(user);
                 //设计怪兽死亡后，送出相应的经验值
                 user.exp+=mas.sendExp;
                 //设计死亡后看下经验时候足够升级

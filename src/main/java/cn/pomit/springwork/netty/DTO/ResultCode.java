@@ -11,58 +11,40 @@ public interface ResultCode {
 	 * 找不到命令
 	 */
 	int NO_INVOKER = 1;
-	
-	/**
-	 * 参数异常
-	 */
-	int AGRUMENT_ERROR = 2;
-	
 	/**
 	 * 未知异常
 	 */
-	int UNKOWN_EXCEPTION = 3;
-	
-	/**
-	 * 玩家名或密码不能为空
-	 */
-	int PLAYERNAME_NULL = 4;
-	
+	int UNKOWN_EXCEPTION = 2;
+
 	/**
 	 * 玩家名已使用
 	 */
-	int PLAYER_EXIST = 5;
+	int PLAYER_EXIST = 3;
 	
 	/**
 	 * 玩家不存在
 	 */
-	int PLAYER_NO_EXIST = 6;
+	int PLAYER_NO_EXIST = 4;
 	
 	/**
 	 * 密码错误
 	 */
-	int PASSWARD_ERROR = 7;
-	
-	/**
-	 * 您已登录
-	 */
-	int HAS_LOGIN = 8;
+	int PASSWARD_ERROR = 5;
 	
 	/**
 	 * 登录失败
 	 */
-	int LOGIN_FAIL = 9;
+	int LOGIN_FAIL = 6;
 	
 	/**
 	 * 玩家不在线
 	 */
-	int PLAYER_NO_ONLINE = 10;
+	int PLAYER_NO_ONLINE = 7;
 	
 	/**
 	 * 请先登录
 	 */
-	int LOGIN_PLEASE = 11;
+	int LOGIN_PLEASE = 8;
 	//移动成功
-	int MOVE_SUCESS=12;
-	//移动失败
-	int MOVE_FAIL=13;
+	int MOVE_SUCESS=9;
 }

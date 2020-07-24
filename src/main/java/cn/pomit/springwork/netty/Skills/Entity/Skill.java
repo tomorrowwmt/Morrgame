@@ -1,10 +1,21 @@
 package cn.pomit.springwork.netty.Skills.Entity;
 
-import lombok.Data;
 
+import javax.xml.bind.annotation.*;
+import java.util.List;
 /*
 技能实体类
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "",propOrder = {
+        "id",
+        "name",
+        "type",
+        "cd",
+        "mp",
+        "skilLists"
+})
+@XmlRootElement(name="root")
 public class Skill {
     //技能id
     private int id;
@@ -16,7 +27,9 @@ public class Skill {
     public  int cd;
     //技能mp消耗
     public int mp;
-
+    @XmlElements({@XmlElement(name = "skill",type = SkilList.class)})
+    //@XmlElementWrapper(name = "skill")
+    private  List<SkilList> skilLists;
     public int getId() {
         return id;
     }
@@ -55,6 +68,14 @@ public class Skill {
 
     public void setMp(int mp) {
         this.mp = mp;
+    }
+
+   public List<SkilList> getSkilLists() {
+       return skilLists;
+    }
+
+    public void setSkilLists(List<SkilList> skilLists) {
+      this.skilLists = skilLists;
     }
 
     @Override

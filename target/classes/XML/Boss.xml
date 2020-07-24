@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<root>
-    <row>
+<Boss>
         <id>1</id>
         <name>狂血妖王</name>
         <hp>150</hp>
         <sendmoney>100</sendmoney>
-    </row>
-</root>
+</Boss>

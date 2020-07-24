@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import cn.pomit.springwork.netty.Bag.Entity.Bag;
 import cn.pomit.springwork.netty.Command.*;
+import cn.pomit.springwork.netty.DTO.ResultCode;
 import cn.pomit.springwork.netty.Monster.Boss;
 import cn.pomit.springwork.netty.Monster.Monster;
 import cn.pomit.springwork.netty.Monster.Service.BitUserService;
@@ -51,35 +52,38 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
     private static IdWorker WORKER=new IdWorker(1,1,1);
     private SessionImpl session;
     public static User user=new User();
-    public static Boss boss=new Boss();
-    public  static Bag bag=new Bag();
     public static ChannelGroup channelGroup=new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println("\n"+ctx.channel().remoteAddress() + " Say : " + msg);
-         UserService userService=SpringUtil.getBean(UserService.class);
         ScenceService scenceService = SpringUtil.getBean(ScenceService.class);
-        // HurtBossService hurtBossService=SpringUtil.getBean(HurtBossService.class);
         String body= (String) msg;
         if("登录完成哈哈".equals(body)) {
+            ctx.writeAndFlush("登陆成功\n");
+            //aoi 打印
             Command com = CmdServcieFactory.getCommandSevice("aoi");
             String  scenceByRole= com.handle(user, "打印实体");
             ctx.writeAndFlush(scenceByRole+"\n");
+            //移动场景
             Command command = CmdServcieFactory.getCommandSevice("move");
             String movescence = command.handle(user, "移动场景");
-            ctx.writeAndFlush(movescence+"\n");
+            ctx.writeAndFlush(movescence+ResultCode.MOVE_SUCESS+"\n");
+            //与npc对话
             String talkNpc = scenceService.talkNpc(user);
             ctx.writeAndFlush(talkNpc+"\n");
+            //与怪兽战斗
             Command ca = CmdServcieFactory.getCommandSevice("attack");
-            String s1 = ca.handle(user, "打怪");
-            ctx.writeAndFlush(s1+"\n");
+            String attack = ca.handle(user, "打怪");
+            ctx.writeAndFlush(attack+"\n");
             return;
         }else if("注册完成".equals(body)){
-            ctx.writeAndFlush("收到注册over\n");
+            ctx.writeAndFlush("注册完成over\n"+ResultCode.SUCCESS);
             return;
         }else if("用户已经存在了".equals(body)){
-            ctx.writeAndFlush("用户已经存在了over\n");
+            ctx.writeAndFlush("用户已存在,请重新注册over\n");
+        }else if("用户名或者密码错误哈哈".equals(body)||"账号不存在哈哈".equals(body)){
+            ctx.writeAndFlush("账号错误，请检查重新提交over\n");
         }
     }
 

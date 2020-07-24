@@ -21,6 +21,7 @@ public class User {
     @Transient
     private String map;
     //当前生命值
+    @Transient
     private Integer hp;
     //药水增加的hp或者mp
     private Integer yaoshui;
@@ -33,6 +34,7 @@ public class User {
     public Integer atk;
     //金钱
     public Integer money;
+    @Transient
     //读取系统邮件状态
     private Integer status;
 
@@ -165,14 +167,10 @@ public class User {
                 ", password='" + password + '\'' +
                 ", sex='" + sex + '\'' +
                 ", profession='" + profession + '\'' +
-                ", hp=" + hp +
-                ", yaoshui=" + yaoshui +
                 ", exp=" + exp +
                 ", level=" + level +
                 ", levexp=" + levexp +
                 ", atk=" + atk +
-                ", money=" + money +
-                ", status=" + status +
                 '}';
     }
 }

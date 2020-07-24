@@ -2,6 +2,19 @@ package cn.pomit.springwork.netty.Monster;
 
 import cn.pomit.springwork.netty.User.Entity.User;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "",propOrder = {
+        "id",
+        "name",
+        "hp",
+        "sendmoney"
+})
+@XmlRootElement(name="Boss")
 public class Boss {
     //id
     private int id;

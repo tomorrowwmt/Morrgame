@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Skill>
-    <row>
+<root>
+    <skill>
         <id>1</id>
         <name>末日风暴</name>
         <type>普通攻击</type>
         <cd>1</cd>
         <mp>30</mp>
-    </row>
-    <row>
+    </skill>
+    <skill>
         <id>2</id>
         <name>唤雷术</name>
         <type>普通攻击</type>
         <cd>1</cd>
-        <mp>30</mp></row>
-    <row>
+        <mp>30</mp>
+    </skill>
+    <skill>
         <id>3</id>
         <name>屠龙大刀</name>
         <type>必杀攻击</type>
         <cd>3</cd>
         <mp>30</mp>
-    </row>
-</Skill>
+    </skill>
+</root>
