@@ -24,9 +24,10 @@ public class ScenceServiceImpl implements ScenceService {
          user.setUsername(userBymap.toString());
         //xml配置表mid=1数据
           Ditu ditu = xmlTojava();
-        //场景怪物
-          List<List<String>> mas= PeiZhiBiao.monster();
-          //Npc
+        //选出地图一场景怪物
+          //List<List<String>> mas= PeiZhiBiao.monster();
+        String mas = masxmlTojava().getName();
+        //Npc
           NPC npc = new NPC("村花莉萌", "大傻逼你来了");
            ret= "当前场景"+ditu.getMname()+",玩家" + user.getUsername()+"\n" + "当前场景信息" +
                    ditu.toString() + mas + "\n" + "当前场景npc:" + npc.getName();

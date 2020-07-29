@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
                 //否则创建账号
                 User user = new User();
                 user.setUid(WORKER.nextId());
-                //user.setMid(1L);
+                user.setMid(1L);
                 user.setUsername(username);
                 user.setPassword(password);
                 user.setSex(sex);

@@ -6,11 +6,10 @@ import java.util.List;
 @XmlType(name = "",propOrder = {
         "skilLists",
 })
-@XmlRootElement(name="root")
+@XmlRootElement(name="Root")
 public class SkilList {
-    @XmlElement(name = "skill")
+    @XmlElement(name = "Skill")
     private List<Skill> skilLists;
-
     public List<Skill> getSkilLists() {
         return skilLists;
     }

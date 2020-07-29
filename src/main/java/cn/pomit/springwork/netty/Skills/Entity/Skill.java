@@ -15,7 +15,7 @@ import java.util.List;
         "mp",
         "skilLists"
 })
-@XmlRootElement(name="root")
+@XmlRootElement(name="Root")
 public class Skill {
     //技能id
     private int id;
@@ -27,8 +27,7 @@ public class Skill {
     public  int cd;
     //技能mp消耗
     public int mp;
-    @XmlElements({@XmlElement(name = "skill",type = SkilList.class)})
-    //@XmlElementWrapper(name = "skill")
+    @XmlElementWrapper(name = "Skill")
     private  List<SkilList> skilLists;
     public int getId() {
         return id;
@@ -69,13 +68,12 @@ public class Skill {
     public void setMp(int mp) {
         this.mp = mp;
     }
-
-   public List<SkilList> getSkilLists() {
-       return skilLists;
+    public List<SkilList> getSkilLists() {
+        return skilLists;
     }
 
     public void setSkilLists(List<SkilList> skilLists) {
-      this.skilLists = skilLists;
+        this.skilLists = skilLists;
     }
 
     @Override

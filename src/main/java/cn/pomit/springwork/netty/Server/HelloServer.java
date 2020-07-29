@@ -19,16 +19,19 @@ public class HelloServer {
     //@PostConstruct
     public static void main(String[] args) throws Exception {
          ApplicationContext ac=new ClassPathXmlApplicationContext("spring-netty.xml");
+         //NioEvent是个线程组，
          EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
+            //启动Nio服务端辅助启动类，降低服务端开发复杂度
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup);
             b.channel(NioServerSocketChannel.class);
+            //作用相当于Reactor模式中的Handler类。主要用于处理网络I/0事件，例如记录日志，对消息进行编码
             b.childHandler(new HelloServerInitializer());
-            // 服务器绑定端口监听
+            // 服务器绑定端口监听，用于异步操作通知的回调
             ChannelFuture f = b.bind(portNumber).sync();
-            // 监听服务器关闭监听
+            // 监听服务器关闭监听，等待服务端链路关闭之后main函数才退出
             f.channel().closeFuture().sync();
             log.info("###########################################");
         } finally {

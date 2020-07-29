@@ -28,8 +28,8 @@ public class IdWorker{
         this.sequence = sequence;
     }
 
-    //初始时间戳
-    private static final long twepoch = 1565020800000L;
+    /** 开始时间戳 (2015-01-01) */
+    private final long twepoch = 1420041600000L;
     //长度
     private static final long workerIdBits = 5L;
     private static final long datacenterIdBits = 5L;
@@ -68,7 +68,19 @@ public class IdWorker{
 
         //获取当前时间戳如果等于上次时间戳（同一毫秒内），则在序列号加一；否则序列号赋值为0，从0开始。
         if (lastTimestamp == timestamp) {
+            //用mask防止溢出
             sequence = (sequence + 1) & sequenceMask;
+            //这段代码通过位与运算保证计算的结果范围始终是 0-4095 ！
+            long seqMask = -1L ^ (-1L << 12L); //计算12位能耐存储的最大正整数，相当于：2^12-1 = 4095
+            System.out.println("seqMask: "+seqMask);
+            System.out.println(1L & seqMask);
+            System.out.println(2L & seqMask);
+            System.out.println(3L & seqMask);
+            System.out.println(4L & seqMask);
+            System.out.println(4095L & seqMask);
+            System.out.println(4096L & seqMask);
+            System.out.println(4097L & seqMask);
+            System.out.println(4098L & seqMask);
             if (sequence == 0) {
                 timestamp = tilNextMillis(lastTimestamp);
             }
@@ -109,7 +121,7 @@ public class IdWorker{
 
     public static void main(String[] args) {
         IdWorker worker = new IdWorker(1,1,0);
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 300; i++) {
             System.out.println(worker.nextId());
         }
         long l = worker.nextId();

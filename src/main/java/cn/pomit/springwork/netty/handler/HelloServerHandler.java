@@ -2,6 +2,7 @@ package cn.pomit.springwork.netty.handler;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 import cn.pomit.springwork.netty.Bag.Entity.Bag;
@@ -21,6 +22,7 @@ import cn.pomit.springwork.netty.User.Session.SessionImpl;
 import cn.pomit.springwork.netty.User.Session.SessionManager;
 import cn.pomit.springwork.netty.UtilSpring.SpringUtil;
 import com.google.common.collect.ImmutableMap;
+import com.sun.org.apache.xpath.internal.WhitespaceStrippingElementMatcher;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -68,7 +70,7 @@ public class HelloServerHandler extends ChannelInboundHandlerAdapter {
             //移动场景
             Command command = CmdServcieFactory.getCommandSevice("move");
             String movescence = command.handle(user, "移动场景");
-            ctx.writeAndFlush(movescence+ResultCode.MOVE_SUCESS+"\n");
+            ctx.writeAndFlush(movescence+"\n");
             //与npc对话
             String talkNpc = scenceService.talkNpc(user);
             ctx.writeAndFlush(talkNpc+"\n");

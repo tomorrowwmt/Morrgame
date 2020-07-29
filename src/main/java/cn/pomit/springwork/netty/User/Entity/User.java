@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 public class User {
     @Id
     private Long uid;
-    @Transient
+   // @Transient
     private Long mid;
     private String username;
     private String password;
